@@ -1,0 +1,19 @@
+syntax = "proto3"; // Defino la sintaxis del archivo proto (proto3 es la sintaxis mas actual)
+
+package persona; // Defino el nombre del paquete
+
+service Persona{ // Creo el servicio y los métodos que va a tener
+    rpc saludar (SaludarRequest) returns (SaludarResponse) {} // Defino un método unario
+}
+
+/*********************************************************************************************/
+// DEFINICIÓN DE TIPOS DE DATOS
+
+message SaludarRequest { // Defino que datos va a tener el tipo de dato SaludarRequest
+    string nombre = 1;   // Las variables deben estar ordenadas numericamente
+    string dia    = 2;
+}
+
+message SaludarResponse { // Defino que datos va a tener el tipo de dato SaludarResponse
+    string saludo = 1;
+}

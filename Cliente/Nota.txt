@@ -1,0 +1,3 @@
+En donde esta el archivo .proto, ejecutar este comando para crear los archivos grpc para python:
+
+python -m grpc_tools.protoc -I./ --python_out=. --pyi_out=. --grpc_python_out=. ./NombreArchivoProto.proto

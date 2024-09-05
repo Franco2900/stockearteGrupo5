@@ -1,0 +1,95 @@
+syntax = "proto3"; // Defino la sintaxis del archivo proto (proto3 es la sintaxis mas actual)
+
+package persona; // Defino el nombre del paquete
+
+service Stockearte // Creo el servicio y los métodos que va a tener
+{ 
+    // PUNTO 1.A
+    rpc altaTienda (altaTiendaRequest) returns (altaTiendaResponse) {} // Defino un método unario
+    rpc bajaTienda (bajaTiendaRequest) returns (bajaTiendaResponse) {}
+
+    // PUNTO 1.B
+    rpc altaUsuario (altaUsuarioRequest) returns (altaUsuarioResponse) {}
+
+    // PUNTO 1.C
+    rpc altaProducto (altaProductoRequest) returns (altaProductoResponse) {}
+
+    // PUNTO 1.D
+    rpc modificacionProducto (modificacionProductoRequest) returns (modificacionProductoResponse) {}
+}
+
+/*********************************************************************************************/
+// DEFINICIÓN DE TIPOS DE DATOS
+
+// PUNTO 1.A
+// Servicio altaTienda
+message altaTiendaRequest     // Defino que datos va a tener el tipo de dato altaTiendaRequest
+{   
+    string codigoTienda = 1;  // Las variables deben estar ordenadas numericamente
+    string direccion    = 2;
+    string ciudad       = 3;
+    string provincia    = 4;
+    bool   habilitado   = 5;
+}
+
+message altaTiendaResponse 
+{ 
+
+}
+
+
+// Servicio bajaTienda
+message bajaTiendaRequest 
+{
+    string codigoTienda = 1;
+}
+
+message bajaTiendaResponse
+{
+
+}
+
+
+// PUNTO 1.B
+// Servicio altaUsuario
+message altaUsuarioRequest
+{
+    string nombre        = 1;
+    string apellido      = 2;
+    string nombreUsuario = 3;
+    string contrasenia   = 4;
+    bool   habilitado    = 5;
+    string codigoTienda  = 6; 
+}
+
+
+// PUNTO 1.C
+// Servicio altaProducto
+message altaProductoRequest
+{
+    string nombre         = 1;
+    string codigoProducto = 2;
+    string talle          = 3;
+    string foto           = 4;
+    string color          = 5;
+    int    stock          = 6;
+}
+
+message altaProductoResponse
+{
+
+}
+
+
+// PUNTO 1.D
+// Servicio modificacionProducto
+message modificacionProductoRequest
+{
+    string codigoProducto = 1;
+    int    nuevoStock     = 2;
+}
+
+message modificacionProductoResponse
+{
+
+}
