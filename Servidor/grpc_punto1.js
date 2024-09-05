@@ -1,5 +1,5 @@
+/*************************************** CONSIGNA ****************************************/
 /*
-CONSIGNA:
 1) Conociendo cuál es la operación principal del sitio, se nos indica el siguiente backlog de tareas:
 
 A) Como usuario de casa central, quiero dar de alta tiendas o eliminarlas. Tengo que poder 
@@ -18,8 +18,11 @@ cada tienda, por lo que este dato en el alta se fija a 0 por defecto.
 D) Como usuario de tienda, quiero modificar el stock de los productos que tiene asignados mi tienda.
 */
 
+/************************************ CONFIGURACIÓN DE LA BASE DE DATOS **********************************/
+
 const mysql = require('mysql');
 const generadorContrasenia = require('generate-password');
+
 
 var conexion = mysql.createConnection({ // Creo una conexión a la base de datos
   host: 'localhost',
@@ -47,31 +50,33 @@ function consulta(comandoSQL, args)
     });
 }
 
+/********************** DEFINICIÓN DE LA LÓGICA DE LOS MÉTODOS DECLARADOS EN EL ARCHIVO .PROTO ***********************/
+
 // PUNTO 1.A
 // Como usuario de casa central: Dar de alta o baja las tiendas
 // Las tiendas tienen los siguientes datos: ID (generado automatica al insertar una nueva tienda en la tabla MySQL), código alfanumérico, dirección, ciudad, provincia, check de habilitado o deshabilitado
 
-async function altaTienda(/*call, callback*/)
+async function altaTienda(call, callback)
 {
     // Acá van los datos que nos llegan del cliente desde gRPC
-    /*const registro =
+    const registro =
     {
         codigoTienda: call.request.codigo,
-        direccion: call.request.direccion,
-        ciudad: call.request.ciudad,
-        provincia: call.request.provincia,
-        habilitado: call.request.habilitado
-    }*/
+        direccion:    call.request.direccion,
+        ciudad:       call.request.ciudad,
+        provincia:    call.request.provincia,
+        habilitado:   call.request.habilitado
+    }
 
     
-    const registro = // PARA PRUEBAS
+    /*const registro = // DATO HARDCODEADO PARA PRUEBAS
     {
         codigoTienda: "sanji32542",
-        direccion: "Lacoste 1920",
-        ciudad: "Las Toninas",
-        provincia: "Buenos Aires",
-        habilitado: false
-    }
+        direccion:    "Lacoste 1920",
+        ciudad:       "Las Toninas",
+        provincia:    "Buenos Aires",
+        habilitado:   false
+    }*/
 
 
     // Chequeo si ya existe la tienda
@@ -79,22 +84,35 @@ async function altaTienda(/*call, callback*/)
     var existeTienda = resultados[0].existe;
 
 
-    if(existeTienda) console.log('Ya existe la tienda');
+    if(existeTienda)
+    {
+        console.log('ERROR: Ya existe la tienda');
+        return callback(null, { mensaje: 'ERROR: Ya existe la tienda' });
+    }
     else
     {
         conexion.query('INSERT INTO tiendas SET ?', registro, function (error) // Si no existe la tienda, la creo
         {
-            if (error) console.log(error);
-            console.log('Se hizo el alta de la tienda con el codigo: ' + registro.codigoTienda);
+            if (error) 
+            {
+                console.log(error);
+                return callback(error);
+            }
+
+            var mensajeExitoso = 'Se hizo el alta de la tienda con el codigo: ' + registro.codigoTienda;
+            console.log(mensajeExitoso);
+            return callback(null, { mensaje: mensajeExitoso });
+            
         })
     }
 
 }
 
 
-async function bajaTienda(/*call, callback*/)
+async function bajaTienda(call, callback)
 {    
-    var codigoTienda = "sanji32542"; // PARA PRUEBAS. ACÁ IRÍA LO QUE NOS LLEGA DESDE GRPC
+    var codigoTienda = call.request.codigoTienda;
+    //var codigoTienda = "sanji32542"; // DATO HARDCODEADO PARA PRUEBAS
 
     // Chequeo si existe la tienda
     var resultados = await consulta(`SELECT EXISTS(SELECT codigoTienda FROM tiendas WHERE codigoTienda = ?) AS existe`, codigoTienda);
@@ -105,11 +123,22 @@ async function bajaTienda(/*call, callback*/)
     {
         conexion.query(`DELETE FROM tiendas WHERE codigoTienda = '${codigoTienda}' `, function(error) 
         {
-            if (error) console.log(error);
-            console.log('Se hizo la baja de la tienda con el codigo: ' + codigoTienda);
+            if (error) 
+            {
+                console.log(error);
+                return callback(error);
+            }
+            
+            var mensajeExitoso = 'Se hizo la baja de la tienda con el codigo: ' + codigoTienda
+            console.log(mensajeExitoso);
+            return callback(null, { mensaje: mensajeExitoso });
         })
     }
-    else console.log('No existe la tienda');
+    else
+    {
+        console.log('No existe la tienda');
+        return callback(null, { mensaje: 'ERROR: No existe la tienda' });
+    } 
 
 }
 
@@ -118,20 +147,20 @@ async function bajaTienda(/*call, callback*/)
 // Como usuario de casa central: Dar de alta usuarios
 // Los usuarios tienen los siguientes datos: ID (generado automatica al insertar una nueva tienda en la tabla MySQL), nombre, apellido, nombre de usuario, contraseña, tienda a la que pertenece (solo puede pertenecer a una tienda o a casa central), check de habilitado o deshabilitado
 
-async function altaUsuario(/*call, callback*/)
+async function altaUsuario(call, callback)
 {
     // Acá van los datos que nos llegan del cliente desde gRPC
-    /*const registro =
+    const registro =
     {
         nombre: call.request.nombre,
         apellido: call.request.apellido,
         nombreUsuario: call.request.nombreUsuario,
         contrasenia: call.request.contrasenia,
-        habilitado: call.request.habilitado
-        codigoTienda: call.request.codigoTienda, 
-    }*/
+        habilitado: call.request.habilitado,
+        codigoTienda: call.request.codigoTienda
+    }
 
-    const registro = // PARA PRUEBAS
+    /*const registro = // DATO HARDCODEADO PARA PRUEBAS
     {
         nombre: 'Pepe',
         apellido: 'Argento',
@@ -139,7 +168,7 @@ async function altaUsuario(/*call, callback*/)
         contrasenia: '12345',
         habilitado: true,
         codigoTienda: 'sanji32542'
-    }
+    }*/
  
     // Chequeo si ya existe el usuario
     var resultados = await consulta(`SELECT EXISTS(SELECT nombreUsuario FROM usuarios WHERE codigo = ?) AS existe`, [registro.nombreUsuario]);
@@ -150,15 +179,30 @@ async function altaUsuario(/*call, callback*/)
     var existeTienda = resultados[0].existe;
     
 
-    if(existeUsuario) console.log('Ya existe el usuario');
-    if(!existeTienda) console.log('No existe la tienda');
+    if(existeUsuario) 
+    {
+        console.log('Ya existe el usuario');
+        return callback(null, { mensaje: 'ERROR: Ya existe el usuario' });
+    }
+    if(!existeTienda) 
+    {
+        console.log('No existe la tienda');
+        return callback(null, { mensaje: 'ERROR: No existe la tienda' });
+    }
 
     if(!existeUsuario && existeTienda) // Si no existe el usuario y si existe la tienda
     {
         conexion.query('INSERT INTO usuarios SET ?', registro, function (error) // Si no existe el usuario, lo creo
         {
-            if (error) console.log(error);
-            console.log('Se hizo el alta del usuario: ' + registro.nombreUsuario);
+            if (error) 
+            {
+                console.log(error);
+                return callback(error);
+            }
+
+            var mensajeExitoso = 'Se hizo el alta del usuario: ' + registro.nombreUsuario
+            console.log(mensajeExitoso);
+            return callback(null, { mensaje: mensajeExitoso });
         })
     }
 
@@ -184,43 +228,51 @@ function generadorCodigo()
 }
 
 
-async function altaProducto(/*call, callback*/)
+async function altaProducto(call, callback)
 {
     // Acá van los datos que nos llegan del cliente desde gRPC
-    /*const registro =
+    const registro =
     {
         nombre: call.request.nombre,
         codigoProducto: generadorCodigo(),
         talle: call.request.talle,
         foto: call.request.foto, // SUPONGO QUE ACÁ VA EL NOMBRE DE LA FOTO O SU URL EN LA WEB
         color: call.request.color,
-        stock: 0
-    }*/
+    }
 
- 
-    const registro = // PARA PRUEBAS
+    /*const registro = // DATO HARDCODEADO PARA PRUEBAS
     {
         nombre: 'Remera',
         codigoProducto: generadorCodigo(),
         talle: 'L',
         foto: 'fondo.jpg',
         color: 'Verde',
-        stock: 0
-    }
+    }*/
 
     // Chequeo si ya existe el producto 
-    // AVERIGUAR SI AL COMPROBAR LA EXISTENCIA DEL PRODUCTO HAY QUE FIJARSE EN EL CODIGO O EN EL NOMBRE, TALLE Y COLOR
+    // AVERIGUAR SI AL COMPROBAR LA EXISTENCIA DEL PRODUCTO HAY QUE FIJARSE EN EL CODIGO O EN EL NOMBRE, TALLE Y COLOR PORQUE EL CÓDIGO SE GENERA AL AZAR
     var resultados = await consulta(`SELECT EXISTS(SELECT codigoProducto FROM productos WHERE codigoProducto = ?) AS existe`, [registro.codigoProducto]);
     var existeProducto = resultados[0].existe;
     
 
-    if(existeProducto) console.log('Ya existe el producto');
+    if(existeProducto) 
+    {
+        console.log('Ya existe el producto');
+        return callback(null, { mensaje: 'ERROR: Ya existe el producto' });
+    }
     else
     {
         conexion.query('INSERT INTO productos SET ?', registro, function (error) // Si no existe el producto, lo creo
         {
-            if (error) console.log(error);
-            console.log('Se hizo el alta del producto con el codigo: ' + registro.codigoProducto);
+            if (error) 
+            {
+                console.log(error);
+                return callback(error);
+            }
+
+            var mensajeExitoso = 'Se hizo el alta del producto: ' +  registro.codigoProducto;
+            console.log(mensajeExitoso);
+            return callback(null, { mensaje: mensajeExitoso });
         })
     }
 
@@ -231,23 +283,45 @@ async function altaProducto(/*call, callback*/)
 // PUNTO 1.D
 // Como usuario de tienda: Modificar el stock de los productos de la tienda a la que pertenece
 
-async function modificacionProducto(/*call, callback*/)
+async function modificacionProducto(call, callback)
 {
-    var nuevoStock = 10; // PARA LAS PRUEBAS
-    var codigoProducto = 'YOoKyaALai'; // PARA LAS PRUEBAS. EL WHERE DE MYSQL NO DIFERENCIA MAYUSCULAS NI MINUSCULAS
+    var nuevoStock     = call.request.nuevoStock;
+    var codigoProducto = call.request.codigoProducto;
 
-    // Chequeo si existe el producto
-    var resultados = await consulta(`SELECT EXISTS(SELECT codigoProducto FROM productos WHERE codigoProducto = ?) AS existe`, [codigoProducto]);
+    //var nuevoStock = 10; // DATO HARDCODEADO PARA PRUEBAS
+    //var codigoProducto = 'YOoKyaALai'; // DATO HARDCODEADO PARA PRUEBAS
+
+    // Chequeo si existe el producto NOTA: EL WHERE DE MYSQL NO DIFERENCIA ENTRE MAYUSCULAS Y MINUSCULAS
+    var resultados = await consulta(`SELECT EXISTS(SELECT codigoProducto FROM tiendasxproductos WHERE codigoProducto = ?) AS existe`, [codigoProducto]);
     var existeProducto = resultados[0].existe;
 
     if(existeProducto)
     {
-        conexion.query(`UPDATE productos SET stock = ${nuevoStock} WHERE codigoProducto = '${codigoProducto}'`, function (error) // Si existe el producto, lo modifico como indica la consigna
+        conexion.query(`UPDATE tiendasXproductos SET stock = ${nuevoStock} WHERE codigoProducto = '${codigoProducto}'`, function (error) // Si existe el producto, lo modifico como indica la consigna
         {
-            if (error) console.log(error);
-            console.log('Se hizo la modificacion de stock del producto con el codigo: ' + codigoProducto);
+            if (error) 
+            {
+                console.log(error);
+                return callback(error);
+            }
+
+            var mensajeExitoso = 'Se hizo la modificacion de stock del producto con el codigo: ' + codigoProducto;
+            console.log(mensajeExitoso);
+            return callback(null, { mensaje: mensajeExitoso });
         })
     }
-    else console.log('No existe el producto');
+    else
+    {
+        console.log('No existe el producto');
+        return callback(null, { mensaje: 'ERROR: No existe el producto' });
+    } 
 
 }
+
+
+/*********************************** EXPORTACIÓN DE LA LÓGICA ***********************************/
+exports.altaTienda = altaTienda
+exports.bajaTienda = bajaTienda
+exports.altaUsuario = altaUsuario
+exports.altaProducto = altaProducto
+exports.modificacionProducto = modificacionProducto

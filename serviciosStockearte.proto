@@ -1,25 +1,31 @@
 syntax = "proto3"; // Defino la sintaxis del archivo proto (proto3 es la sintaxis mas actual)
 
-package persona; // Defino el nombre del paquete
+package stockearte; // Defino el nombre del paquete
 
 service Stockearte // Creo el servicio y los métodos que va a tener
 { 
     // PUNTO 1.A
-    rpc altaTienda (altaTiendaRequest) returns (altaTiendaResponse) {} // Defino un método unario
-    rpc bajaTienda (bajaTiendaRequest) returns (bajaTiendaResponse) {}
+    rpc altaTienda (altaTiendaRequest) returns (mensajeSimple) {} // Defino un método unario
+    rpc bajaTienda (bajaTiendaRequest) returns (mensajeSimple) {}
 
     // PUNTO 1.B
-    rpc altaUsuario (altaUsuarioRequest) returns (altaUsuarioResponse) {}
+    rpc altaUsuario (altaUsuarioRequest) returns (mensajeSimple) {}
 
     // PUNTO 1.C
-    rpc altaProducto (altaProductoRequest) returns (altaProductoResponse) {}
+    rpc altaProducto (altaProductoRequest) returns (mensajeSimple) {}
 
     // PUNTO 1.D
-    rpc modificacionProducto (modificacionProductoRequest) returns (modificacionProductoResponse) {}
+    rpc modificacionProducto (modificacionProductoRequest) returns (mensajeSimple) {}
 }
 
 /*********************************************************************************************/
 // DEFINICIÓN DE TIPOS DE DATOS
+
+message mensajeSimple
+{
+    string mensaje = 1;
+}
+
 
 // PUNTO 1.A
 // Servicio altaTienda
@@ -32,21 +38,10 @@ message altaTiendaRequest     // Defino que datos va a tener el tipo de dato alt
     bool   habilitado   = 5;
 }
 
-message altaTiendaResponse 
-{ 
-
-}
-
-
 // Servicio bajaTienda
 message bajaTiendaRequest 
 {
     string codigoTienda = 1;
-}
-
-message bajaTiendaResponse
-{
-
 }
 
 
@@ -72,12 +67,7 @@ message altaProductoRequest
     string talle          = 3;
     string foto           = 4;
     string color          = 5;
-    int    stock          = 6;
-}
-
-message altaProductoResponse
-{
-
+    int32  stock          = 6;
 }
 
 
@@ -86,10 +76,5 @@ message altaProductoResponse
 message modificacionProductoRequest
 {
     string codigoProducto = 1;
-    int    nuevoStock     = 2;
-}
-
-message modificacionProductoResponse
-{
-
+    int32  nuevoStock     = 2;
 }
