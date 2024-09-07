@@ -6,7 +6,8 @@ service Stockearte // Creo el servicio y los métodos que va a tener
 { 
     // PUNTO 1.A
     rpc altaTienda (altaTiendaRequest) returns (mensajeSimple) {} // Defino un método unario
-    rpc bajaTienda (bajaTiendaRequest) returns (mensajeSimple) {}
+    rpc bajaLogicaTienda (bajaLogicaTiendaRequest) returns (mensajeSimple) {}
+    rpc altaLogicaTienda (altaLogicaTiendaRequest) returns (mensajeSimple) {}
 
     // PUNTO 1.B
     rpc altaUsuario (altaUsuarioRequest) returns (mensajeSimple) {}
@@ -39,7 +40,13 @@ message altaTiendaRequest     // Defino que datos va a tener el tipo de dato alt
 }
 
 // Servicio bajaTienda
-message bajaTiendaRequest 
+message bajaLogicaTiendaRequest 
+{
+    string codigoTienda = 1;
+}
+
+// Servicio altaLogicaTienda
+message altaLogicaTiendaRequest
 {
     string codigoTienda = 1;
 }
