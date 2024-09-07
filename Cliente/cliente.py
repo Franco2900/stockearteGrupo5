@@ -12,12 +12,13 @@ canal = grpc.insecure_channel("localhost:8080")
 
 
 """
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Falta implentar endpoint para:
 
 - verStockPorTalleYColor
 
 -generarTocken(LOGIN)
-
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 """
 
 # Definir una ruta para la página principal
