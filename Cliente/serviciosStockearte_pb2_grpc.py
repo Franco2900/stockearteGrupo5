@@ -39,9 +39,14 @@ class StockearteStub(object):
                 request_serializer=serviciosStockearte__pb2.altaTiendaRequest.SerializeToString,
                 response_deserializer=serviciosStockearte__pb2.mensajeSimple.FromString,
                 _registered_method=True)
-        self.bajaTienda = channel.unary_unary(
-                '/stockearte.Stockearte/bajaTienda',
-                request_serializer=serviciosStockearte__pb2.bajaTiendaRequest.SerializeToString,
+        self.bajaLogicaTienda = channel.unary_unary(
+                '/stockearte.Stockearte/bajaLogicaTienda',
+                request_serializer=serviciosStockearte__pb2.bajaLogicaTiendaRequest.SerializeToString,
+                response_deserializer=serviciosStockearte__pb2.mensajeSimple.FromString,
+                _registered_method=True)
+        self.altaLogicaTienda = channel.unary_unary(
+                '/stockearte.Stockearte/altaLogicaTienda',
+                request_serializer=serviciosStockearte__pb2.altaLogicaTiendaRequest.SerializeToString,
                 response_deserializer=serviciosStockearte__pb2.mensajeSimple.FromString,
                 _registered_method=True)
         self.altaUsuario = channel.unary_unary(
@@ -71,7 +76,13 @@ class StockearteServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def bajaTienda(self, request, context):
+    def bajaLogicaTienda(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def altaLogicaTienda(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -106,9 +117,14 @@ def add_StockearteServicer_to_server(servicer, server):
                     request_deserializer=serviciosStockearte__pb2.altaTiendaRequest.FromString,
                     response_serializer=serviciosStockearte__pb2.mensajeSimple.SerializeToString,
             ),
-            'bajaTienda': grpc.unary_unary_rpc_method_handler(
-                    servicer.bajaTienda,
-                    request_deserializer=serviciosStockearte__pb2.bajaTiendaRequest.FromString,
+            'bajaLogicaTienda': grpc.unary_unary_rpc_method_handler(
+                    servicer.bajaLogicaTienda,
+                    request_deserializer=serviciosStockearte__pb2.bajaLogicaTiendaRequest.FromString,
+                    response_serializer=serviciosStockearte__pb2.mensajeSimple.SerializeToString,
+            ),
+            'altaLogicaTienda': grpc.unary_unary_rpc_method_handler(
+                    servicer.altaLogicaTienda,
+                    request_deserializer=serviciosStockearte__pb2.altaLogicaTiendaRequest.FromString,
                     response_serializer=serviciosStockearte__pb2.mensajeSimple.SerializeToString,
             ),
             'altaUsuario': grpc.unary_unary_rpc_method_handler(
@@ -165,7 +181,7 @@ class Stockearte(object):
             _registered_method=True)
 
     @staticmethod
-    def bajaTienda(request,
+    def bajaLogicaTienda(request,
             target,
             options=(),
             channel_credentials=None,
@@ -178,8 +194,35 @@ class Stockearte(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/stockearte.Stockearte/bajaTienda',
-            serviciosStockearte__pb2.bajaTiendaRequest.SerializeToString,
+            '/stockearte.Stockearte/bajaLogicaTienda',
+            serviciosStockearte__pb2.bajaLogicaTiendaRequest.SerializeToString,
+            serviciosStockearte__pb2.mensajeSimple.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def altaLogicaTienda(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/stockearte.Stockearte/altaLogicaTienda',
+            serviciosStockearte__pb2.altaLogicaTiendaRequest.SerializeToString,
             serviciosStockearte__pb2.mensajeSimple.FromString,
             options,
             channel_credentials,

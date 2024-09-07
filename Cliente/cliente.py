@@ -11,6 +11,14 @@ app = Flask(__name__)
 canal = grpc.insecure_channel("localhost:8080") 
 
 
+"""
+Falta implentar endpoint para:
+
+- verStockPorTalleYColor
+
+-generarTocken(LOGIN)
+
+"""
 
 # Definir una ruta para la página principal
 @app.route('/')
@@ -33,8 +41,8 @@ def altaTienda():
 def bajaTienda():
     # Se crea un stub para interactuar con los servicios
     stub  = serviciosStockearte_pb2_grpc.StockearteStub(canal)
-    solicitud= serviciosStockearte_pb2.bajaTiendaRequest(codigoTienda="1")
-    response=stub.bajaTienda(solicitud)
+    solicitud= serviciosStockearte_pb2.bajaLogicaTiendaRequest(codigoTienda="1")
+    response=stub.bajaLogicaTienda(solicitud)
     print("Respuesta del servidor: " + response.mensaje)
     return make_response(response.mensaje)
 

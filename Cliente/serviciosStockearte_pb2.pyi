@@ -24,7 +24,13 @@ class altaTiendaRequest(_message.Message):
     habilitado: bool
     def __init__(self, codigoTienda: _Optional[str] = ..., direccion: _Optional[str] = ..., ciudad: _Optional[str] = ..., provincia: _Optional[str] = ..., habilitado: bool = ...) -> None: ...
 
-class bajaTiendaRequest(_message.Message):
+class bajaLogicaTiendaRequest(_message.Message):
+    __slots__ = ("codigoTienda",)
+    CODIGOTIENDA_FIELD_NUMBER: _ClassVar[int]
+    codigoTienda: str
+    def __init__(self, codigoTienda: _Optional[str] = ...) -> None: ...
+
+class altaLogicaTiendaRequest(_message.Message):
     __slots__ = ("codigoTienda",)
     CODIGOTIENDA_FIELD_NUMBER: _ClassVar[int]
     codigoTienda: str
