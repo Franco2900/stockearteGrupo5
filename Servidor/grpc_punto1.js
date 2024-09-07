@@ -37,8 +37,8 @@ conexion.connect(function (error) { // Me conecto a la base de datos
 })
 
 
-// Función para ejecutar una consulta y devolver una promesa
-function consulta(comandoSQL, args) 
+// Función para ejecutar un comando SQL y devolver una promesa
+function query(comandoSQL, args) 
 {
     return new Promise((resolve, reject) => 
     {
@@ -61,7 +61,7 @@ async function altaTienda(call, callback)
     // Acá van los datos que nos llegan del cliente desde gRPC
     const registro =
     {
-        codigoTienda: call.request.codigo,
+        codigoTienda: call.request.codigoTienda,
         direccion:    call.request.direccion,
         ciudad:       call.request.ciudad,
         provincia:    call.request.provincia,
@@ -80,7 +80,7 @@ async function altaTienda(call, callback)
 
 
     // Chequeo si ya existe la tienda
-    var resultados = await consulta(`SELECT EXISTS(SELECT codigoTienda FROM tiendas WHERE codigoTienda = ?) AS existe`, [registro.codigoTienda]);
+    var resultados = await query(`SELECT EXISTS(SELECT codigoTienda FROM tiendas WHERE codigoTienda = ?) AS existe`, [registro.codigoTienda]);
     var existeTienda = resultados[0].existe;
 
 
@@ -91,57 +91,92 @@ async function altaTienda(call, callback)
     }
     else
     {
-        conexion.query('INSERT INTO tiendas SET ?', registro, function (error) // Si no existe la tienda, la creo
+        try // Si no existe la tienda, la creo
         {
-            if (error) 
-            {
-                console.log(error);
-                return callback(error);
-            }
+            await query('INSERT INTO tiendas SET ?', registro);
 
             var mensajeExitoso = 'Se hizo el alta de la tienda con el codigo: ' + registro.codigoTienda;
             console.log(mensajeExitoso);
             return callback(null, { mensaje: mensajeExitoso });
-            
-        })
+        }
+        catch(error) 
+        {
+            console.log(error);
+            return callback(error);
+        }
     }
 
 }
 
 
-async function bajaTienda(call, callback)
+async function bajaLogicaTienda(call, callback)
 {    
     var codigoTienda = call.request.codigoTienda;
-    //var codigoTienda = "sanji32542"; // DATO HARDCODEADO PARA PRUEBAS
+    // var codigoTienda = "sanji32542"; // DATO HARDCODEADO PARA PRUEBAS
 
     // Chequeo si existe la tienda
-    var resultados = await consulta(`SELECT EXISTS(SELECT codigoTienda FROM tiendas WHERE codigoTienda = ?) AS existe`, codigoTienda);
+    var resultados = await query(`SELECT EXISTS(SELECT codigoTienda FROM tiendas WHERE codigoTienda = ?) AS existe`, codigoTienda);
     var existeTienda = resultados[0].existe;
 
 
     if(existeTienda)
     {
-        conexion.query(`DELETE FROM tiendas WHERE codigoTienda = '${codigoTienda}' `, function(error) 
+        try 
         {
-            if (error) 
-            {
-                console.log(error);
-                return callback(error);
-            }
-            
-            var mensajeExitoso = 'Se hizo la baja de la tienda con el codigo: ' + codigoTienda
+            await query(`UPDATE tiendas SET habilitado = 0 WHERE codigoTienda = '${codigoTienda}' `, {});
+
+            var mensajeExitoso = 'Se hizo la baja lógica de la tienda con el codigo: ' + codigoTienda;
             console.log(mensajeExitoso);
             return callback(null, { mensaje: mensajeExitoso });
-        })
+        }
+        catch(error) 
+        {
+            console.log(error);
+            return callback(error);
+        }
     }
     else
     {
-        console.log('No existe la tienda');
+        console.log('ERROR: No existe la tienda');
         return callback(null, { mensaje: 'ERROR: No existe la tienda' });
     } 
 
 }
 
+
+async function altaLogicaTienda(call, callback)
+{    
+    var codigoTienda = call.request.codigoTienda;
+    // var codigoTienda = "sanji32542"; // DATO HARDCODEADO PARA PRUEBAS
+
+    // Chequeo si existe la tienda
+    var resultados = await query(`SELECT EXISTS(SELECT codigoTienda FROM tiendas WHERE codigoTienda = ?) AS existe`, codigoTienda);
+    var existeTienda = resultados[0].existe;
+
+
+    if(existeTienda)
+    {
+        try 
+        {
+            await query(`UPDATE tiendas SET habilitado = 1 WHERE codigoTienda = '${codigoTienda}' `, {});
+
+            var mensajeExitoso = 'Se hizo el alta lógica de la tienda con el codigo: ' + codigoTienda;
+            console.log(mensajeExitoso);
+            return callback(null, { mensaje: mensajeExitoso });
+        }
+        catch(error) 
+        {
+            console.log(error);
+            return callback(error);
+        }
+    }
+    else
+    {
+        console.log('ERROR: No existe la tienda');
+        return callback(null, { mensaje: 'ERROR: No existe la tienda' });
+    } 
+
+}
 
 // PUNTO 1.B
 // Como usuario de casa central: Dar de alta usuarios
@@ -171,11 +206,11 @@ async function altaUsuario(call, callback)
     }*/
  
     // Chequeo si ya existe el usuario
-    var resultados = await consulta(`SELECT EXISTS(SELECT nombreUsuario FROM usuarios WHERE codigo = ?) AS existe`, [registro.nombreUsuario]);
+    var resultados = await query(`SELECT EXISTS(SELECT nombreUsuario FROM usuarios WHERE nombreUsuario = ?) AS existe`, [registro.nombreUsuario]);
     var existeUsuario = resultados[0].existe;
     
     // Chequeo si existe la tienda que se quiere asignar al usuario
-    resultados = await consulta(`SELECT EXISTS(SELECT codigoTienda FROM tiendas WHERE codigoTienda = ?) AS existe`, [registro.codigoTienda]);
+    resultados = await query(`SELECT EXISTS(SELECT codigoTienda FROM tiendas WHERE codigoTienda = ?) AS existe`, [registro.codigoTienda]);
     var existeTienda = resultados[0].existe;
     
 
@@ -251,7 +286,7 @@ async function altaProducto(call, callback)
 
     // Chequeo si ya existe el producto 
     // AVERIGUAR SI AL COMPROBAR LA EXISTENCIA DEL PRODUCTO HAY QUE FIJARSE EN EL CODIGO O EN EL NOMBRE, TALLE Y COLOR PORQUE EL CÓDIGO SE GENERA AL AZAR
-    var resultados = await consulta(`SELECT EXISTS(SELECT codigoProducto FROM productos WHERE codigoProducto = ?) AS existe`, [registro.codigoProducto]);
+    var resultados = await query(`SELECT EXISTS(SELECT codigoProducto FROM productos WHERE codigoProducto = ?) AS existe`, [registro.codigoProducto]);
     var existeProducto = resultados[0].existe;
     
 
@@ -292,7 +327,7 @@ async function modificacionProducto(call, callback)
     //var codigoProducto = 'YOoKyaALai'; // DATO HARDCODEADO PARA PRUEBAS
 
     // Chequeo si existe el producto NOTA: EL WHERE DE MYSQL NO DIFERENCIA ENTRE MAYUSCULAS Y MINUSCULAS
-    var resultados = await consulta(`SELECT EXISTS(SELECT codigoProducto FROM tiendasxproductos WHERE codigoProducto = ?) AS existe`, [codigoProducto]);
+    var resultados = await query(`SELECT EXISTS(SELECT codigoProducto FROM tiendasxproductos WHERE codigoProducto = ?) AS existe`, [codigoProducto]);
     var existeProducto = resultados[0].existe;
 
     if(existeProducto)
@@ -321,7 +356,10 @@ async function modificacionProducto(call, callback)
 
 /*********************************** EXPORTACIÓN DE LA LÓGICA ***********************************/
 exports.altaTienda = altaTienda
-exports.bajaTienda = bajaTienda
+exports.bajaLogicaTienda = bajaLogicaTienda
+exports.altaLogicaTienda = altaLogicaTienda
+
 exports.altaUsuario = altaUsuario
+
 exports.altaProducto = altaProducto
 exports.modificacionProducto = modificacionProducto
