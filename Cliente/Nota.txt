@@ -1,3 +1,15 @@
 En donde esta el archivo .proto, ejecutar este comando para crear los archivos grpc para python:
 
-python -m grpc_tools.protoc -I./ --python_out=. --pyi_out=. --grpc_python_out=. ./NombreArchivoProto.proto
+python -m grpc_tools.protoc -I./ --python_out=./Cliente --pyi_out=./Cliente --grpc_python_out=./Cliente ./serviciosStockearte.proto
+
+Este comando genera los archivos en la misma ruta 
+
+Es necesario tener estos dos módulos de pip:
+python -m pip install grpcio
+python -m pip install grpcio-tools
+
+Con el siguiente comando podemos ver que módulos tenemos instalados en pip:
+pip list
+
+Instalar protoc, agregarlo a la variable PATH del entorno de Windows
+https://github.com/protocolbuffers/protobuf/releases
