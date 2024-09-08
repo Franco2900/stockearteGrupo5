@@ -227,18 +227,19 @@ async function altaUsuario(call, callback)
 
     if(!existeUsuario && existeTienda) // Si no existe el usuario y si existe la tienda
     {
-        conexion.query('INSERT INTO usuarios SET ?', registro, function (error) // Si no existe el usuario, lo creo
+        try // Si no existe el usuario, lo creo
         {
-            if (error) 
-            {
-                console.log(error);
-                return callback(error);
-            }
+            await query('INSERT INTO usuarios SET ?', registro);
 
-            var mensajeExitoso = 'Se hizo el alta del usuario: ' + registro.nombreUsuario
+            var mensajeExitoso = 'Se hizo el alta del usuario: ' + registro.nombreUsuario;
             console.log(mensajeExitoso);
             return callback(null, { mensaje: mensajeExitoso });
-        })
+        }
+        catch(error) 
+        {
+            console.log(error);
+            return callback(error);
+        }
     }
 
 }
@@ -297,18 +298,19 @@ async function altaProducto(call, callback)
     }
     else
     {
-        conexion.query('INSERT INTO productos SET ?', registro, function (error) // Si no existe el producto, lo creo
+        try // Si no existe el producto, lo creo
         {
-            if (error) 
-            {
-                console.log(error);
-                return callback(error);
-            }
+            await query('INSERT INTO productos SET ?', registro);
 
             var mensajeExitoso = 'Se hizo el alta del producto: ' +  registro.codigoProducto;
             console.log(mensajeExitoso);
             return callback(null, { mensaje: mensajeExitoso });
-        })
+        }
+        catch(error) 
+        {
+            console.log(error);
+            return callback(error);
+        }
     }
 
 }
@@ -332,18 +334,19 @@ async function modificacionProducto(call, callback)
 
     if(existeProducto)
     {
-        conexion.query(`UPDATE tiendasXproductos SET stock = ${nuevoStock} WHERE codigoProducto = '${codigoProducto}'`, function (error) // Si existe el producto, lo modifico como indica la consigna
+        try 
         {
-            if (error) 
-            {
-                console.log(error);
-                return callback(error);
-            }
+            await query(`UPDATE tiendasXproductos SET stock = ${nuevoStock} WHERE codigoProducto = '${codigoProducto}' `, {});
 
             var mensajeExitoso = 'Se hizo la modificacion de stock del producto con el codigo: ' + codigoProducto;
             console.log(mensajeExitoso);
             return callback(null, { mensaje: mensajeExitoso });
-        })
+        }
+        catch(error) 
+        {
+            console.log(error);
+            return callback(error);
+        }
     }
     else
     {

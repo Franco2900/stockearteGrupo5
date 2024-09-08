@@ -12,9 +12,11 @@ const stockeartePackage = gRPC.loadPackageDefinition(packageDefinition).stockear
 /*************************************** LÓGICA DEL NEGOCIO *************************************************/
 // Módulos con la lógica del negocio
 const grpc_punto1 = require('./grpc_punto1.js');
+const grpc_punto1 = require('./grpc_punto2.js');
 
 // Como no se puede añadir el servicio directamente exportando desde el módulo, clono las funciones
 
+// Lógica Punto 1
 const altaTienda           = grpc_punto1.altaTienda.bind({}); // bind() crea una nueva función que tiene el mismo comportamiento que la original
 const bajaLogicaTienda     = grpc_punto1.bajaLogicaTienda.bind({});
 const altaLogicaTienda     = grpc_punto1.altaLogicaTienda.bind({});
@@ -23,6 +25,8 @@ const altaUsuario          = grpc_punto1.altaUsuario.bind({});
 
 const altaProducto         = grpc_punto1.altaProducto.bind({});
 const modificacionProducto = grpc_punto1.modificacionProducto.bind({});
+
+// Lógica Punto 2
 
 /**************************************** SERVIDOR GRPC ********************************************************/
 var servidor = new gRPC.Server(); // Creo el servidor gRPC
@@ -41,5 +45,5 @@ servidor.addService(stockeartePackage.Stockearte.service, {
 
 // Enlazo el servidor a una dirección IP y un puerto y lo arranco
 servidor.bindAsync("0.0.0.0:8000", gRPC.ServerCredentials.createInsecure(), () => {
-    servidor.start();
+    console.log('Servidor Node.js iniciado');
 });

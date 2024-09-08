@@ -72,7 +72,7 @@ message altaProductoRequest
     string nombre         = 1;
     string codigoProducto = 2;
     string talle          = 3;
-    string foto           = 4;
+    bytes  foto           = 4;
     string color          = 5;
     int32  stock          = 6;
 }

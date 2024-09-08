@@ -1,0 +1,21 @@
+syntax = "proto3"; // Defino la sintaxis del archivo proto (proto3 es la sintaxis mas actual)
+
+package imagen; // Defino el nombre del paquete
+
+service Imagen{ // Creo el servicio y los métodos que va a tener
+    rpc subirImagen (mensajeImagen) returns (subirImagenResponse) {} // Defino un método unario
+    rpc bajarImagen (mensajeVacio) returns (mensajeImagen) {}
+}
+
+/*********************************************************************************************/
+// DEFINICIÓN DE TIPOS DE DATOS
+
+message mensajeImagen { // Defino que datos va a tener el tipo de dato mensajeImagen
+    bytes imagen = 1;        // Las variables deben estar ordenadas numericamente
+}
+
+message subirImagenResponse { // Defino que datos va a tener el tipo de dato subirImagenResponse
+    string mensaje = 1;
+}
+
+message mensajeVacio {}

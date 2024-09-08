@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@grpc/grpc-js": "^1.11.1",
+    "@grpc/proto-loader": "^0.7.13",
+    "generate-password": "^1.7.1",
+    "sharp": "^0.33.5"
+  }
+}
