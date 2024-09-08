@@ -2,13 +2,16 @@ import grpc                         # Libreria para trabajar con grpc
 import serviciosStockearte_pb2      # Contiene las definiciones de los mensajes
 import serviciosStockearte_pb2_grpc # Contiene las definiciones de los servicios
 
+#make_response lo podemos usar para un mensaje estático
 from flask import Flask,request,make_response
+from google.protobuf.json_format import MessageToJson
+
 
 # Crear una instancia de la aplicación Flask
 app = Flask(__name__)
 
 # Crea una conexión de canal insegura con el servidor gRPC en una determinada dirección IP y puerto
-canal = grpc.insecure_channel("localhost:8080") 
+canal = grpc.insecure_channel("localhost:8000") 
 
 
 """
@@ -27,53 +30,58 @@ def hello():
     return "¡Hola, Mundo!"
 
     
-@app.route('/altaTienda')
+@app.route('/altaTienda', methods=['POST'])
 def altaTienda():
+
     # Se crea un stub para interactuar con los servicios
     stub  = serviciosStockearte_pb2_grpc.StockearteStub(canal)
-    #result= stub.altaTienda(request.json)
-    #return make_response("ok")
-    solicitud= serviciosStockearte_pb2.altaTiendaRequest(codigoTienda="1",direccion="Av. siempre viva",ciudad="Lanus",provincia="Buenos Aires",habilitado=True)
+
+    #Desempaquetamos el diccionario en argumentos con nombre y valor
+    solicitud= serviciosStockearte_pb2.altaTiendaRequest(**request.json)
+
     response=stub.altaTienda(solicitud)
-    print("Respuesta del servidor: " + response.mensaje)
-    return make_response(response.mensaje)
+    return MessageToJson(response)
 
-@app.route('/bajaTienda')
+
+@app.route('/bajaTienda', methods=['POST'])
 def bajaTienda():
-    # Se crea un stub para interactuar con los servicios
     stub  = serviciosStockearte_pb2_grpc.StockearteStub(canal)
-    solicitud= serviciosStockearte_pb2.bajaLogicaTiendaRequest(codigoTienda="1")
+
+    solicitud= serviciosStockearte_pb2.bajaLogicaTiendaRequest(**request.json)
+
     response=stub.bajaLogicaTienda(solicitud)
-    print("Respuesta del servidor: " + response.mensaje)
-    return make_response(response.mensaje)
+    return MessageToJson(response)
 
-@app.route('/altaUsuario')
+@app.route('/altaUsuario', methods=['POST'])
 def altaUsuario():
-    # Se crea un stub para interactuar con los servicios
     stub  = serviciosStockearte_pb2_grpc.StockearteStub(canal)
-    solicitud= serviciosStockearte_pb2.altaUsuarioRequest(nombre="Tony",apellido="Stark",nombreUsuario="TonyStark777",contrasenia="YosoyIronman123",habilitado=True,codigoTienda="1")
+
+    solicitud= serviciosStockearte_pb2.altaUsuarioRequest(**request.json)
+
     response=stub.altaUsuario(solicitud)
-    print("Respuesta del servidor: " + response.mensaje)
-    return make_response(response.mensaje)
+    return MessageToJson(response)
 
-@app.route('/altaProducto')
+
+@app.route('/altaProducto', methods=['POST'])
 def altaProducto():
-    # Se crea un stub para interactuar con los servicios
     stub  = serviciosStockearte_pb2_grpc.StockearteStub(canal)
-    solicitud= serviciosStockearte_pb2.altaProductoRequest(nombre="Pantalon",codigoProducto="",talle="XXL",foto="Imagen-1",color="verde")
+
+    solicitud= serviciosStockearte_pb2.altaProductoRequest(**request.json)
+
     response=stub.altaProducto(solicitud)
-    print("Respuesta del servidor: " + response.mensaje)
-    return make_response(response.mensaje)
+    return MessageToJson(response)
 
-@app.route('/modificarProducto')
+
+
+@app.route('/modificarProducto', methods=['POST'])
 def modificarProducto():
-    # Se crea un stub para interactuar con los servicios
-    stub  = serviciosStockearte_pb2_grpc.StockearteStub(canal)
-    solicitud= serviciosStockearte_pb2.modificacionProductoRequest(codigoProducto="kQtsjcMSMh",stock=20)
-    response=stub.modificacionProducto(solicitud)
-    print("Respuesta del servidor: " + response.mensaje)
-    return make_response(response.mensaje)
 
+    stub  = serviciosStockearte_pb2_grpc.StockearteStub(canal)
+
+    solicitud= serviciosStockearte_pb2.modificacionProductoRequest(**request.json)
+
+    response=stub.modificacionProducto(solicitud)
+    return MessageToJson(response)
 
 
 # Ejecutar la aplicación
