@@ -29,19 +29,22 @@ function query(comandoSQL, args)
 
 /************************************ FUNCIONES DE CARGA DE DATOS **********************************/
 
+async function chequearExistencia(tabla, columna, valor) {
+    const resultados = await query(`SELECT EXISTS(SELECT ${columna} FROM ${tabla} WHERE ${columna} = ?) AS existe`, [valor]);
+    return resultados[0].existe;
+}
+
 async function cargarTienda(registro)
 {
-    // Chequeo si ya existe la tienda
-    var resultados = await query(`SELECT EXISTS(SELECT codigoTienda FROM tiendas WHERE codigoTienda = ?) AS existe`, [registro.codigoTienda]);
-    var existeTienda = resultados[0].existe;
+    var existeTienda = await chequearExistencia('tienda', 'codigo', registro.codigo);
 
-    if(existeTienda) console.log('ERROR: Ya existe la tienda');
+    if(existeTienda) console.log('ERROR: Ya existe la tienda ' + registro.codigo);
     else
     {
         try
         {
-            await query('INSERT INTO tiendas SET ?', registro);
-            console.log('Se hizo el alta de la tienda con el codigo: ' + registro.codigoTienda);
+            await query('INSERT INTO tienda SET ?', registro);
+            console.log('Se hizo el alta de la tienda con el codigo: ' + registro.codigo);
         }
         catch(error) {console.log(error);}
     }
@@ -50,23 +53,18 @@ async function cargarTienda(registro)
 
 async function cargarUsuario(registro)
 {
-    // Chequeo si ya existe el usuario
-    var resultados = await query(`SELECT EXISTS(SELECT nombreUsuario FROM usuarios WHERE nombreUsuario = ?) AS existe`, [registro.nombreUsuario]);
-    var existeUsuario = resultados[0].existe;
-    
-    // Chequeo si existe la tienda que se quiere asignar al usuario
-    resultados = await query(`SELECT EXISTS(SELECT codigoTienda FROM tiendas WHERE codigoTienda = ?) AS existe`, [registro.codigoTienda]);
-    var existeTienda = resultados[0].existe;
+    const existeUsuario = await chequearExistencia('usuario', 'usuario', registro.usuario);
+    const existeTienda  = await chequearExistencia('tienda', 'codigo', registro.tienda_codigo);
 
-    if(existeUsuario) console.log('ERROR: Ya existe el usuario ' + registro.nombreUsuario);
+    if(existeUsuario) console.log('ERROR: Ya existe el usuario ' + registro.usuario);
     if(!existeTienda) console.log('ERROR: No existe la tienda');
     
     if(!existeUsuario && existeTienda) // Si no existe el usuario y si existe la tienda
     {
         try
         {
-            await query('INSERT INTO usuarios SET ?', registro);
-            console.log('Se hizo el alta del usuario: ' + registro.nombreUsuario);
+            await query('INSERT INTO usuario SET ?', registro);
+            console.log('Se hizo el alta del usuario: ' + registro.usuario);
         }
         catch(error) {console.log(error);}
     }
@@ -76,90 +74,26 @@ async function cargarUsuario(registro)
 
 async function cargaDatosDePrueba()
 {
-
-    // CARGA DE TIENDAS
-    var registro =
-    {
-        codigoTienda: "sanji32542",
-        direccion:    "Lacoste 1920",
-        ciudad:       "Las Toninas",
-        provincia:    "Buenos Aires",
-        habilitado:   false
+    const tiendas = [
+        { codigo: "sanji32542", direccion: "Lacoste 1920",   ciudad: "Las Toninas",       provincia: "Buenos Aires", habilitado: false },
+        { codigo: "asdfgh987",  direccion: "Juan Justo 200", ciudad: "Monte Chingolo",    provincia: "Buenos Aires", habilitado: true },
+        { codigo: "xcbewu13",   direccion: "Canarias 1850",  ciudad: "Ciudad de Cordoba", provincia: "Cordoba",      habilitado: true }
+    ];
+    
+    const usuarios = [
+        { nombre: 'Pepe',    apellido: 'Argento',   usuario: 'El Pepo',   password: '12345',           habilitado: true,  tienda_codigo: 'sanji32542' },
+        { nombre: 'Moni',    apellido: 'Argento',   usuario: 'La Peluca', password: 'qwerty',          habilitado: true,  tienda_codigo: 'asdfgh987' },
+        { nombre: 'Unlero',  apellido: 'Sistemas',  usuario: 'The One',   password: 'fñnbqio_@748e5a', habilitado: false, tienda_codigo: 'asdfgh987' },
+        { nombre: 'Horacio', apellido: 'Hernandez', usuario: 'H-H',       password: '564sdgf',         habilitado: true,  tienda_codigo: 'sanji32542' }
+    ];
+    
+    for (const tienda of tiendas) {
+        await cargarTienda(tienda);
     }
-
-    cargarTienda(registro);
-
-    registro =
-    {
-        codigoTienda: "asdfgh987",
-        direccion:    "Juan Justo 200",
-        ciudad:       "Monte Chingolo",
-        provincia:    "Buenos Aires",
-        habilitado:   true
+    
+    for (const usuario of usuarios) {
+        await cargarUsuario(usuario);
     }
-
-    cargarTienda(registro);
-
-    registro =
-    {
-        codigoTienda: "xcbewu13",
-        direccion:    "Canarias 1850",
-        ciudad:       "Ciudad de  Cordoba",
-        provincia:    "Cordoba",
-        habilitado:   true
-    }
-
-    cargarTienda(registro);
-
-    // CARGA DE USUARIOS
-    registro =
-    {
-        nombre: 'Pepe',
-        apellido: 'Argento',
-        nombreUsuario: 'El Pepo',
-        contrasenia: '12345',
-        habilitado: true,
-        codigoTienda: 'sanji32542'
-    }
-
-    cargarUsuario(registro);
-
-    registro =
-    {
-        nombre: 'Moni',
-        apellido: 'Argento',
-        nombreUsuario: 'La Peluca',
-        contrasenia: 'qwerty',
-        habilitado: true,
-        codigoTienda: 'asdfgh987'
-    }
-
-    cargarUsuario(registro);
-
-
-    registro =
-    {
-        nombre: 'Unlero',
-        apellido: 'Sistemas',
-        nombreUsuario: 'The One',
-        contrasenia: 'fñnbqio_@748e5a',
-        habilitado: false,
-        codigoTienda: 'asdfgh987'
-    }
-
-    cargarUsuario(registro);
-
-    registro =
-    {
-        nombre: 'Horacio',
-        apellido: 'Hernandez',
-        nombreUsuario: 'H-H',
-        contrasenia: '564sdgf',
-        habilitado: true,
-        codigoTienda: 'sanji32542'
-    }
-
-    cargarUsuario(registro);
 
     // FALTAN LOS DATOS DE PRUEBA DE LOS PRODUCTOS. AGREGARLOS CUANDO ESTE TERMINADA LA BASE DE DATOS
 }

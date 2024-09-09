@@ -49,14 +49,38 @@ async function buscarTodosLosUsuarios(/*call, callback*/)
 
     try
     {
+        var resultados = await query(
+            `SELECT usuario.usuario
+            FROM usuario INNER JOIN tienda 
+            ON usuario.tienda_id = tienda.id 
+            WHERE tienda.central = 1 AND tienda.habilitado = 1`, {}
+        );
+
+        console.log(resultados);
+
+        /*if (resultados.length > 0) 
+        {
+            const nombre = resultados[0].nombre;
+
+            console.log('Imagen descargada: ' + nombre);
+        } 
+        else console.log('El usuario no pertenece a la casa central');*/
+    
+    }
+    catch(error) {console.log(error);}
+
+        
+    /*try
+    {
         var resultados = await query('SELECT nombre, apellido, nombreUsuario, habilitado, codigoTienda FROM usuarios', {});
         console.log(resultados);
     }
-    catch(error) {console.log(error);}
+    catch(error) {console.log(error);}*/
     
     // AGREGAR COMO DEVOLVER TODOS LOS DATOS MEDIANTE GRPC
 }
 
+buscarTodosLosUsuarios();
 
 async function buscarUsuarioXNombreUsuario(/*call, callback*/)
 {
