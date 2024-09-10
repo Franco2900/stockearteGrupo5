@@ -1,0 +1,10 @@
+En donde esta el archivo .proto, ejecutar este comando para crear los archivos grpc para python:
+
+python -m grpc_tools.protoc -I./ --python_out=./Cliente --pyi_out=./Cliente --grpc_python_out=./Cliente ./imagenBlob.proto
+
+Es necesario tener estos dos módulos de pip:
+python -m pip install grpcio
+python -m pip install grpcio-tools
+
+Con el siguiente comando podemos ver que módulos tenemos instalados en pip:
+pip list

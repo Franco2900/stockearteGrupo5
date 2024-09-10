@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package stockearte;
+
+service Stockearte {
+    // PUNTO 1.C
+    rpc altaProducto (altaProductoRequest) returns (mensajeSimple) {}
+    rpc mostrarProducto (consultarProductoRequest) returns (mensajeSimple){}
+}
+
+// PUNTO 1.C
+// Servicio altaProducto
+message altaProductoRequest
+{
+    string nombre         = 1;
+    string codigoProducto = 2;
+    string talle          = 3;
+    string foto           = 4;
+    string color          = 5;
+    int32  stock          = 6;
+}
+
+message consultarProductoRequest
+{
+    string codigoProducto=1;
+}
+
+message mensajeSimple
+{
+    string mensaje = 1;
+}
