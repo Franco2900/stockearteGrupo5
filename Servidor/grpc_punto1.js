@@ -195,16 +195,8 @@ async function altaUsuario(call, callback)
         codigoTienda: call.request.codigoTienda
     }
 
-    /*const registro = // DATO HARDCODEADO PARA PRUEBAS
-    {
-        nombre: 'Pepe',
-        apellido: 'Argento',
-        nombreUsuario: 'El Pepo',
-        contrasenia: '12345',
-        habilitado: true,
-        codigoTienda: 'sanji32542'
-    }*/
- 
+
+
     // Chequeo si ya existe el usuario
     var resultados = await query(`SELECT EXISTS(SELECT usuario FROM usuario WHERE usuario = ?) AS existe`, [registro.nombreUsuario]);
     var existeUsuario = resultados[0].existe;
@@ -265,72 +257,47 @@ function generadorCodigo()
 }
 
 
-async function altaProducto(call, callback)
-{
+async function altaProducto(call, callback) {
     // Acá van los datos que nos llegan del cliente desde gRPC
-    /*
-    const registro =
-    {
-        nombre: call.request.nombre,
-        codigoProducto: generadorCodigo(),
-        talle: call.request.talle,
-        foto: call.request.foto, // SUPONGO QUE ACÁ VA EL NOMBRE DE LA FOTO O SU URL EN LA WEB
-        color: call.request.color,
-
-    }*/
     const { nombre, talle, foto, color, tiendaObject } = call.request;
     const codigoProducto = generadorCodigo();
     const listaCodigosTiendas = tiendaObject.map(tienda => tienda.codigo);
-    /*const registro = // DATO HARDCODEADO PARA PRUEBAS
-    {
-        nombre: 'Remera',
-        codigoProducto: generadorCodigo(),
-        talle: 'L',
-        foto: 'fondo.jpg',
-        color: 'Verde',
-    }*/
 
-    // Chequeo si ya existe el producto 
-    //var resultados = await query(`SELECT EXISTS(SELECT codigo FROM producto WHERE nombre = ? and talle = ? and color = ?) AS existe`, [registro.nombre, registro.talle, registro.color]);
-
-    var resultados = await query(`SELECT EXISTS(SELECT stock from tienda_x_producto WHERE producto_codigo = (SELECT codigo FROM producto WHERE nombre = ? and talle = ? and color = ?) AND tienda_codigo IN (listaCodigosTiendas)) AS existe`, [registro.nombre, registro.talle, registro.color, listaCodigosTiendas]);    
+    // Chequeo si ya existe el producto
+    var resultados = await query(
+        `SELECT EXISTS(SELECT codigo FROM producto WHERE nombre = ? and talle = ? and color = ?) AS existe`,
+        [nombre, talle, color]
+    );
     var existeProducto = resultados[0].existe;
-    
 
-    if(existeProducto) 
-    {
+    if (existeProducto) { // SI EXISTE EL PRODUCTO CON MISMO NOMBRE, TALLE Y COLOR..ARROJA ERROR
         console.log('Ya existe el producto');
         return callback(null, { mensaje: 'ERROR: Ya existe el producto' });
-    }
-    else
-    {
-        try // Si no existe el producto, lo creo
-        {
-            await connection.beginTransaction();
-            await connection.query(
+    } else {
+        try { // Si no existe el producto, lo creo..y como no esta creado, no va a estar en la tabla intermedia
+            await query(
                 'INSERT INTO producto (codigo, nombre, talle, foto, color) VALUES (?, ?, ?, ?, ?)',
                 [codigoProducto, nombre, talle, foto, color]
             );
 
-            const insertPromises = tiendaCodigos.map(codigoTienda => {
-                return connection.query(
-                    'INSERT INTO tienda_x_producto (tienda_codigo, producto_codigo, stock) VALUES (?, ?, ?)',
-                    [codigoTienda, codigoProducto, 0]
-                );
-            });
+            // Uso de Promise.all para asegurar que todas las inserciones se completen
+            await Promise.all(
+                listaCodigosTiendas.map(tiendaCodigo => {
+                    return query(
+                        'INSERT INTO tienda_x_producto (tienda_codigo, producto_codigo, stock) VALUES (?, ?, ?)',
+                        [tiendaCodigo, codigoProducto, 0]
+                    );
+                })
+            );
 
-            await Promise.all(insertPromises);
-            var mensajeExitoso = 'Se hizo el alta del producto: ' +  registro.codigoProducto;
+            var mensajeExitoso = 'Se hizo el alta del producto: ' + codigoProducto;
             console.log(mensajeExitoso);
             return callback(null, { mensaje: mensajeExitoso });
-        }
-        catch(error) 
-        {
+        } catch (error) {
             console.log(error);
             return callback(error);
         }
     }
-
 }
 
 

@@ -70,11 +70,47 @@ async function cargarUsuario(registro)
     }
 }
 
+async function cargarProducto(registro)
+{
+    var resultadoProducto = await query('SELECT EXISTS(SELECT codigo from producto where codigo = ?) AS existe', [registro.codigoProducto]);
+    var existeProducto = resultadoProducto[0].existe;
+
+    if (existeProducto) { //SOLO VA A INSERTAR EN TIENDAS QUE EXISTE PORQUE TIENE QUE SELECCIONAR
+        console.log('ERROR: Ya existe el producto ' + registro.codigoProducto);
+    }
+    else {
+        try{ //INSERTO EL PRODUCTO
+            await query(
+                'INSERT INTO producto (codigo, nombre, talle, foto, color) VALUES (?, ?, ?, ?, ?)',
+                [registro.codigoProducto, registro.nombre, registro.talle, registro.foto, registro.color]
+            );
+        } catch(error) {console.log(error);}
+
+        registro.tiendaObject.forEach(async tienda => { //POR CADA TIENDA, INSERTO EN LA TABLA INTERMEDIA
+            var resultadoTiendas = await query(`SELECT EXISTS(SELECT stock from tienda_x_producto WHERE producto_codigo = ? AND tienda_codigo = ?) AS existe`, [registro.codigoProducto, tienda.codigo]);    
+            var existeProductoTienda = resultadoTiendas[0].existe;
+    
+            
+            if(existeProductoTienda) {
+                console.log('ERROR: Ya existe el producto en la tienda ' + tienda.codigo);
+            } else {
+                try{
+                    await query(
+                            'INSERT INTO tienda_x_producto (tienda_codigo, producto_codigo, stock) VALUES (?, ?, ?)',
+                            [tienda.codigo, registro.codigoProducto, 0]
+                        );
+                        
+                } catch(error) {console.log(error);}
+            }
+        console.log(`Código de tienda: ${tienda.codigo}`);
+        });
+    }
+}
+
 /************************** DATOS HARDCODEADOS PARA REALIZAR PRUEBAS ****************************/ 
 
 async function cargaDatosDePrueba()
 {
-    /*
     const tiendas = [
         { codigo: "sanji32542", direccion: "Lacoste 1920",   ciudad: "Las Toninas",       provincia: "Buenos Aires", habilitado: false },
         { codigo: "asdfgh987",  direccion: "Juan Justo 200", ciudad: "Monte Chingolo",    provincia: "Buenos Aires", habilitado: true },
@@ -86,26 +122,31 @@ async function cargaDatosDePrueba()
 
     for (const tienda of tiendas) {
         await cargarTienda(tienda);
-    }*/
-    /*
+    }
+    
     const usuarios = [
         { nombre: 'Pepe',    apellido: 'Argento',   usuario: 'El Pepo',   password: '12345',           habilitado: true,  tienda_codigo: 'sanji32542' },
         { nombre: 'Moni',    apellido: 'Argento',   usuario: 'La Peluca', password: 'qwerty',          habilitado: true,  tienda_codigo: 'asdfgh987' },
         { nombre: 'Unlero',  apellido: 'Sistemas',  usuario: 'The One',   password: 'fñnbqio_@748e5a', habilitado: false, tienda_codigo: 'asdfgh987' },
         { nombre: 'Horacio', apellido: 'Hernandez', usuario: 'H-H',       password: '564sdgf',         habilitado: true,  tienda_codigo: 'sanji32542' }
-    ];*/
-    const usuarios = [
-        { nombre: 'Pepe',    apellido: 'Argento',   usuario: 'El Pepo',   password: '12345', habilitado: true,  tienda_codigo: 'sanji32542' },
-        { nombre: 'Ana',    apellido: 'Martínez', usuario: 'AnaM',     password: 'abc123', habilitado: true,  tienda_codigo: 'ewq22123s' },
-        { nombre: 'Carlos', apellido: 'Gómez',    usuario: 'CarlosG', password: 'passw0rd', habilitado: false, tienda_codigo: 'xcbewu13' }
     ];
     
     for (const usuario of usuarios) {
         await cargarUsuario(usuario);
     }
+ 
+    const productos = [
+        {nombre: 'Camisa Básica', codigoProducto: 'CB123', talle: 'M', foto: 'base64string1', color: 'Rojo',
+            tiendaObject: [ {codigo: 'asdfgh987'},{codigo: 'sanji32542'} ]
+        },
+        {nombre: 'Pantalones Jeans', codigoProducto: 'PJ456', talle: 'L', foto: 'base64string2', color: 'Azul',
+            "tiendaObject": [ {codigo: 'wxyz123abc'} ] 
+        }  
+    ]
 
-    // FALTAN LOS DATOS DE PRUEBA DE LOS PRODUCTOS. AGREGARLOS CUANDO ESTE TERMINADA LA BASE DE DATOS
+    for (const producto of productos) {
+        await cargarProducto(producto);
+    }
 }
-
 
 cargaDatosDePrueba();
