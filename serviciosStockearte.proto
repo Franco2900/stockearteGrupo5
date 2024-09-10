@@ -14,6 +14,7 @@ service Stockearte // Creo el servicio y los métodos que va a tener
 
     // PUNTO 1.C
     rpc altaProducto (altaProductoRequest) returns (mensajeSimple) {}
+    rpc altaProducto (altaProductoRequest2) returns (mensajeSimple) {}
 
     // PUNTO 1.D
     rpc modificacionProducto (modificacionProductoRequest) returns (mensajeSimple) {}
@@ -75,6 +76,20 @@ message altaProductoRequest
     bytes  foto           = 4;
     string color          = 5;
     int32  stock          = 6;
+}
+
+message TiendaObject {
+    string codigo         = 1;
+}
+
+message altaProductoRequest2
+{
+    string nombre         = 1;
+    string codigoProducto = 2;
+    string talle          = 3;
+    bytes  foto           = 4;
+    string color          = 5;
+    repeated TiendaObject tiendaObject = 6;
 }
 
 

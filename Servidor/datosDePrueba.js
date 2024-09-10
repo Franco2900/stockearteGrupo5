@@ -74,22 +74,31 @@ async function cargarUsuario(registro)
 
 async function cargaDatosDePrueba()
 {
+    /*
     const tiendas = [
         { codigo: "sanji32542", direccion: "Lacoste 1920",   ciudad: "Las Toninas",       provincia: "Buenos Aires", habilitado: false },
         { codigo: "asdfgh987",  direccion: "Juan Justo 200", ciudad: "Monte Chingolo",    provincia: "Buenos Aires", habilitado: true },
-        { codigo: "xcbewu13",   direccion: "Canarias 1850",  ciudad: "Ciudad de Cordoba", provincia: "Cordoba",      habilitado: true }
+        { codigo: "xcbewu13",   direccion: "Canarias 1850",  ciudad: "Ciudad de Cordoba", provincia: "Cordoba",      habilitado: true },
+        { codigo: "pqr789xyz",  direccion: "Av. Libertador 3000", ciudad: "Buenos Aires", provincia: "Buenos Aires", habilitado: true },
+        { codigo: "lmno456stu", direccion: "Calle Falsa 123", ciudad: "La Plata", provincia: "Buenos Aires", habilitado: false },
+        { codigo: "wxyz123abc", direccion: "Avenida San Martín 456", ciudad: "Rosario", provincia: "Santa Fe", habilitado: true }
     ];
-    
+
+    for (const tienda of tiendas) {
+        await cargarTienda(tienda);
+    }*/
+    /*
     const usuarios = [
         { nombre: 'Pepe',    apellido: 'Argento',   usuario: 'El Pepo',   password: '12345',           habilitado: true,  tienda_codigo: 'sanji32542' },
         { nombre: 'Moni',    apellido: 'Argento',   usuario: 'La Peluca', password: 'qwerty',          habilitado: true,  tienda_codigo: 'asdfgh987' },
         { nombre: 'Unlero',  apellido: 'Sistemas',  usuario: 'The One',   password: 'fñnbqio_@748e5a', habilitado: false, tienda_codigo: 'asdfgh987' },
         { nombre: 'Horacio', apellido: 'Hernandez', usuario: 'H-H',       password: '564sdgf',         habilitado: true,  tienda_codigo: 'sanji32542' }
+    ];*/
+    const usuarios = [
+        { nombre: 'Pepe',    apellido: 'Argento',   usuario: 'El Pepo',   password: '12345', habilitado: true,  tienda_codigo: 'sanji32542' },
+        { nombre: 'Ana',    apellido: 'Martínez', usuario: 'AnaM',     password: 'abc123', habilitado: true,  tienda_codigo: 'ewq22123s' },
+        { nombre: 'Carlos', apellido: 'Gómez',    usuario: 'CarlosG', password: 'passw0rd', habilitado: false, tienda_codigo: 'xcbewu13' }
     ];
-    
-    for (const tienda of tiendas) {
-        await cargarTienda(tienda);
-    }
     
     for (const usuario of usuarios) {
         await cargarUsuario(usuario);
