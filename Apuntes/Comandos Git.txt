@@ -25,11 +25,11 @@ git status
 
 /**************************************************************************/
 
-Quitar cambios locales del zona de preparación (staging area)
+Restaurar un archivo con cambios locales a la última version
 
-Quitar un archivo:          git remove NombreDelArchivo
-Quitar múltiples archivos:  git remove NombreDelArchivo1 NombreDelArchivo2
-Quitar todos los archivos:  git remove .
+Quitar un archivo:          git restore NombreDelArchivo
+Quitar múltiples archivos:  git restore NombreDelArchivo1 NombreDelArchivo2
+Quitar todos los archivos:  git restore .
 
 /**************************************************************************/
 /**************************************************************************/

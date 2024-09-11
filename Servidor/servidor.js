@@ -12,7 +12,7 @@ const stockeartePackage = gRPC.loadPackageDefinition(packageDefinition).stockear
 /*************************************** LÓGICA DEL NEGOCIO *************************************************/
 // Módulos con la lógica del negocio
 const grpc_punto1 = require('./grpc_punto1.js');
-const grpc_punto1 = require('./grpc_punto2.js');
+const grpc_punto2 = require('./grpc_punto2.js');
 
 // Como no se puede añadir el servicio directamente exportando desde el módulo, clono las funciones
 
@@ -27,12 +27,18 @@ const altaProducto         = grpc_punto1.altaProducto.bind({});
 const modificacionProducto = grpc_punto1.modificacionProducto.bind({});
 
 // Lógica Punto 2
+const buscarUsuario_X_Usuario      = grpc_punto2.buscarUsuario_X_Usuario.bind({});
+const buscarUsuario_X_TiendaCodigo = grpc_punto2.buscarUsuario_X_TiendaCodigo.bind({});
+
+const buscarTienda_X_TiendaCodigo  = grpc_punto2.buscarTienda_X_TiendaCodigo.bind({});
+const buscarTienda_X_Habilitado    = grpc_punto2.buscarTienda_X_Habilitado.bind({});
 
 /**************************************** SERVIDOR GRPC ********************************************************/
 var servidor = new gRPC.Server(); // Creo el servidor gRPC
 
 // Añado los métodos al servicio Stockearte
 servidor.addService(stockeartePackage.Stockearte.service, { 
+    // Funciones punto 1
     altaTienda,
     bajaLogicaTienda,
     altaLogicaTienda,
@@ -40,7 +46,14 @@ servidor.addService(stockeartePackage.Stockearte.service, {
     altaUsuario,
     
     altaProducto,
-    modificacionProducto
+    modificacionProducto,
+
+    // Funciones punto 2
+    buscarUsuario_X_Usuario,
+    buscarUsuario_X_TiendaCodigo,
+
+    buscarTienda_X_TiendaCodigo,
+    buscarTienda_X_Habilitado
 });
 
 // Enlazo el servidor a una dirección IP y un puerto y lo arranco

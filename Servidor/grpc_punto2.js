@@ -38,158 +38,281 @@ function query(comandoSQL, args)
     });
 }
 
+/************************************* FUNCIONES ÚTILES ***************************************/
+async function chequearExistenciaUsuario(usuario)
+{
+    var resultados = await query(
+        `SELECT EXISTS (
+            SELECT usuario 
+            FROM usuario 
+            WHERE usuario = '${usuario}'
+        ) AS existeUsuario`, {}
+    );
+
+    return resultados[0].existeUsuario;
+}
+
+
+async function chequearExistenciaTienda(codigo)
+{
+    var resultados = await query(
+        `SELECT EXISTS (
+            SELECT codigo 
+            FROM tienda 
+            WHERE codigo = '${codigo}'
+        ) AS existeTienda`, {}
+    );
+
+    return resultados[0].existeTienda;
+}
+
+
+async function chequearCasaCentral(usuario)
+{
+    var resultados = await query(
+        `SELECT EXISTS (
+            SELECT usuario.usuario
+            FROM usuario 
+            INNER JOIN tienda 
+            ON usuario.tienda_codigo = tienda.codigo 
+            WHERE tienda.central = 1 AND tienda.habilitado = 1 AND usuario.usuario = '${usuario}'
+        ) AS usuarioEsDeCasaCentral`, {}
+    );
+
+    return resultados[0].usuarioEsDeCasaCentral;
+}
+
+
+async function chequearEsUsuarioValido(usuario)
+{
+    var respuesta = "";
+
+    var existeUsuarioQueSolicita = await chequearExistenciaUsuario(usuario);
+    var usuarioEsDeCasaCentral   = await chequearCasaCentral(usuario); 
+
+    if (!existeUsuarioQueSolicita) 
+    {
+        var mensajeDeError = `ERROR: No existe el usuario que solicita los datos: ${usuario}`;
+        console.log(mensajeDeError);
+        respuesta = mensajeDeError;
+    }
+    if (!usuarioEsDeCasaCentral)
+    {
+        var mensajeDeError = `ERROR: El usuario ${usuario} no pertenece a la casa central`;
+        console.log(mensajeDeError);
+        respuesta = mensajeDeError;
+    }
+
+    if(existeUsuarioQueSolicita && usuarioEsDeCasaCentral) respuesta = true;
+
+    return respuesta;
+}
+
 /********************** DEFINICIÓN DE LA LÓGICA DE LOS MÉTODOS DECLARADOS EN EL ARCHIVO .PROTO ***********************/
+
 // PUNTO 2.A
 // Como usuario de casa central: Buscar usuarios. Se pueden filtrar por nombre de usuario y/o tienda.
 
-async function buscarTodosLosUsuarios(/*call, callback*/)
+async function buscarUsuario_X_Usuario(call, callback)
 {
-
-    // AGREGAR CHEQUEO PARA QUE LA CONSULTA SOLO SE PUEDA HACER COMO USUARIO DE CASA CENTRAL
+    var usuarioQueSolicita = call.request.usuarioQueSolicita;
+    var usuarioABuscar     = call.request.usuarioABuscar;
+    //var usuarioQueSolicita = 'El Pepo';    // DATO HARDCODEADO PARA PRUEBAS
+    //var usuarioABuscar     = 'La Peluca';  // DATO HARDCODEADO PARA PRUEBAS
 
     try
     {
-        var resultados = await query(
-            `SELECT usuario.usuario
-            FROM usuario INNER JOIN tienda 
-            ON usuario.tienda_id = tienda.id 
-            WHERE tienda.central = 1 AND tienda.habilitado = 1`, {}
-        );
-
-        console.log(resultados);
-
-        /*if (resultados.length > 0) 
+        // Compruebo si el usuario que solicita los datos es válido
+        var usuarioQueSolicitaEsValido = chequearEsUsuarioValido(usuarioQueSolicita);
+        if(usuarioQueSolicitaEsValido !== true) return callback(null, { mensaje: usuarioQueSolicitaEsValido });
+         
+        // Compruebo si el usuario a buscar es válido
+        var existeUsuarioABuscar = await chequearExistenciaUsuario(usuarioABuscar);
+        if(!existeUsuarioABuscar) 
         {
-            const nombre = resultados[0].nombre;
+            var mensajeDeError = `ERROR: No existe el usuario del que se buscan datos: ${usuarioABuscar}`; 
+            console.log(mensajeDeError);
+            return callback(null, { mensaje: mensajeDeError });
+        }
 
-            console.log('Imagen descargada: ' + nombre);
-        } 
-        else console.log('El usuario no pertenece a la casa central');*/
-    
-    }
-    catch(error) {console.log(error);}
-
+        // Si todo esta OK
+        if(usuarioQueSolicitaEsValido && existeUsuarioABuscar) 
+        {
+            var resultados = await query(
+                `SELECT usuario, password, nombre, apellido, habilitado, tienda_codigo 
+                FROM usuario 
+                WHERE usuario = '${usuarioABuscar}' `, {}
+            );
         
-    /*try
-    {
-        var resultados = await query('SELECT nombre, apellido, nombreUsuario, habilitado, codigoTienda FROM usuarios', {});
-        console.log(resultados);
-    }
-    catch(error) {console.log(error);}*/
+            var respuesta = { usuario: resultados[0].usuario, password: resultados[0].password, nombre: resultados[0].nombre, apellido: resultados[0].apellido, habilitado: resultados[0].habilitado, tienda_codigo: resultados[0].tienda_codigo };
+            
+            console.log('************************************************************');
+            console.log('Consulta solicitada: Buscar usuario por su nombre de usuario');
+            console.log('Usuario que solicito los datos: ' + usuarioQueSolicita);
+            console.log('Usuario que consulto: ' + usuarioABuscar);
+            console.log('Datos devueltos al cliente:');
+            console.log(respuesta);
+            return callback(null, respuesta);
+        }
     
-    // AGREGAR COMO DEVOLVER TODOS LOS DATOS MEDIANTE GRPC
+    }
+    catch(error) {console.log(error);}
+
 }
 
-buscarTodosLosUsuarios();
 
-async function buscarUsuarioXNombreUsuario(/*call, callback*/)
+async function buscarUsuario_X_TiendaCodigo(call, callback)
 {
-
-    // AGREGAR CHEQUEO PARA QUE LA CONSULTA SOLO SE PUEDA HACER COMO USUARIO DE CASA CENTRAL
-
-    // var nombreUsuario = call.request.nombreUsuario;
-    var nombreUsuario = 'La Peluca'; // DATO HARDCODEADO PARA PRUEBAS
+    var usuarioQueSolicita = call.request.usuarioQueSolicita;
+    var tiendaABuscar      = call.request.tiendaABuscar;
+    //var usuarioQueSolicita = 'El Pepo';    // DATO HARDCODEADO PARA PRUEBAS
+    //var tiendaABuscar      = 'asdfgh987';  // DATO HARDCODEADO PARA PRUEBAS
 
     try
     {
-        var resultados = await query(`SELECT nombre, apellido, nombreUsuario, habilitado, codigoTienda FROM usuarios WHERE nombreUsuario = '${nombreUsuario}' `, {});
-        console.log(resultados);
+        // Compruebo si el usuario que solicita los datos es válido
+        var usuarioQueSolicitaEsValido = chequearEsUsuarioValido(usuarioQueSolicita);
+        if(usuarioQueSolicitaEsValido !== true) return callback(null, { mensaje: usuarioQueSolicitaEsValido });
+        
+        // Compruebo si la tienda a buscar es válida
+        var existeTiendaABuscar = await chequearExistenciaTienda(tiendaABuscar);
+        if(!existeTiendaABuscar)
+        {
+            var mensajeDeError = `ERROR: No existe la tienda: ${tiendaABuscar}`; 
+            console.log(mensajeDeError);
+            return callback(null, { mensaje: mensajeDeError });
+        }
+
+        // Si todo esta OK
+        if(usuarioQueSolicitaEsValido && existeTiendaABuscar) 
+        {
+            var resultados = await query(
+                `SELECT usuario, password, nombre, apellido, habilitado, tienda_codigo 
+                FROM usuario 
+                WHERE tienda_codigo = '${tiendaABuscar}' `, {}
+            );
+
+            // ACÁ CAMBIA CON RESPECTO A LA FUNCIÓN ANTERIOR PORQUE UNA TIENDA PUEDE TENER MUCHOS USUARIOS
+            var respuesta = [];
+            for(var i = 0; i < resultados.length; i++)
+            {
+                respuesta[i] = { usuario: resultados[i].usuario, password: resultados[i].password, nombre: resultados[i].nombre, apellido: resultados[i].apellido, habilitado: resultados[i].habilitado, tienda_codigo: resultados[i].tienda_codigo };
+            }
+
+            console.log('************************************************************');
+            console.log('Consulta solicitada: Buscar usuario por codigo de tienda');
+            console.log('Usuario que solicito los datos: ' + usuarioQueSolicita);
+            console.log('Tienda que consulto: ' + tiendaABuscar);
+            console.log('Datos devueltos al cliente:');
+            console.log(respuesta);
+            return callback(null, respuesta);
+        }
+    
     }
     catch(error) {console.log(error);}
-    
-    // AGREGAR COMO DEVOLVER TODOS LOS DATOS MEDIANTE GRPC
+
 }
-
-
-async function buscarUsuarioXCodigoTienda(/*call, callback*/)
-{
-    // AGREGAR CHEQUEO PARA QUE LA CONSULTA SOLO SE PUEDA HACER COMO USUARIO DE CASA CENTRAL
-
-    //var codigoTienda = call.request.codigoTienda;
-    var codigoTienda = 'sanji32542'; // DATO HARDCODEADO PARA PRUEBAS
-
-    try
-    {
-        var resultados = await query(`SELECT nombre, apellido, nombreUsuario, habilitado, codigoTienda FROM usuarios WHERE codigoTienda = '${codigoTienda}' `, {});
-        console.log(resultados);
-    }
-    catch(error) {console.log(error);}
-    
-    // AGREGAR COMO DEVOLVER TODOS LOS DATOS MEDIANTE GRPC
-}
-
-
 
 
 // PUNTO 2.B
 // Como usuario de casa central: Buscar tiendas. Se pueden filtrar por código y/o estado (habilitada/deshabilitada).
 
-async function buscarTodasLasTiendas(/*call, callback*/)
+async function buscarTienda_X_TiendaCodigo(/*call, callback*/)
 {
-    // AGREGAR CHEQUEO PARA QUE LA CONSULTA SOLO SE PUEDA HACER COMO USUARIO DE CASA CENTRAL
+    var usuarioQueSolicita = call.request.usuarioQueSolicita;
+    var tiendaABuscar      = call.request.tiendaABuscar;
+    //var usuarioQueSolicita = 'El Pepo';    // DATO HARDCODEADO PARA PRUEBAS
+    //var tiendaABuscar      = 'asdfgh987';  // DATO HARDCODEADO PARA PRUEBAS
 
     try
     {
-        var resultados = await query(`SELECT codigoTienda, direccion, ciudad, provincia, habilitado FROM tiendas`, {});
-        console.log(resultados);
+        // Compruebo si el usuario que solicita los datos es válido
+        var usuarioQueSolicitaEsValido = chequearEsUsuarioValido(usuarioQueSolicita);
+        if(usuarioQueSolicitaEsValido !== true) return callback(null, { mensaje: usuarioQueSolicitaEsValido });
+         
+        // Compruebo si la tienda a buscar es válida
+        var existeTiendaABuscar = await chequearExistenciaTienda(tiendaABuscar);
+        if(!existeTiendaABuscar)
+        {
+            var mensajeDeError = `ERROR: No existe la tienda: ${tiendaABuscar}`; 
+            console.log(mensajeDeError);
+            return callback(null, { mensaje: mensajeDeError });
+        }
+
+        // Si todo esta OK
+        if(usuarioQueSolicitaEsValido && existeTiendaABuscar) 
+        {
+            var resultados = await query(
+                `SELECT codigo, direccion, ciudad, provincia, habilitado, central
+                FROM tienda 
+                WHERE codigo = '${tiendaABuscar}' `, {}
+            );
+        
+            var respuesta = { codigo: resultados[0].codigo, direccion: resultados[0].direccion, ciudad: resultados[0].ciudad, provincia: resultados[0].provincia, habilitado: resultados[0].habilitado, central: resultados[0].central };
+            
+            console.log('************************************************************');
+            console.log('Consulta solicitada: Buscar tienda por su codigo');
+            console.log('Usuario que solicito los datos: ' + usuarioQueSolicita);
+            console.log('Tienda que consulto: ' + tiendaABuscar);
+            console.log('Datos devueltos al cliente:');
+            console.log(respuesta);
+            return callback(null, respuesta);
+        }
+    
     }
     catch(error) {console.log(error);}
-    
-    // AGREGAR COMO DEVOLVER TODOS LOS DATOS MEDIANTE GRPC
+
 }
 
 
-async function buscarTiendaXCodigoTienda(/*call, callback*/)
+async function buscarTienda_X_Habilitado(call, callback)
 {
-    // AGREGAR CHEQUEO PARA QUE LA CONSULTA SOLO SE PUEDA HACER COMO USUARIO DE CASA CENTRAL
-
-    // var codigoTienda = call.request.codigoTienda;
-    var codigoTienda = 'asdfgh987'; // DATO HARDCODEADO PARA PRUEBAS
+    var usuarioQueSolicita = call.request.usuarioQueSolicita;
+    var habilitado         = call.request.habilitado;
+    //var usuarioQueSolicita = 'El Pepo';  // DATO HARDCODEADO PARA PRUEBAS
+    //var habilitado         = true;       // DATO HARDCODEADO PARA PRUEBAS
 
     try
     {
-        var resultados = await query(`SELECT codigoTienda, direccion, ciudad, provincia, habilitado FROM tiendas WHERE codigoTienda = '${codigoTienda}' `, {});
-        console.log(resultados);
+        // Compruebo si el usuario que solicita los datos es válido
+        var usuarioQueSolicitaEsValido = chequearEsUsuarioValido(usuarioQueSolicita);
+        if(usuarioQueSolicitaEsValido !== true) return callback(null, { mensaje: usuarioQueSolicitaEsValido });
+
+        // Si todo esta OK
+        if(usuarioQueSolicitaEsValido) 
+        {
+            var resultados = await query(
+                `SELECT codigo, direccion, ciudad, provincia, habilitado, central
+                FROM tienda
+                WHERE habilitado = ${habilitado} `, {}
+            );
+
+            // Puede haber muchas tiendas
+            var respuesta = [];
+            for(var i = 0; i < resultados.length; i++)
+            {
+                respuesta[i] = { codigo: resultados[i].codigo, direccion: resultados[i].direccion, ciudad: resultados[i].ciudad, provincia: resultados[i].provincia, habilitado: resultados[i].habilitado, central: resultados[i].central };
+            }
+
+            console.log('************************************************************');
+            console.log('Consulta solicitada: Buscar tienda por habilitado');
+            console.log('Usuario que solicito los datos: ' + usuarioQueSolicita);
+            console.log('Habilitado consultado: ' + habilitado);
+            console.log('Datos devueltos al cliente:');
+            console.log(respuesta);
+            return callback(null, respuesta);
+        }
+    
     }
     catch(error) {console.log(error);}
-    
-    // AGREGAR COMO DEVOLVER TODOS LOS DATOS MEDIANTE GRPC
+
 }
 
+// NOTA: OPTIMIZAR LO DE ARRIBA
 
-async function buscarTiendaXHabilitado(/*call, callback*/)
-{
-    // AGREGAR CHEQUEO PARA QUE LA CONSULTA SOLO SE PUEDA HACER COMO USUARIO DE CASA CENTRAL
-
-    // var habilitado = call.request.habilitado;
-    var habilitado = 1; // DATO HARDCODEADO PARA PRUEBAS
-
-    try
-    {
-        var resultados = await query(`SELECT codigoTienda, direccion, ciudad, provincia, habilitado FROM tiendas WHERE habilitado = ${habilitado} `, {});
-        console.log(resultados);
-    }
-    catch(error) {console.log(error);}
-    
-    // AGREGAR COMO DEVOLVER TODOS LOS DATOS MEDIANTE GRPC
-}
-
-
+// FUNCIONES INCOMPLETAS
 // PUNTO 2.C
 // Buscar productos. Se pueden filtrar por nombre, código, talle, color.
-
-async function buscarTodosLosProductos(/*call, callback*/)
-{
-    try
-    {
-        var resultados = await query('SELECT nombre, codigoProducto, talle, foto, color FROM productos', {});
-        console.log(resultados);
-    }
-    catch(error) {console.log(error);}
-    
-    // AGREGAR COMO DEVOLVER TODOS LOS DATOS MEDIANTE GRPC
-}
-
 
 async function buscarProductoXNombre(/*call, callback*/)
 {
@@ -256,4 +379,8 @@ async function buscarProductoXColor(/*call, callback*/)
 
 
 /*********************************** EXPORTACIÓN DE LA LÓGICA ***********************************/
-//exports.altaTienda = altaTienda
+exports.buscarUsuario_X_Usuario = buscarUsuario_X_Usuario
+exports.buscarUsuario_X_TiendaCodigo = buscarUsuario_X_TiendaCodigo
+
+exports.buscarTienda_X_TiendaCodigo = buscarTienda_X_TiendaCodigo
+exports.buscarTienda_X_Habilitado = buscarTienda_X_Habilitado
