@@ -99,34 +99,6 @@ async function altaProducto(call, callback) {
 
 }
 
-async function mostrarProducto(call,callback){
-
-    const registro =
-    {
-        codigoProducto : call.request.codigoProducto
-    }
-
-    // Chequeo si ya existe el producto 
-    var resultados = await query(`SELECT EXISTS(SELECT codigoProducto FROM productos WHERE codigoProducto = ?) AS existe`, [registro.codigoProducto]);
-    var existeProducto = resultados[0].existe;
-
-    if(existeProducto) 
-    {
-        var consulta=await query('SELECT foto FROM productos WHERE codigoProducto = ?', [registro.codigoProducto]);
-        console.log("Imagen recuperada con exito")
-
-        var mensajeExitoso = consulta[0].foto;
-        return callback(null, { mensaje: mensajeExitoso });
-
-    }
-    else{
-        console.log('No existe el producto');
-        return callback(null, { mensaje: 'ERROR: No existe el producto' });
-
-    }
-
-
-}
 
 /*****************************************************************************************************/
 
