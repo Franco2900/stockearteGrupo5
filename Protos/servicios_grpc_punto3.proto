@@ -1,0 +1,62 @@
+syntax = "proto3"; 
+
+package servicios_grpc_punto3_package;
+
+service servicios_grpc_punto3_Service
+{ 
+    // PUNTO 3.A
+    rpc buscarTodosLosProductos (mensajeVacio) returns (arregloProductos) {} 
+
+    // PUNTO 3.B
+    rpc buscarTodosLosUsuarios (mensajeVacio) returns (arregloUsuarios) {}
+
+    // PUNTO 3.C
+    rpc buscarTodasLasTiendas (mensajeVacio) returns (arregloTiendas) {}
+}
+
+/*********************************************************************************************/
+// DEFINICIÓN DE TIPOS DE DATOS
+
+message mensajeVacio {}
+
+// PUNTO 3.A
+message producto
+{
+    string codigo        = 1;
+    string nombre        = 2;
+    string talle         = 3;
+    string color         = 4;
+    string tienda_codigo = 5;
+}
+
+message arregloProductos
+{
+    repeated usuario arregloProductos = 1;
+}
+
+
+// PUNTO 3.B
+message usuario
+{
+    string usuario       = 1;
+    bool   habilitado    = 2;
+    string tienda_codigo = 3;
+}
+
+message arregloUsuarios
+{
+    repeated usuario arregloUsuarios = 1;
+}
+
+
+// PUNTO 3.C
+message tienda
+{
+    string codigo     = 1;
+    bool   habilitado = 2;
+}
+
+message arregloTiendas
+{
+    repeated tienda arregloTiendas = 1;
+}

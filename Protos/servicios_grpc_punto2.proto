@@ -1,0 +1,79 @@
+syntax = "proto3"; 
+
+package servicios_grpc_punto2_package; 
+
+service servicios_grpc_punto2_Service
+{ 
+    // PUNTO 2.A
+    rpc buscarUsuario_X_Usuario (buscarUsuario_X_UsuarioRequest) returns (usuario) {} 
+    rpc buscarUsuario_X_TiendaCodigo (buscarUsuario_X_TiendaCodigoRequest) returns (arregloUsuarios) {}
+
+    // PUNTO 2.B
+    rpc buscarTienda_X_TiendaCodigo (buscarTienda_X_TiendaCodigoRequest) returns (tienda) {}
+    rpc buscarTienda_X_Habilitado (buscarTienda_X_HabilitadoRequest) returns (arregloTiendas) {}
+
+    // PUNTO 2.C
+    
+}
+
+/*********************************************************************************************/
+// DEFINICIÓN DE TIPOS DE DATOS
+
+// PUNTO 2.A
+message usuario
+{
+    string usuario       = 1;
+    string password      = 2;
+    string nombre        = 3;
+    string apellido      = 4;
+    bool   habilitado    = 5;
+    string tienda_codigo = 6;
+}
+
+message arregloUsuarios
+{
+    repeated usuario arregloUsuarios = 1;
+}
+
+message buscarUsuario_X_UsuarioRequest   
+{   
+    string usuarioQueSolicita = 1;       
+    string usuarioABuscar     = 2;
+}
+
+message buscarUsuario_X_TiendaCodigoRequest
+{
+    string usuarioQueSolicita = 1;  
+    string tiendaABuscar      = 2;
+}
+
+
+// PUNTO 2.B
+message tienda
+{
+    string codigo     = 1;
+    string direccion  = 2;
+    string ciudad     = 3;
+    string provincia  = 4;
+    bool   habilitado = 5;
+    bool   central    = 6;
+}
+
+message arregloTiendas
+{
+    repeated tienda arregloTiendas = 1;
+}
+
+message buscarTienda_X_TiendaCodigoRequest
+{
+    string usuarioQueSolicita = 1;  
+    string tiendaABuscar      = 2;
+}
+
+message buscarTienda_X_HabilitadoRequest
+{
+    string usuarioQueSolicita = 1;
+    bool   habilitado = 2;
+}
+
+// PUNTO 2.C

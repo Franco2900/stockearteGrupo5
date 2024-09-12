@@ -1,0 +1,102 @@
+syntax = "proto3"; // Defino la sintaxis del archivo proto (proto3 es la sintaxis mas actual)
+
+package servicios_grpc_punto1_package; // Defino el nombre del paquete
+
+service servicios_grpc_punto1_Service // Creo el servicio y los métodos que va a tener
+{ 
+    // PUNTO 1.A
+    rpc altaTienda (altaTiendaRequest) returns (mensajeSimple) {} // Defino un método unario
+    rpc bajaLogicaTienda (bajaLogicaTiendaRequest) returns (mensajeSimple) {}
+    rpc altaLogicaTienda (altaLogicaTiendaRequest) returns (mensajeSimple) {}
+
+    // PUNTO 1.B
+    rpc altaUsuario (altaUsuarioRequest) returns (mensajeSimple) {}
+
+    // PUNTO 1.C
+    rpc altaProducto (altaProductoRequest) returns (mensajeSimple) {}
+    //rpc altaProducto (altaProductoRequest2) returns (mensajeSimple) {}
+
+    // PUNTO 1.D
+    rpc modificacionProducto (modificacionProductoRequest) returns (mensajeSimple) {}
+}
+
+/*********************************************************************************************/
+// DEFINICIÓN DE TIPOS DE DATOS
+
+message mensajeSimple
+{
+    string mensaje = 1;
+}
+
+
+// PUNTO 1.A
+// Servicio altaTienda
+message altaTiendaRequest     // Defino que datos va a tener el tipo de dato altaTiendaRequest
+{   
+    string codigoTienda = 1;  // Las variables deben estar ordenadas numericamente
+    string direccion    = 2;
+    string ciudad       = 3;
+    string provincia    = 4;
+    bool   habilitado   = 5;
+}
+
+// Servicio bajaTienda
+message bajaLogicaTiendaRequest 
+{
+    string codigoTienda = 1;
+}
+
+// Servicio altaLogicaTienda
+message altaLogicaTiendaRequest
+{
+    string codigoTienda = 1;
+}
+
+
+// PUNTO 1.B
+// Servicio altaUsuario
+message altaUsuarioRequest
+{
+    string nombre        = 1;
+    string apellido      = 2;
+    string nombreUsuario = 3;
+    string contrasenia   = 4;
+    bool   habilitado    = 5;
+    string codigoTienda  = 6; 
+}
+
+
+// PUNTO 1.C
+// Servicio altaProducto
+message altaProductoRequest
+{
+    string nombre         = 1;
+    string codigoProducto = 2;
+    string talle          = 3;
+    bytes  foto           = 4;
+    string color          = 5;
+    int32  stock          = 6;
+}
+
+message TiendaObject {
+    string codigo         = 1;
+}
+
+message altaProductoRequest2
+{
+    string nombre         = 1;
+    string codigoProducto = 2;
+    string talle          = 3;
+    bytes  foto           = 4;
+    string color          = 5;
+    repeated TiendaObject tiendaObject = 6;
+}
+
+
+// PUNTO 1.D
+// Servicio modificacionProducto
+message modificacionProductoRequest
+{
+    string codigoProducto = 1;
+    int32  nuevoStock     = 2;
+}
