@@ -13,3 +13,30 @@ pip list
 
 Instalar protoc, agregarlo a la variable PATH del entorno de Windows
 https://github.com/protocolbuffers/protobuf/releases
+
+
+IMPORTANTE
+Para cambiar el tamaño máximo de los campos de 1 MB a 512 MB
+
+En xampp/mysql/bin/my.ini 
+
+Ingresar con bloc de notas e buscar la cadena "max_allowed_packet",
+saldran 2 apariciones, en ambas poner 512MB
+
+Para chequear los cambios, poner en SQL
+
+SHOW VARIABLES LIKE 'max_allowed_packet';
+
+
+Error con XAMPP, en mysql
+
+comandos cmd:
+
+vemos todos los servicios ejecutando en el puerto 3306
+netstat -ano | findstr :3306
+
+vemos el nombre del serivicio, el 5156 lo sacamos del comando anterior, al final de todo
+tasklist /FI "PID eq 5156"
+
+ejecutamos la consola como administrador y ejecutamos para finalizar esa tarea
+taskkill /PID 5156 /F

@@ -19,9 +19,7 @@ const grpc_punto1 = require('./Logica/grpc_punto1.js');
 const altaTienda           = grpc_punto1.altaTienda.bind({}); // bind() crea una nueva función que tiene el mismo comportamiento que la original
 const bajaLogicaTienda     = grpc_punto1.bajaLogicaTienda.bind({}); // Como no se puede añadir el servicio directamente exportando desde el módulo, clono las funciones
 const altaLogicaTienda     = grpc_punto1.altaLogicaTienda.bind({});
-
 const altaUsuario          = grpc_punto1.altaUsuario.bind({});
-
 const altaProducto         = grpc_punto1.altaProducto.bind({});
 const modificacionProducto = grpc_punto1.modificacionProducto.bind({});
 
@@ -32,9 +30,7 @@ servidor.addService(servicios_grpc_punto1_package.servicios_grpc_punto1_Service.
     altaTienda,
     bajaLogicaTienda,
     altaLogicaTienda,
-
     altaUsuario,
-    
     altaProducto,
     modificacionProducto
 });
@@ -50,7 +46,6 @@ const grpc_punto2 = require('./Logica/grpc_punto2.js');
 
 const buscarUsuario_X_Usuario      = grpc_punto2.buscarUsuario_X_Usuario.bind({});
 const buscarUsuario_X_TiendaCodigo = grpc_punto2.buscarUsuario_X_TiendaCodigo.bind({});
-
 const buscarTienda_X_TiendaCodigo  = grpc_punto2.buscarTienda_X_TiendaCodigo.bind({});
 const buscarTienda_X_Habilitado    = grpc_punto2.buscarTienda_X_Habilitado.bind({});
 
@@ -58,7 +53,6 @@ servidor.addService(servicios_grpc_punto2_package.servicios_grpc_punto2_Service.
 
     buscarUsuario_X_Usuario,
     buscarUsuario_X_TiendaCodigo,
-
     buscarTienda_X_TiendaCodigo,
     buscarTienda_X_Habilitado
 });
