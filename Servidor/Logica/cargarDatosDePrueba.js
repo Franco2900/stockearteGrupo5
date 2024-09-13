@@ -1,36 +1,10 @@
 /************************************ CONFIGURACIÓN DE LA BASE DE DATOS **********************************/
-const mysql = require('mysql');
-
-var conexion = mysql.createConnection({ // Creo una conexión a la base de datos
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'Stockearte'
-})
-
-conexion.connect(function (error) { // Me conecto a la base de datos
-  if (error) console.log('Problemas de conexion con mysql')
-  else       console.log('Conexión exitosa con la base de datos')
-})
-
-
-// Función para ejecutar un comando SQL y devolver una promesa
-function query(comandoSQL, args) 
-{
-    return new Promise((resolve, reject) => 
-    {
-        conexion.query(comandoSQL, args, (error, resultados) => 
-        {
-            if (error) return reject(error);
-            resolve(resultados);
-        });
-    });
-}
+const conexionDataBase = require('./conexionDataBase.js');
 
 /************************************ FUNCIONES DE CARGA DE DATOS **********************************/
 
 async function chequearExistencia(tabla, columna, valor) {
-    const resultados = await query(`SELECT EXISTS(SELECT ${columna} FROM ${tabla} WHERE ${columna} = ?) AS existe`, [valor]);
+    const resultados = await conexionDataBase.query(`SELECT EXISTS(SELECT ${columna} FROM ${tabla} WHERE ${columna} = ?) AS existe`, [valor]);
     return resultados[0].existe;
 }
 
@@ -43,7 +17,7 @@ async function cargarTienda(registro)
     {
         try
         {
-            await query('INSERT INTO tienda SET ?', registro);
+            await conexionDataBase.query('INSERT INTO tienda SET ?', registro);
             console.log('Se hizo el alta de la tienda con el codigo: ' + registro.codigo);
         }
         catch(error) {console.log(error);}
@@ -63,7 +37,7 @@ async function cargarUsuario(registro)
     {
         try
         {
-            await query('INSERT INTO usuario SET ?', registro);
+            await conexionDataBase.query('INSERT INTO usuario SET ?', registro);
             console.log('Se hizo el alta del usuario: ' + registro.usuario);
         }
         catch(error) {console.log(error);}
@@ -72,7 +46,7 @@ async function cargarUsuario(registro)
 
 async function cargarProducto(registro)
 {
-    var resultadoProducto = await query('SELECT EXISTS(SELECT codigo from producto where codigo = ?) AS existe', [registro.codigoProducto]);
+    var resultadoProducto = await conexionDataBase.query('SELECT EXISTS(SELECT codigo from producto where codigo = ?) AS existe', [registro.codigoProducto]);
     var existeProducto = resultadoProducto[0].existe;
 
     if (existeProducto) { //SOLO VA A INSERTAR EN TIENDAS QUE EXISTE PORQUE TIENE QUE SELECCIONAR
@@ -80,14 +54,14 @@ async function cargarProducto(registro)
     }
     else {
         try{ //INSERTO EL PRODUCTO
-            await query(
+            await conexionDataBase.query(
                 'INSERT INTO producto (codigo, nombre, talle, foto, color) VALUES (?, ?, ?, ?, ?)',
                 [registro.codigoProducto, registro.nombre, registro.talle, registro.foto, registro.color]
             );
         } catch(error) {console.log(error);}
 
         registro.tiendaObject.forEach(async tienda => { //POR CADA TIENDA, INSERTO EN LA TABLA INTERMEDIA
-            var resultadoTiendas = await query(`SELECT EXISTS(SELECT stock from tienda_x_producto WHERE producto_codigo = ? AND tienda_codigo = ?) AS existe`, [registro.codigoProducto, tienda.codigo]);    
+            var resultadoTiendas = await conexionDataBase.query(`SELECT EXISTS(SELECT stock from tienda_x_producto WHERE producto_codigo = ? AND tienda_codigo = ?) AS existe`, [registro.codigoProducto, tienda.codigo]);    
             var existeProductoTienda = resultadoTiendas[0].existe;
     
             
@@ -95,7 +69,7 @@ async function cargarProducto(registro)
                 console.log('ERROR: Ya existe el producto en la tienda ' + tienda.codigo);
             } else {
                 try{
-                    await query(
+                    await conexionDataBase.query(
                             'INSERT INTO tienda_x_producto (tienda_codigo, producto_codigo, stock) VALUES (?, ?, ?)',
                             [tienda.codigo, registro.codigoProducto, 0]
                         );
@@ -111,13 +85,15 @@ async function cargarProducto(registro)
 
 async function cargaDatosDePrueba()
 {
+    console.log('Cargando datos de prueba a la base de datos Stockearte');
+
     const tiendas = [
-        { codigo: "sanji32542", direccion: "Lacoste 1920",   ciudad: "Las Toninas",       provincia: "Buenos Aires", habilitado: false },
-        { codigo: "asdfgh987",  direccion: "Juan Justo 200", ciudad: "Monte Chingolo",    provincia: "Buenos Aires", habilitado: true },
-        { codigo: "xcbewu13",   direccion: "Canarias 1850",  ciudad: "Ciudad de Cordoba", provincia: "Cordoba",      habilitado: true },
-        { codigo: "pqr789xyz",  direccion: "Av. Libertador 3000", ciudad: "Buenos Aires", provincia: "Buenos Aires", habilitado: true },
-        { codigo: "lmno456stu", direccion: "Calle Falsa 123", ciudad: "La Plata", provincia: "Buenos Aires", habilitado: false },
-        { codigo: "wxyz123abc", direccion: "Avenida San Martín 456", ciudad: "Rosario", provincia: "Santa Fe", habilitado: true }
+        { codigo: "sanji32542", direccion: "Lacoste 1920",           ciudad: "Las Toninas",       provincia: "Buenos Aires", habilitado: false },
+        { codigo: "asdfgh987",  direccion: "Juan Justo 200",         ciudad: "Monte Chingolo",    provincia: "Buenos Aires", habilitado: true },
+        { codigo: "xcbewu13",   direccion: "Canarias 1850",          ciudad: "Ciudad de Cordoba", provincia: "Cordoba",      habilitado: true },
+        { codigo: "pqr789xyz",  direccion: "Av. Libertador 3000",    ciudad: "Buenos Aires",      provincia: "Buenos Aires", habilitado: true },
+        { codigo: "lmno456stu", direccion: "Calle Falsa 123",        ciudad: "La Plata",          provincia: "Buenos Aires", habilitado: false },
+        { codigo: "wxyz123abc", direccion: "Avenida San Martín 456", ciudad: "Rosario",           provincia: "Santa Fe",     habilitado: true }
     ];
 
     for (const tienda of tiendas) {
@@ -125,10 +101,13 @@ async function cargaDatosDePrueba()
     }
     
     const usuarios = [
-        { nombre: 'Pepe',    apellido: 'Argento',   usuario: 'El Pepo',   password: '12345',           habilitado: true,  tienda_codigo: 'sanji32542' },
-        { nombre: 'Moni',    apellido: 'Argento',   usuario: 'La Peluca', password: 'qwerty',          habilitado: true,  tienda_codigo: 'asdfgh987' },
-        { nombre: 'Unlero',  apellido: 'Sistemas',  usuario: 'The One',   password: 'fñnbqio_@748e5a', habilitado: false, tienda_codigo: 'asdfgh987' },
-        { nombre: 'Horacio', apellido: 'Hernandez', usuario: 'H-H',       password: '564sdgf',         habilitado: true,  tienda_codigo: 'sanji32542' }
+        { nombre: 'Pepe',    apellido: 'Argento',   usuario: 'Racing Campeon', password: '1967',            habilitado: true,  tienda_codigo: 'sanji32542' },
+        { nombre: 'Moni',    apellido: 'Argento',   usuario: 'La Peluca',      password: 'qwerty',          habilitado: true,  tienda_codigo: 'asdfgh987' },
+        { nombre: 'Unlero',  apellido: 'Sistemas',  usuario: 'The One',        password: 'fñnbqio_@748e5a', habilitado: false, tienda_codigo: 'asdfgh987' },
+        { nombre: 'Horacio', apellido: 'Hernandez', usuario: 'H-H',            password: '564sdgf',         habilitado: true,  tienda_codigo: 'sanji32542' },
+        { nombre: 'Luis',    apellido: 'Gonzalez',  usuario: 'LG',             password: 'dstew23',         habilitado: false, tienda_codigo: 'pqr789xyz' },
+        { nombre: 'Jorge',   apellido: 'Perez',     usuario: 'El curioso',     password: 'xznwqw@',         habilitado: true,  tienda_codigo: 'lmno456stu' },
+        { nombre: 'Manuel',  apellido: 'Avilar',    usuario: 'Manu',           password: 'liecw',           habilitado: true,  tienda_codigo: 'wxyz123abc' },
     ];
     
     for (const usuario of usuarios) {
