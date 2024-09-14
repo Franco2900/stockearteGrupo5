@@ -1,4 +1,6 @@
 import requests
+import json
+from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 
 # ====================================================================================
@@ -108,27 +110,36 @@ data = {
     "nombre": "Campera",
     "talle": "XL",
     "color": "Roja",
-    "tiendaObject": [{"codigo": "9"}, {"codigo": "10"}]
+    "tiendaObject": [{"codigo": "9"}, {"codigo": "10"}],
 }
 
+# Crea el MultipartEncoder
+m = MultipartEncoder(
+    fields={
+        "data": json.dumps(data),
+        "foto": ("campera-roja.jpg", open("campera-roja.jpg", "rb"), "image/jpeg"),
+    }
+)
 
-files = {'foto': open('campera-roja.jpg', 'rb')}
+headers = {"Content-Type": m.content_type}
 
-response = requests.post(url,files=files,data=data)
+r = requests.post(url, data=m, headers=headers)
 
-print(response.json())
+# Imprime la respuesta en formato JSON
+print(r.json())
+
 
 # ====================================================================================
 
 
 url = "http://localhost:5000/modificarProducto"
 
-data = {"codigoProducto": "bGvCpouhkd", "nuevoStock": 12}
+data = {"codigoProducto": "iXqBlBDGSc", "nuevoStock": 12}
 
 response = requests.post(url, json=data)
 print(response.json())
 
-data = {"codigoProducto": "sOMqnqycMc", "nuevoStock": 23}
+data = {"codigoProducto": "TZYdjxMAat", "nuevoStock": 23}
 
 response = requests.post(url, json=data)
 print(response.json())
