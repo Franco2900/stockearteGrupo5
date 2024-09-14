@@ -105,8 +105,7 @@ async function altaProducto(call, callback) {
 var servidor = new grpc.Server();
 
 servidor.addService(serviciosStockearte.Stockearte.service, { 
-    altaProducto,
-    mostrarProducto
+    altaProducto
 });
 
 servidor.bindAsync("0.0.0.0:4000", grpc.ServerCredentials.createInsecure(), () => {

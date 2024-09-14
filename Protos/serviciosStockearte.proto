@@ -110,7 +110,7 @@ message arregloProductos
 message altaTiendaRequest     // Defino que datos va a tener este tipo de dato
 {   
     string usuarioCentral = 1; // Las variables deben estar ordenadas numericamente
-    string codigoTienda   = 2;  
+    string codigo         = 2;  
     string direccion      = 3;
     string ciudad         = 4;
     string provincia      = 5;
@@ -119,12 +119,12 @@ message altaTiendaRequest     // Defino que datos va a tener este tipo de dato
 
 message bajaLogicaTiendaRequest 
 {
-    string codigoTienda = 1;
+    string codigo = 1;
 }
 
 message altaLogicaTiendaRequest
 {
-    string codigoTienda = 1;
+    string codigo = 1;
 }
 
 

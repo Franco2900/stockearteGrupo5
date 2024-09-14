@@ -220,7 +220,7 @@ async function altaUsuario(call, callback)
             await conexionDataBase.query(`INSERT INTO usuario 
                 SET usuario = '${registro.usuario}', password = '${registro.password}', 
                 nombre = '${registro.nombre}', apellido = '${registro.apellido}', 
-                habilitado = '${registro.habilitado}', tienda_codigo = '${registro.tienda_codigo}' `, {});
+                habilitado = ${registro.habilitado}, tienda_codigo = '${registro.tienda_codigo}' `, {});
 
             console.log('Se hizo el alta de la tienda con los siguientes datos');
             console.log(registro);
@@ -245,7 +245,11 @@ async function altaUsuario(call, callback)
 // Crea un código al azar de 10 caracteres
 function generadorCodigo()
 {
-    var codigo = generadorpassword.generate({
+
+    var generator = require('generate-password');
+
+
+    var codigo = generator.generate({
         length: 10,      // Longitud de la contraseña
         numbers: false,  // Incluir números
         symbols: false,  // Incluir símbolos

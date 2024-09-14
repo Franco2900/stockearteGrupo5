@@ -24,27 +24,51 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x19serviciosStockearte.proto\x12\nstockearte\" \n\rmensajeSimple\x12\x0f\n\x07mensaje\x18\x01 \x01(\t\"s\n\x11\x61ltaTiendaRequest\x12\x14\n\x0c\x63odigoTienda\x18\x01 \x01(\t\x12\x11\n\tdireccion\x18\x02 \x01(\t\x12\x0e\n\x06\x63iudad\x18\x03 \x01(\t\x12\x11\n\tprovincia\x18\x04 \x01(\t\x12\x12\n\nhabilitado\x18\x05 \x01(\x08\"/\n\x17\x62\x61jaLogicaTiendaRequest\x12\x14\n\x0c\x63odigoTienda\x18\x01 \x01(\t\"/\n\x17\x61ltaLogicaTiendaRequest\x12\x14\n\x0c\x63odigoTienda\x18\x01 \x01(\t\"\x8c\x01\n\x12\x61ltaUsuarioRequest\x12\x0e\n\x06nombre\x18\x01 \x01(\t\x12\x10\n\x08\x61pellido\x18\x02 \x01(\t\x12\x15\n\rnombreUsuario\x18\x03 \x01(\t\x12\x13\n\x0b\x63ontrasenia\x18\x04 \x01(\t\x12\x12\n\nhabilitado\x18\x05 \x01(\x08\x12\x14\n\x0c\x63odigoTienda\x18\x06 \x01(\t\"x\n\x13\x61ltaProductoRequest\x12\x0e\n\x06nombre\x18\x01 \x01(\t\x12\x16\n\x0e\x63odigoProducto\x18\x02 \x01(\t\x12\r\n\x05talle\x18\x03 \x01(\t\x12\x0c\n\x04\x66oto\x18\x04 \x01(\t\x12\r\n\x05\x63olor\x18\x05 \x01(\t\x12\r\n\x05stock\x18\x06 \x01(\x05\"I\n\x1bmodificacionProductoRequest\x12\x16\n\x0e\x63odigoProducto\x18\x01 \x01(\t\x12\x12\n\nnuevoStock\x18\x02 \x01(\x05\x32\xfa\x03\n\nStockearte\x12H\n\naltaTienda\x12\x1d.stockearte.altaTiendaRequest\x1a\x19.stockearte.mensajeSimple\"\x00\x12T\n\x10\x62\x61jaLogicaTienda\x12#.stockearte.bajaLogicaTiendaRequest\x1a\x19.stockearte.mensajeSimple\"\x00\x12T\n\x10\x61ltaLogicaTienda\x12#.stockearte.altaLogicaTiendaRequest\x1a\x19.stockearte.mensajeSimple\"\x00\x12J\n\x0b\x61ltaUsuario\x12\x1e.stockearte.altaUsuarioRequest\x1a\x19.stockearte.mensajeSimple\"\x00\x12L\n\x0c\x61ltaProducto\x12\x1f.stockearte.altaProductoRequest\x1a\x19.stockearte.mensajeSimple\"\x00\x12\\\n\x14modificacionProducto\x12\'.stockearte.modificacionProductoRequest\x1a\x19.stockearte.mensajeSimple\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x19serviciosStockearte.proto\x12\x11stockeartePackage\" \n\rmensajeSimple\x12\x0f\n\x07mensaje\x18\x01 \x01(\t\"\x0e\n\x0cmensajeVacio\"y\n\x07usuario\x12\x0f\n\x07usuario\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\x0e\n\x06nombre\x18\x03 \x01(\t\x12\x10\n\x08\x61pellido\x18\x04 \x01(\t\x12\x12\n\nhabilitado\x18\x05 \x01(\x08\x12\x15\n\rtienda_codigo\x18\x06 \x01(\t\"F\n\x0f\x61rregloUsuarios\x12\x33\n\x0f\x61rregloUsuarios\x18\x01 \x03(\x0b\x32\x1a.stockeartePackage.usuario\"s\n\x06tienda\x12\x0e\n\x06\x63odigo\x18\x01 \x01(\t\x12\x11\n\tdireccion\x18\x02 \x01(\t\x12\x0e\n\x06\x63iudad\x18\x03 \x01(\t\x12\x11\n\tprovincia\x18\x04 \x01(\t\x12\x12\n\nhabilitado\x18\x05 \x01(\x08\x12\x0f\n\x07\x63\x65ntral\x18\x06 \x01(\x08\"C\n\x0e\x61rregloTiendas\x12\x31\n\x0e\x61rregloTiendas\x18\x01 \x03(\x0b\x32\x19.stockeartePackage.tienda\"_\n\x08producto\x12\x0e\n\x06\x63odigo\x18\x01 \x01(\t\x12\x0e\n\x06nombre\x18\x02 \x01(\t\x12\r\n\x05talle\x18\x03 \x01(\t\x12\r\n\x05\x63olor\x18\x04 \x01(\t\x12\x15\n\rtienda_codigo\x18\x05 \x01(\t\"H\n\x10\x61rregloProductos\x12\x34\n\x10\x61rregloProductos\x18\x01 \x03(\x0b\x32\x1a.stockeartePackage.usuario\"\x85\x01\n\x11\x61ltaTiendaRequest\x12\x16\n\x0eusuarioCentral\x18\x01 \x01(\t\x12\x0e\n\x06\x63odigo\x18\x02 \x01(\t\x12\x11\n\tdireccion\x18\x03 \x01(\t\x12\x0e\n\x06\x63iudad\x18\x04 \x01(\t\x12\x11\n\tprovincia\x18\x05 \x01(\t\x12\x12\n\nhabilitado\x18\x06 \x01(\x08\")\n\x17\x62\x61jaLogicaTiendaRequest\x12\x0e\n\x06\x63odigo\x18\x01 \x01(\t\")\n\x17\x61ltaLogicaTiendaRequest\x12\x0e\n\x06\x63odigo\x18\x01 \x01(\t\"\x9c\x01\n\x12\x61ltaUsuarioRequest\x12\x16\n\x0eusuarioCentral\x18\x01 \x01(\t\x12\x0f\n\x07usuario\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\x12\x0e\n\x06nombre\x18\x04 \x01(\t\x12\x10\n\x08\x61pellido\x18\x05 \x01(\t\x12\x12\n\nhabilitado\x18\x06 \x01(\x08\x12\x15\n\rtienda_codigo\x18\x07 \x01(\t\"\x1e\n\x0cTiendaObject\x12\x0e\n\x06\x63odigo\x18\x01 \x01(\t\"\xa0\x01\n\x13\x61ltaProductoRequest\x12\x0e\n\x06nombre\x18\x01 \x01(\t\x12\x16\n\x0e\x63odigoProducto\x18\x02 \x01(\t\x12\r\n\x05talle\x18\x03 \x01(\t\x12\x0c\n\x04\x66oto\x18\x04 \x01(\t\x12\r\n\x05\x63olor\x18\x05 \x01(\t\x12\x35\n\x0ctiendaObject\x18\x06 \x03(\x0b\x32\x1f.stockeartePackage.TiendaObject\"I\n\x1bmodificacionProductoRequest\x12\x16\n\x0e\x63odigoProducto\x18\x01 \x01(\t\x12\x12\n\nnuevoStock\x18\x02 \x01(\x05\"P\n\x1e\x62uscarUsuario_X_UsuarioRequest\x12\x16\n\x0eusuarioCentral\x18\x01 \x01(\t\x12\x16\n\x0eusuarioABuscar\x18\x02 \x01(\t\"T\n#buscarUsuario_X_TiendaCodigoRequest\x12\x16\n\x0eusuarioCentral\x18\x01 \x01(\t\x12\x15\n\rtiendaABuscar\x18\x02 \x01(\t\"S\n\"buscarTienda_X_TiendaCodigoRequest\x12\x16\n\x0eusuarioCentral\x18\x01 \x01(\t\x12\x15\n\rtiendaABuscar\x18\x02 \x01(\t\"N\n buscarTienda_X_HabilitadoRequest\x12\x16\n\x0eusuarioCentral\x18\x01 \x01(\t\x12\x12\n\nhabilitado\x18\x02 \x01(\x08\x32\xcc\n\n\x11stockearteService\x12V\n\naltaTienda\x12$.stockeartePackage.altaTiendaRequest\x1a .stockeartePackage.mensajeSimple\"\x00\x12\x62\n\x10\x62\x61jaLogicaTienda\x12*.stockeartePackage.bajaLogicaTiendaRequest\x1a .stockeartePackage.mensajeSimple\"\x00\x12\x62\n\x10\x61ltaLogicaTienda\x12*.stockeartePackage.altaLogicaTiendaRequest\x1a .stockeartePackage.mensajeSimple\"\x00\x12X\n\x0b\x61ltaUsuario\x12%.stockeartePackage.altaUsuarioRequest\x1a .stockeartePackage.mensajeSimple\"\x00\x12Z\n\x0c\x61ltaProducto\x12&.stockeartePackage.altaProductoRequest\x1a .stockeartePackage.mensajeSimple\"\x00\x12j\n\x14modificacionProducto\x12..stockeartePackage.modificacionProductoRequest\x1a .stockeartePackage.mensajeSimple\"\x00\x12j\n\x17\x62uscarUsuario_X_Usuario\x12\x31.stockeartePackage.buscarUsuario_X_UsuarioRequest\x1a\x1a.stockeartePackage.usuario\"\x00\x12|\n\x1c\x62uscarUsuario_X_TiendaCodigo\x12\x36.stockeartePackage.buscarUsuario_X_TiendaCodigoRequest\x1a\".stockeartePackage.arregloUsuarios\"\x00\x12q\n\x1b\x62uscarTienda_X_TiendaCodigo\x12\x35.stockeartePackage.buscarTienda_X_TiendaCodigoRequest\x1a\x19.stockeartePackage.tienda\"\x00\x12u\n\x19\x62uscarTienda_X_Habilitado\x12\x33.stockeartePackage.buscarTienda_X_HabilitadoRequest\x1a!.stockeartePackage.arregloTiendas\"\x00\x12\x61\n\x17\x62uscarTodosLosProductos\x12\x1f.stockeartePackage.mensajeVacio\x1a#.stockeartePackage.arregloProductos\"\x00\x12_\n\x16\x62uscarTodosLosUsuarios\x12\x1f.stockeartePackage.mensajeVacio\x1a\".stockeartePackage.arregloUsuarios\"\x00\x12]\n\x15\x62uscarTodasLasTiendas\x12\x1f.stockeartePackage.mensajeVacio\x1a!.stockeartePackage.arregloTiendas\"\x00\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'serviciosStockearte_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_MENSAJESIMPLE']._serialized_start=41
-  _globals['_MENSAJESIMPLE']._serialized_end=73
-  _globals['_ALTATIENDAREQUEST']._serialized_start=75
-  _globals['_ALTATIENDAREQUEST']._serialized_end=190
-  _globals['_BAJALOGICATIENDAREQUEST']._serialized_start=192
-  _globals['_BAJALOGICATIENDAREQUEST']._serialized_end=239
-  _globals['_ALTALOGICATIENDAREQUEST']._serialized_start=241
-  _globals['_ALTALOGICATIENDAREQUEST']._serialized_end=288
-  _globals['_ALTAUSUARIOREQUEST']._serialized_start=291
-  _globals['_ALTAUSUARIOREQUEST']._serialized_end=431
-  _globals['_ALTAPRODUCTOREQUEST']._serialized_start=433
-  _globals['_ALTAPRODUCTOREQUEST']._serialized_end=553
-  _globals['_MODIFICACIONPRODUCTOREQUEST']._serialized_start=555
-  _globals['_MODIFICACIONPRODUCTOREQUEST']._serialized_end=628
-  _globals['_STOCKEARTE']._serialized_start=631
-  _globals['_STOCKEARTE']._serialized_end=1137
+  _globals['_MENSAJESIMPLE']._serialized_start=48
+  _globals['_MENSAJESIMPLE']._serialized_end=80
+  _globals['_MENSAJEVACIO']._serialized_start=82
+  _globals['_MENSAJEVACIO']._serialized_end=96
+  _globals['_USUARIO']._serialized_start=98
+  _globals['_USUARIO']._serialized_end=219
+  _globals['_ARREGLOUSUARIOS']._serialized_start=221
+  _globals['_ARREGLOUSUARIOS']._serialized_end=291
+  _globals['_TIENDA']._serialized_start=293
+  _globals['_TIENDA']._serialized_end=408
+  _globals['_ARREGLOTIENDAS']._serialized_start=410
+  _globals['_ARREGLOTIENDAS']._serialized_end=477
+  _globals['_PRODUCTO']._serialized_start=479
+  _globals['_PRODUCTO']._serialized_end=574
+  _globals['_ARREGLOPRODUCTOS']._serialized_start=576
+  _globals['_ARREGLOPRODUCTOS']._serialized_end=648
+  _globals['_ALTATIENDAREQUEST']._serialized_start=651
+  _globals['_ALTATIENDAREQUEST']._serialized_end=784
+  _globals['_BAJALOGICATIENDAREQUEST']._serialized_start=786
+  _globals['_BAJALOGICATIENDAREQUEST']._serialized_end=827
+  _globals['_ALTALOGICATIENDAREQUEST']._serialized_start=829
+  _globals['_ALTALOGICATIENDAREQUEST']._serialized_end=870
+  _globals['_ALTAUSUARIOREQUEST']._serialized_start=873
+  _globals['_ALTAUSUARIOREQUEST']._serialized_end=1029
+  _globals['_TIENDAOBJECT']._serialized_start=1031
+  _globals['_TIENDAOBJECT']._serialized_end=1061
+  _globals['_ALTAPRODUCTOREQUEST']._serialized_start=1064
+  _globals['_ALTAPRODUCTOREQUEST']._serialized_end=1224
+  _globals['_MODIFICACIONPRODUCTOREQUEST']._serialized_start=1226
+  _globals['_MODIFICACIONPRODUCTOREQUEST']._serialized_end=1299
+  _globals['_BUSCARUSUARIO_X_USUARIOREQUEST']._serialized_start=1301
+  _globals['_BUSCARUSUARIO_X_USUARIOREQUEST']._serialized_end=1381
+  _globals['_BUSCARUSUARIO_X_TIENDACODIGOREQUEST']._serialized_start=1383
+  _globals['_BUSCARUSUARIO_X_TIENDACODIGOREQUEST']._serialized_end=1467
+  _globals['_BUSCARTIENDA_X_TIENDACODIGOREQUEST']._serialized_start=1469
+  _globals['_BUSCARTIENDA_X_TIENDACODIGOREQUEST']._serialized_end=1552
+  _globals['_BUSCARTIENDA_X_HABILITADOREQUEST']._serialized_start=1554
+  _globals['_BUSCARTIENDA_X_HABILITADOREQUEST']._serialized_end=1632
+  _globals['_STOCKEARTESERVICE']._serialized_start=1635
+  _globals['_STOCKEARTESERVICE']._serialized_end=2991
 # @@protoc_insertion_point(module_scope)
