@@ -1,0 +1,193 @@
+syntax = "proto3"; // Defino la sintaxis del archivo proto (proto3 es la sintaxis mas actual)
+
+package stockeartePackage; // Defino el nombre del paquete
+
+service stockearteService // Creo el servicio y los métodos que va a tener
+{ 
+    // PUNTO 1.A
+    rpc altaTienda (altaTiendaRequest) returns (mensajeSimple) {} // Defino un método unario
+    rpc bajaLogicaTienda (bajaLogicaTiendaRequest) returns (mensajeSimple) {}
+    rpc altaLogicaTienda (altaLogicaTiendaRequest) returns (mensajeSimple) {}
+
+    // PUNTO 1.B
+    rpc altaUsuario (altaUsuarioRequest) returns (mensajeSimple) {}
+
+    // PUNTO 1.C
+    rpc altaProducto (altaProductoRequest) returns (mensajeSimple) {}
+
+    // PUNTO 1.D
+    rpc modificacionProducto (modificacionProductoRequest) returns (mensajeSimple) {}
+
+
+
+    // PUNTO 2.A
+    rpc buscarUsuario_X_Usuario (buscarUsuario_X_UsuarioRequest) returns (usuario) {} 
+    rpc buscarUsuario_X_TiendaCodigo (buscarUsuario_X_TiendaCodigoRequest) returns (arregloUsuarios) {}
+
+    // PUNTO 2.B
+    rpc buscarTienda_X_TiendaCodigo (buscarTienda_X_TiendaCodigoRequest) returns (tienda) {}
+    rpc buscarTienda_X_Habilitado (buscarTienda_X_HabilitadoRequest) returns (arregloTiendas) {}
+
+    // PUNTO 2.C
+    // SIN HACER TODAVÍA
+
+
+
+    // PUNTO 3.A
+    rpc buscarTodosLosProductos (mensajeVacio) returns (arregloProductos) {} 
+
+    // PUNTO 3.B
+    rpc buscarTodosLosUsuarios (mensajeVacio) returns (arregloUsuarios) {}
+
+    // PUNTO 3.C
+    rpc buscarTodasLasTiendas (mensajeVacio) returns (arregloTiendas) {}
+
+    // PUNTO 4
+    // SIN HACER TODAVÍA
+}
+
+/*********************************************************************************************/
+// DEFINICIÓN DE TIPOS DE DATOS
+
+
+// TIPOS DE DATOS RE-UTILIZABLES
+message mensajeSimple
+{
+    string mensaje = 1;
+}
+
+message mensajeVacio {}
+
+message usuario
+{
+    string usuario       = 1;
+    string password      = 2;
+    string nombre        = 3;
+    string apellido      = 4;
+    bool   habilitado    = 5;
+    string tienda_codigo = 6;
+}
+
+message arregloUsuarios
+{
+    repeated usuario arregloUsuarios = 1;
+}
+
+message tienda
+{
+    string codigo     = 1;
+    string direccion  = 2;
+    string ciudad     = 3;
+    string provincia  = 4;
+    bool   habilitado = 5;
+    bool   central    = 6;
+}
+
+message arregloTiendas
+{
+    repeated tienda arregloTiendas = 1;
+}
+
+message producto
+{
+    string codigo        = 1;
+    string nombre        = 2;
+    string talle         = 3;
+    string color         = 4;
+    string tienda_codigo = 5;
+}
+
+message arregloProductos
+{
+    repeated usuario arregloProductos = 1;
+}
+
+
+
+// TIPOS DE DATOS ESPECÍFICOS
+
+// PUNTO 1.A
+message altaTiendaRequest     // Defino que datos va a tener este tipo de dato
+{   
+    string usuarioCentral = 1; // Las variables deben estar ordenadas numericamente
+    string codigoTienda   = 2;  
+    string direccion      = 3;
+    string ciudad         = 4;
+    string provincia      = 5;
+    bool   habilitado     = 6;
+}
+
+message bajaLogicaTiendaRequest 
+{
+    string codigoTienda = 1;
+}
+
+message altaLogicaTiendaRequest
+{
+    string codigoTienda = 1;
+}
+
+
+// PUNTO 1.B
+message altaUsuarioRequest
+{
+    string usuarioCentral = 1;
+    string usuario        = 2;
+    string password       = 3;
+    string nombre         = 4;
+    string apellido       = 5;
+    bool   habilitado     = 6;
+    string tienda_codigo  = 7; 
+}
+
+
+// PUNTO 1.C
+message TiendaObject {
+    string codigo         = 1;
+}
+
+message altaProductoRequest
+{
+    string nombre         = 1;
+    string codigoProducto = 2;
+    string talle          = 3;
+    string foto           = 4;
+    string color          = 5;
+    repeated TiendaObject tiendaObject = 6;
+}
+
+
+// PUNTO 1.D
+message modificacionProductoRequest
+{
+    string codigoProducto = 1;
+    int32  nuevoStock     = 2;
+}
+
+// PUNTO 2.A
+message buscarUsuario_X_UsuarioRequest   
+{   
+    string usuarioCentral = 1;       
+    string usuarioABuscar  = 2;
+}
+
+message buscarUsuario_X_TiendaCodigoRequest
+{
+    string usuarioCentral = 1;  
+    string tiendaABuscar   = 2;
+}
+
+// PUNTO 2.B
+message buscarTienda_X_TiendaCodigoRequest
+{
+    string usuarioCentral = 1;  
+    string tiendaABuscar  = 2;
+}
+
+message buscarTienda_X_HabilitadoRequest
+{
+    string usuarioCentral = 1;
+    bool   habilitado     = 2;
+}
+
+// PUNTO 2.C

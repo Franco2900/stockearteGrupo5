@@ -88,12 +88,12 @@ async function cargaDatosDePrueba()
     console.log('Cargando datos de prueba a la base de datos Stockearte');
 
     const tiendas = [
-        { codigo: "sanji32542", direccion: "Lacoste 1920",           ciudad: "Las Toninas",       provincia: "Buenos Aires", habilitado: false },
-        { codigo: "asdfgh987",  direccion: "Juan Justo 200",         ciudad: "Monte Chingolo",    provincia: "Buenos Aires", habilitado: true },
-        { codigo: "xcbewu13",   direccion: "Canarias 1850",          ciudad: "Ciudad de Cordoba", provincia: "Cordoba",      habilitado: true },
-        { codigo: "pqr789xyz",  direccion: "Av. Libertador 3000",    ciudad: "Buenos Aires",      provincia: "Buenos Aires", habilitado: true },
-        { codigo: "lmno456stu", direccion: "Calle Falsa 123",        ciudad: "La Plata",          provincia: "Buenos Aires", habilitado: false },
-        { codigo: "wxyz123abc", direccion: "Avenida San Martín 456", ciudad: "Rosario",           provincia: "Santa Fe",     habilitado: true }
+        { codigo: "sanji32542", direccion: "Lacoste 1920",           ciudad: "Las Toninas",       provincia: "Buenos Aires", habilitado: false, central: true },
+        { codigo: "asdfgh987",  direccion: "Juan Justo 200",         ciudad: "Monte Chingolo",    provincia: "Buenos Aires", habilitado: true,  central: false },
+        { codigo: "xcbewu13",   direccion: "Canarias 1850",          ciudad: "Ciudad de Cordoba", provincia: "Cordoba",      habilitado: true,  central: false },
+        { codigo: "pqr789xyz",  direccion: "Av. Libertador 3000",    ciudad: "Buenos Aires",      provincia: "Buenos Aires", habilitado: true,  central: false },
+        { codigo: "lmno456stu", direccion: "Calle Falsa 123",        ciudad: "La Plata",          provincia: "Buenos Aires", habilitado: false, central: false },
+        { codigo: "wxyz123abc", direccion: "Avenida San Martín 456", ciudad: "Rosario",           provincia: "Santa Fe",     habilitado: true,  central: false }
     ];
 
     for (const tienda of tiendas) {

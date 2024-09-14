@@ -30,7 +30,6 @@ message mensajeSimple
 
 
 // PUNTO 1.A
-// Servicio altaTienda
 message altaTiendaRequest     // Defino que datos va a tener el tipo de dato altaTiendaRequest
 {   
     string codigoTienda = 1;  // Las variables deben estar ordenadas numericamente
@@ -40,13 +39,11 @@ message altaTiendaRequest     // Defino que datos va a tener el tipo de dato alt
     bool   habilitado   = 5;
 }
 
-// Servicio bajaTienda
 message bajaLogicaTiendaRequest 
 {
     string codigoTienda = 1;
 }
 
-// Servicio altaLogicaTienda
 message altaLogicaTiendaRequest
 {
     string codigoTienda = 1;
@@ -54,7 +51,6 @@ message altaLogicaTiendaRequest
 
 
 // PUNTO 1.B
-// Servicio altaUsuario
 message altaUsuarioRequest
 {
     string nombre        = 1;
@@ -67,7 +63,6 @@ message altaUsuarioRequest
 
 
 // PUNTO 1.C
-// Servicio altaProducto
 message altaProductoRequest
 {
     string nombre         = 1;
@@ -94,7 +89,6 @@ message altaProductoRequest2
 
 
 // PUNTO 1.D
-// Servicio modificacionProducto
 message modificacionProductoRequest
 {
     string codigoProducto = 1;

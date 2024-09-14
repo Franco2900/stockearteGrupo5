@@ -8,28 +8,26 @@ var conexion = mysql.createConnection({ // Creo una conexión a la base de datos
   database: 'Stockearte'
 })
 
-function conectarseALaBaseDeDatos() // Me conecto a la base de datos
+/*function conectarseALaBaseDeDatos() // Me conecto a la base de datos
 {
     return new Promise((resolve, reject) => {
 
       conexion.connect(function (error) {
         if (error) 
         {
-          console.log('Problemas de conexion con mysql');
-          return reject(error);
+            console.log('************************************************************');
+            console.log('Problemas de conexion con mysql');
+            return reject(error);
         } 
         else {
-          console.log('Conexión exitosa con la base de datos');
-          resolve();
+            console.log('************************************************************');
+            console.log('Conexión exitosa con la base de datos');
+            resolve();
         }
       });
 
     });
-}
-
-(async () => {
-    await conectarseALaBaseDeDatos();
-})();
+}*/
 
 
 // Función para ejecutar un comando SQL y devolver una promesa
@@ -82,7 +80,7 @@ async function chequearCasaCentral(usuario)
             FROM usuario 
             INNER JOIN tienda 
             ON usuario.tienda_codigo = tienda.codigo 
-            WHERE tienda.central = 1 AND tienda.habilitado = 1 AND usuario.usuario = '${usuario}'
+            WHERE tienda.central = 1 AND usuario.usuario = '${usuario}'
         ) AS usuarioEsDeCasaCentral`, {}
     );
 
@@ -116,6 +114,7 @@ async function chequearEsUsuarioValido(usuario)
 }
 
 /*********************************** EXPORTACIÓN DE LA LÓGICA ***********************************/
+//exports.conectarseALaBaseDeDatos = conectarseALaBaseDeDatos
 exports.query = query
 exports.chequearExistenciaUsuario = chequearExistenciaUsuario
 exports.chequearExistenciaTienda = chequearExistenciaTienda

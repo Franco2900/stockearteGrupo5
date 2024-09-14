@@ -19,16 +19,16 @@ const conexionDataBase = require('./conexionDataBase.js');
 
 async function buscarUsuario_X_Usuario(call, callback)
 {
-    var usuarioQueSolicita = call.request.usuarioQueSolicita;
-    var usuarioABuscar     = call.request.usuarioABuscar;
-    //var usuarioQueSolicita = 'El Pepo';    // DATO HARDCODEADO PARA PRUEBAS
-    //var usuarioABuscar     = 'La Peluca';  // DATO HARDCODEADO PARA PRUEBAS
+    var usuarioCentral = call.request.usuarioCentral;
+    var usuarioABuscar = call.request.usuarioABuscar;
+    //var usuarioCentral = 'Racing Campeon';    // DATO HARDCODEADO PARA PRUEBAS
+    //var usuarioABuscar = 'La Peluca';         // DATO HARDCODEADO PARA PRUEBAS
 
     try
     {
         // Compruebo si el usuario que solicita los datos es válido
-        var usuarioQueSolicitaEsValido = conexionDataBase.chequearEsUsuarioValido(usuarioQueSolicita);
-        if(usuarioQueSolicitaEsValido !== true) return callback(null, { mensaje: usuarioQueSolicitaEsValido });
+        var usuarioCentralEsValido = conexionDataBase.chequearEsUsuarioValido(usuarioCentral);
+        if(usuarioCentralEsValido !== true) return callback(null, { mensaje: usuarioCentralEsValido });
          
         // Compruebo si el usuario a buscar es válido
         var existeUsuarioABuscar = await conexionDataBase.chequearExistenciaUsuario(usuarioABuscar);
@@ -40,7 +40,7 @@ async function buscarUsuario_X_Usuario(call, callback)
         }
 
         // Si todo esta OK
-        if(usuarioQueSolicitaEsValido && existeUsuarioABuscar) 
+        if(usuarioCentralEsValido && existeUsuarioABuscar) 
         {
             var resultados = await conexionDataBase.query(
                 `SELECT usuario, password, nombre, apellido, habilitado, tienda_codigo 
@@ -52,7 +52,7 @@ async function buscarUsuario_X_Usuario(call, callback)
             
             console.log('************************************************************');
             console.log('Consulta solicitada: Buscar usuario por su nombre de usuario');
-            console.log('Usuario que solicito los datos: ' + usuarioQueSolicita);
+            console.log('Usuario que solicito los datos: ' + usuarioCentral);
             console.log('Usuario que consulto: ' + usuarioABuscar);
             console.log('Datos devueltos al cliente:');
             console.log(respuesta);
@@ -67,16 +67,16 @@ async function buscarUsuario_X_Usuario(call, callback)
 
 async function buscarUsuario_X_TiendaCodigo(call, callback)
 {
-    var usuarioQueSolicita = call.request.usuarioQueSolicita;
-    var tiendaABuscar      = call.request.tiendaABuscar;
-    //var usuarioQueSolicita = 'El Pepo';    // DATO HARDCODEADO PARA PRUEBAS
-    //var tiendaABuscar      = 'asdfgh987';  // DATO HARDCODEADO PARA PRUEBAS
+    var usuarioCentral = call.request.usuarioCentral;
+    var tiendaABuscar  = call.request.tiendaABuscar;
+    //var usuarioCentral = 'El Pepo';    // DATO HARDCODEADO PARA PRUEBAS
+    //var tiendaABuscar  = 'asdfgh987';  // DATO HARDCODEADO PARA PRUEBAS
 
     try
     {
         // Compruebo si el usuario que solicita los datos es válido
-        var usuarioQueSolicitaEsValido = conexionDataBase.chequearEsUsuarioValido(usuarioQueSolicita);
-        if(usuarioQueSolicitaEsValido !== true) return callback(null, { mensaje: usuarioQueSolicitaEsValido });
+        var usuarioCentralEsValido = conexionDataBase.chequearEsUsuarioValido(usuarioCentral);
+        if(usuarioCentralEsValido !== true) return callback(null, { mensaje: usuarioCentralEsValido });
         
         // Compruebo si la tienda a buscar es válida
         var existeTiendaABuscar = await conexionDataBase.chequearExistenciaTienda(tiendaABuscar);
@@ -88,7 +88,7 @@ async function buscarUsuario_X_TiendaCodigo(call, callback)
         }
 
         // Si todo esta OK
-        if(usuarioQueSolicitaEsValido && existeTiendaABuscar) 
+        if(usuarioCentralEsValido && existeTiendaABuscar) 
         {
             var resultados = await conexionDataBase.query(
                 `SELECT usuario, password, nombre, apellido, habilitado, tienda_codigo 
@@ -105,7 +105,7 @@ async function buscarUsuario_X_TiendaCodigo(call, callback)
 
             console.log('************************************************************');
             console.log('Consulta solicitada: Buscar usuario por codigo de tienda');
-            console.log('Usuario que solicito los datos: ' + usuarioQueSolicita);
+            console.log('Usuario que solicito los datos: ' + usuarioCentral);
             console.log('Tienda que consulto: ' + tiendaABuscar);
             console.log('Datos devueltos al cliente:');
             console.log(respuesta);
@@ -121,18 +121,18 @@ async function buscarUsuario_X_TiendaCodigo(call, callback)
 // PUNTO 2.B
 // Como usuario de casa central: Buscar tiendas por código y/o estado (habilitada/deshabilitada).
 
-async function buscarTienda_X_TiendaCodigo(/*call, callback*/)
+async function buscarTienda_X_TiendaCodigo(call, callback)
 {
-    var usuarioQueSolicita = call.request.usuarioQueSolicita;
-    var tiendaABuscar      = call.request.tiendaABuscar;
-    //var usuarioQueSolicita = 'El Pepo';    // DATO HARDCODEADO PARA PRUEBAS
-    //var tiendaABuscar      = 'asdfgh987';  // DATO HARDCODEADO PARA PRUEBAS
+    var usuarioCentral = call.request.usuarioCentral;
+    var tiendaABuscar  = call.request.tiendaABuscar;
+    //var usuarioCentral = 'El Pepo';    // DATO HARDCODEADO PARA PRUEBAS
+    //var tiendaABuscar  = 'asdfgh987';  // DATO HARDCODEADO PARA PRUEBAS
 
     try
     {
         // Compruebo si el usuario que solicita los datos es válido
-        var usuarioQueSolicitaEsValido = conexionDataBase.chequearEsUsuarioValido(usuarioQueSolicita);
-        if(usuarioQueSolicitaEsValido !== true) return callback(null, { mensaje: usuarioQueSolicitaEsValido });
+        var usuarioCentralEsValido = conexionDataBase.chequearEsUsuarioValido(usuarioCentral);
+        if(usuarioCentralEsValido !== true) return callback(null, { mensaje: usuarioCentralEsValido });
          
         // Compruebo si la tienda a buscar es válida
         var existeTiendaABuscar = await conexionDataBase.chequearExistenciaTienda(tiendaABuscar);
@@ -144,7 +144,7 @@ async function buscarTienda_X_TiendaCodigo(/*call, callback*/)
         }
 
         // Si todo esta OK
-        if(usuarioQueSolicitaEsValido && existeTiendaABuscar) 
+        if(usuarioCentralEsValido && existeTiendaABuscar) 
         {
             var resultados = await conexionDataBase.query(
                 `SELECT codigo, direccion, ciudad, provincia, habilitado, central
@@ -156,7 +156,7 @@ async function buscarTienda_X_TiendaCodigo(/*call, callback*/)
             
             console.log('************************************************************');
             console.log('Consulta solicitada: Buscar tienda por su codigo');
-            console.log('Usuario que solicito los datos: ' + usuarioQueSolicita);
+            console.log('Usuario que solicito los datos: ' + usuarioCentral);
             console.log('Tienda que consulto: ' + tiendaABuscar);
             console.log('Datos devueltos al cliente:');
             console.log(respuesta);
@@ -171,19 +171,19 @@ async function buscarTienda_X_TiendaCodigo(/*call, callback*/)
 
 async function buscarTienda_X_Habilitado(call, callback)
 {
-    var usuarioQueSolicita = call.request.usuarioQueSolicita;
-    var habilitado         = call.request.habilitado;
-    //var usuarioQueSolicita = 'El Pepo';  // DATO HARDCODEADO PARA PRUEBAS
-    //var habilitado         = true;       // DATO HARDCODEADO PARA PRUEBAS
+    var usuarioCentral = call.request.usuarioCentral;
+    var habilitado     = call.request.habilitado;
+    //var usuarioCentral = 'El Pepo';  // DATO HARDCODEADO PARA PRUEBAS
+    //var habilitado     = true;       // DATO HARDCODEADO PARA PRUEBAS
 
     try
     {
         // Compruebo si el usuario que solicita los datos es válido
-        var usuarioQueSolicitaEsValido = conexionDataBase.chequearEsUsuarioValido(usuarioQueSolicita);
-        if(usuarioQueSolicitaEsValido !== true) return callback(null, { mensaje: usuarioQueSolicitaEsValido });
+        var usuarioCentralEsValido = conexionDataBase.chequearEsUsuarioValido(usuarioCentral);
+        if(usuarioCentralEsValido !== true) return callback(null, { mensaje: usuarioCentralEsValido });
 
         // Si todo esta OK
-        if(usuarioQueSolicitaEsValido) 
+        if(usuarioCentralEsValido) 
         {
             var resultados = await conexionDataBase.query(
                 `SELECT codigo, direccion, ciudad, provincia, habilitado, central
@@ -200,7 +200,7 @@ async function buscarTienda_X_Habilitado(call, callback)
 
             console.log('************************************************************');
             console.log('Consulta solicitada: Buscar tienda por habilitado');
-            console.log('Usuario que solicito los datos: ' + usuarioQueSolicita);
+            console.log('Usuario que solicito los datos: ' + usuarioCentral);
             console.log('Habilitado consultado: ' + habilitado);
             console.log('Datos devueltos al cliente:');
             console.log(respuesta);

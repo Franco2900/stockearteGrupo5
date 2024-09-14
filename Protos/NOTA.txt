@@ -1,0 +1,2 @@
+A pesar de que solo vamos a usar un archivo proto, hay que dejar los archivos protos ya hechos intactos así tenemos
+una mejor idea de que datos utiliza cada punto

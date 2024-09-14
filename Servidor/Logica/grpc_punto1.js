@@ -25,50 +25,58 @@ const conexionDataBase = require('./conexionDataBase.js');
 
 // PUNTO 1.A
 // Como usuario de casa central: Dar de alta o baja las tiendas
-// Las tiendas tienen los siguientes datos: código alfanumérico, dirección, ciudad, provincia, check de habilitado o deshabilitado
 
 async function altaTienda(call, callback)
 {
+    console.log('************************************************************');
+    console.log('Haciendo alta de tienda');
+
     // Acá van los datos que nos llegan del cliente desde gRPC
     const registro =
     {
-        codigoTienda: call.request.codigoTienda,
-        direccion:    call.request.direccion,
-        ciudad:       call.request.ciudad,
-        provincia:    call.request.provincia,
-        habilitado:   call.request.habilitado
+        usuarioCentral: call.request.usuarioCentral,
+        codigo:         call.request.codigo,
+        direccion:      call.request.direccion,
+        ciudad:         call.request.ciudad,
+        provincia:      call.request.provincia,
+        habilitado:     call.request.habilitado
     }
 
-    
     /*const registro = // DATO HARDCODEADO PARA PRUEBAS
     {
-        codigoTienda: "sanji32542",
-        direccion:    "Lacoste 1920",
-        ciudad:       "Las Toninas",
-        provincia:    "Buenos Aires",
-        habilitado:   false
+        usuarioCentral: "Racing Campeon",
+        codigo:         "sanji32542",
+        direccion:      "Lacoste 1920",
+        ciudad:         "Las Toninas",
+        provincia:      "Buenos Aires",
+        habilitado:     false
     }*/
 
-
-    // Chequeo si ya existe la tienda
-    var resultados = await conexionDataBase.query(`SELECT EXISTS(SELECT codigo FROM tienda WHERE codigo = ?) AS existe`, [registro.codigoTienda]);
-    var existeTienda = resultados[0].existe;
-
-
+    var esUsuarioValido = await conexionDataBase.chequearEsUsuarioValido(registro.usuarioCentral);
+    var existeTienda    = await conexionDataBase.chequearExistenciaTienda(registro.tienda_codigo);
+    
+    if(esUsuarioValido !== true) return callback(null, { mensaje: esUsuarioValido });
+    
     if(existeTienda)
     {
         console.log('ERROR: Ya existe la tienda');
-        return callback(null, { mensaje: 'ERROR: Ya existe la tienda' });
+        //return callback(null, { mensaje: 'ERROR: Ya existe la tienda' });
     }
-    else
+
+
+    if(esUsuarioValido && !existeTienda) 
     {
         try // Si no existe la tienda, la creo
         {
-            await conexionDataBase.query('INSERT INTO tienda SET ?', registro);
+            await conexionDataBase.query(`INSERT INTO tienda 
+                SET codigo = '${registro.codigo}', direccion = '${registro.direccion}', 
+                ciudad = '${registro.ciudad}', provincia = '${registro.provincia}', 
+                habilitado = '${registro.habilitado}' `, {});
 
-            var mensajeExitoso = 'Se hizo el alta de la tienda con el codigo: ' + registro.codigoTienda;
-            console.log(mensajeExitoso);
-            return callback(null, { mensaje: mensajeExitoso });
+            console.log('Se hizo el alta de la tienda con los siguientes datos');
+            console.log(registro);
+
+            return callback(null, { mensaje: `Se hizo el alta de la tienda con el codigo: ${registro.codigo}` });
         }
         catch(error) 
         {
@@ -76,17 +84,20 @@ async function altaTienda(call, callback)
             return callback(error);
         }
     }
-
+    
 }
 
 
 async function bajaLogicaTienda(call, callback)
-{    
-    var codigoTienda = call.request.codigoTienda;
-    // var codigoTienda = "sanji32542"; // DATO HARDCODEADO PARA PRUEBAS
+{
+    console.log('************************************************************');
+    console.log('Haciendo baja lógica de tienda');
+    
+    var codigo = call.request.codigo;
+    // var codigo = "sanji32542"; // DATO HARDCODEADO PARA PRUEBAS
 
     // Chequeo si existe la tienda
-    var resultados = await conexionDataBase.query(`SELECT EXISTS(SELECT codigo FROM tienda WHERE codigo = ?) AS existe`, codigoTienda);
+    var resultados = await conexionDataBase.query(`SELECT EXISTS(SELECT codigo FROM tienda WHERE codigo = ?) AS existe`, codigo);
     var existeTienda = resultados[0].existe;
 
 
@@ -94,9 +105,9 @@ async function bajaLogicaTienda(call, callback)
     {
         try 
         {
-            await conexionDataBase.query(`UPDATE tienda SET habilitado = 0 WHERE codigo = '${codigoTienda}' `, {});
+            await conexionDataBase.query(`UPDATE tienda SET habilitado = 0 WHERE codigo = '${codigo}' `, {});
 
-            var mensajeExitoso = 'Se hizo la baja lógica de la tienda con el codigo: ' + codigoTienda;
+            var mensajeExitoso = 'Se hizo la baja lógica de la tienda con el codigo: ' + codigo;
             console.log(mensajeExitoso);
             return callback(null, { mensaje: mensajeExitoso });
         }
@@ -116,12 +127,15 @@ async function bajaLogicaTienda(call, callback)
 
 
 async function altaLogicaTienda(call, callback)
-{    
-    var codigoTienda = call.request.codigoTienda;
-    // var codigoTienda = "sanji32542"; // DATO HARDCODEADO PARA PRUEBAS
+{   
+    console.log('************************************************************');
+    console.log('Haciendo alta lógica de tienda');
+
+    var codigo = call.request.codigo;
+    // var codigo = "sanji32542"; // DATO HARDCODEADO PARA PRUEBAS
 
     // Chequeo si existe la tienda
-    var resultados = await conexionDataBase.query(`SELECT EXISTS(SELECT codigo FROM tienda WHERE codigo = ?) AS existe`, codigoTienda);
+    var resultados = await conexionDataBase.query(`SELECT EXISTS(SELECT codigo FROM tienda WHERE codigo = ?) AS existe`, codigo);
     var existeTienda = resultados[0].existe;
 
 
@@ -129,9 +143,9 @@ async function altaLogicaTienda(call, callback)
     {
         try 
         {
-            await conexionDataBase.query(`UPDATE tienda SET habilitado = 1 WHERE codigo = '${codigoTienda}' `, {});
+            await conexionDataBase.query(`UPDATE tienda SET habilitado = 1 WHERE codigo = '${codigo}' `, {});
 
-            var mensajeExitoso = 'Se hizo el alta lógica de la tienda con el codigo: ' + codigoTienda;
+            var mensajeExitoso = 'Se hizo el alta lógica de la tienda con el codigo: ' + codigo;
             console.log(mensajeExitoso);
             return callback(null, { mensaje: mensajeExitoso });
         }
@@ -151,52 +165,67 @@ async function altaLogicaTienda(call, callback)
 
 // PUNTO 1.B
 // Como usuario de casa central: Dar de alta usuarios
-// Los usuarios tienen los siguientes datos: ID (generado automatica al insertar una nueva tienda en la tabla MySQL), nombre, apellido, nombre de usuario, contraseña, tienda a la que pertenece (solo puede pertenecer a una tienda o a casa central), check de habilitado o deshabilitado
 
 async function altaUsuario(call, callback)
 {
+    console.log('************************************************************');
+    console.log('Haciendo alta de usuario');
+
     // Acá van los datos que nos llegan del cliente desde gRPC
     const registro =
     {
-        nombre: call.request.nombre,
-        apellido: call.request.apellido,
-        nombreUsuario: call.request.nombreUsuario,
-        contrasenia: call.request.contrasenia,
-        habilitado: call.request.habilitado,
-        codigoTienda: call.request.codigoTienda
+        usuarioCentral:   call.request.usuarioCentral,
+        usuario:          call.request.usuario,
+        password:         call.request.password,
+        nombre:           call.request.nombre,
+        apellido:         call.request.apellido,
+        habilitado:       call.request.habilitado,
+        tienda_codigo:    call.request.tienda_codigo
     }
 
-
-
-    // Chequeo si ya existe el usuario
-    var resultados = await conexionDataBase.query(`SELECT EXISTS(SELECT usuario FROM usuario WHERE usuario = ?) AS existe`, [registro.nombreUsuario]);
-    var existeUsuario = resultados[0].existe;
-    
-    // Chequeo si existe la tienda que se quiere asignar al usuario
-    resultados = await conexionDataBase.query(`SELECT EXISTS(SELECT codigo FROM tienda WHERE codigo = ?) AS existe`, [registro.codigoTienda]);
-    var existeTienda = resultados[0].existe;
-    
-
-    if(existeUsuario) 
+    /*const registro = // DATO HARDCODEADO PARA PRUEBAS
     {
-        console.log('Ya existe el usuario');
-        return callback(null, { mensaje: 'ERROR: Ya existe el usuario' });
+        usuarioCentral:   'Racing Campeon',
+        usuario:          'La Peluca',
+        password:         'qwerty',
+        nombre:           'Moni',
+        apellido:         'Argento',
+        habilitado:       true,
+        tienda_codigo:    'sanji32542'
+    }*/
+
+
+    var esUsuarioValido = await conexionDataBase.chequearEsUsuarioValido(registro.usuarioCentral);
+    var existeUsuario   = await conexionDataBase.chequearExistenciaUsuario(registro.usuario);
+    var existeTienda    = await conexionDataBase.chequearExistenciaTienda(registro.tienda_codigo);
+
+    if(esUsuarioValido !== true) return callback(null, { mensaje: esUsuarioValido });
+    
+    if(existeUsuario)
+    {
+        console.log('ERROR: Ya existe el usuario que se quiere dar de alta');
+        return callback(null, { mensaje: 'ERROR: Ya existe el usuario que se quiere dar de alta' });
     }
+
     if(!existeTienda) 
     {
-        console.log('No existe la tienda');
+        console.log('ERROR: No existe la tienda');
         return callback(null, { mensaje: 'ERROR: No existe la tienda' });
     }
 
-    if(!existeUsuario && existeTienda) // Si no existe el usuario y si existe la tienda
+    if(esUsuarioValido && !existeUsuario && existeTienda) // Si el usuario que ingresa los datos es válido, si no existe el usuario nuevo y si existe la tienda
     {
-        try // Si no existe el usuario, lo creo
+        try // Creo el usuario
         {
-            await conexionDataBase.query('INSERT INTO usuario SET ?', registro);
+            await conexionDataBase.query(`INSERT INTO usuario 
+                SET usuario = '${registro.usuario}', password = '${registro.password}', 
+                nombre = '${registro.nombre}', apellido = '${registro.apellido}', 
+                habilitado = '${registro.habilitado}', tienda_codigo = '${registro.tienda_codigo}' `, {});
 
-            var mensajeExitoso = 'Se hizo el alta del usuario: ' + registro.nombreUsuario;
-            console.log(mensajeExitoso);
-            return callback(null, { mensaje: mensajeExitoso });
+            console.log('Se hizo el alta de la tienda con los siguientes datos');
+            console.log(registro);
+
+            return callback(null, { mensaje: `Se hizo el alta del usuario: ${registro.usuario}` });
         }
         catch(error) 
         {
@@ -216,7 +245,7 @@ async function altaUsuario(call, callback)
 // Crea un código al azar de 10 caracteres
 function generadorCodigo()
 {
-    var codigo = generadorContrasenia.generate({
+    var codigo = generadorpassword.generate({
         length: 10,      // Longitud de la contraseña
         numbers: false,  // Incluir números
         symbols: false,  // Incluir símbolos
@@ -241,11 +270,14 @@ async function altaProducto(call, callback) {
     );
     var existeProducto = resultados[0].existe;
 
-    if (existeProducto) { // SI EXISTE EL PRODUCTO CON MISMO NOMBRE, TALLE Y COLOR..ARROJA ERROR
+    if (existeProducto) // SI EXISTE EL PRODUCTO CON MISMO NOMBRE, TALLE Y COLOR..ARROJA ERROR
+    { 
         console.log('Ya existe el producto');
         return callback(null, { mensaje: 'ERROR: Ya existe el producto' });
-    } else {
-        try { // Si no existe el producto, lo creo..y como no esta creado, no va a estar en la tabla intermedia
+    } else 
+    {
+        try // Si no existe el producto, lo creo..y como no esta creado, no va a estar en la tabla intermedia
+        { 
             await conexionDataBase.query(
                 'INSERT INTO producto (codigo, nombre, talle, foto, color) VALUES (?, ?, ?, ?, ?)',
                 [codigoProducto, nombre, talle, foto, color]
@@ -264,7 +296,9 @@ async function altaProducto(call, callback) {
             var mensajeExitoso = 'Se hizo el alta del producto: ' + codigoProducto;
             console.log(mensajeExitoso);
             return callback(null, { mensaje: mensajeExitoso });
-        } catch (error) {
+        } 
+        catch (error) 
+        {
             console.log(error);
             return callback(error);
         }
