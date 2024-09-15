@@ -19,13 +19,13 @@ const conexionDataBase = require('./conexionDataBase.js');
 
 // PUNTO 4.A
 // Modificar todos los campos de usuario
-async function modificarUsuario(/*call, callback*/)
+async function modificarUsuario(call, callback)
 {
     console.log('************************************************************');
     console.log('Modificando datos');
 
     // Acá van los datos que nos llegan del cliente desde gRPC
-    /*const registro =
+    const registro =
     {
         usuarioAModificar: call.request.usuarioAModificar, // ESTE CAMPO ES NUEVO
         usuario:           call.request.usuario,
@@ -34,9 +34,9 @@ async function modificarUsuario(/*call, callback*/)
         apellido:          call.request.apellido,
         habilitado:        call.request.habilitado,
         tienda_codigo:     call.request.tienda_codigo
-    }*/
+    }
     
-    const registro = // DATO HARDCODEADO PARA PRUEBAS
+    /*const registro = // DATO HARDCODEADO PARA PRUEBAS
     {
         usuarioAModificar: 'Racing Campeon',
         usuario:           'Racing Campeon',
@@ -45,7 +45,7 @@ async function modificarUsuario(/*call, callback*/)
         apellido:          'Argento',
         habilitado:        false, // CAMBIA ACÁ CON RESPECTO A LOS DATOS DE PRUEBA
         tienda_codigo:     'sanji32542'
-    }
+    }*/
 
     var existeUsuarioAModificar = await conexionDataBase.chequearExistenciaUsuario(registro.usuarioAModificar);
     var existeTienda            = await conexionDataBase.chequearExistenciaTienda(registro.tienda_codigo);
@@ -55,26 +55,27 @@ async function modificarUsuario(/*call, callback*/)
 
     if(existeUsuarioAModificar && existeTienda)
     {
-        console.log('Datos antes de la modificación');
+        console.log('Modificación solicitada: Modificar usuario');
+        console.log('Usuario a modificar: ' + registro.usuarioAModificar);
 
+        console.log('Datos antes de la modificación');
         var resultados = await conexionDataBase.query(
             `SELECT *
             FROM usuario
             WHERE usuario = '${registro.usuarioAModificar}' `, {}
         );
-
         console.log(resultados);
 
 
         console.log('Datos después de la modificación');
-
         await conexionDataBase.query(
             `UPDATE usuario
             SET usuario = '${registro.usuario}', password = '${registro.password}', nombre = '${registro.nombre}', apellido = '${registro.apellido}', habilitado = ${registro.habilitado}, tienda_codigo = '${registro.tienda_codigo}'
             WHERE usuario = '${registro.usuarioAModificar}' `, {}
         );
-
         console.log(registro);
+
+        return callback(null, { mensaje: `Modificación del usuario ${registro.usuarioAModificar} realizada correctamente` });
     }
 
 }
@@ -82,13 +83,14 @@ async function modificarUsuario(/*call, callback*/)
 
 // PUNTO 4.B
 // Modificar todos los campos de tienda. Asignar y desasignar usuarios y/o productos
-async function modificarTienda(/*call, callback*/)
+// NOTA: LA FUNCIÓN PARA MODIFICAR TODOS LOS CAMPOS DE TIENDA YA ESTA. FALTA LO DE ASIGNAR Y DESAGSINAR. FIJARSE SI SE EN OTRAS FUNCIONES NUEVAS O NO
+async function modificarTienda(call, callback)
 {
     console.log('************************************************************');
     console.log('Modificando datos');
 
     // Acá van los datos que nos llegan del cliente desde gRPC
-    /*const registro =
+    const registro =
     {
         tiendaAModificar:  call.request.tiendaAModificar, // ESTE CAMPO ES NUEVO
         codigo:            call.request.codigo,
@@ -96,10 +98,10 @@ async function modificarTienda(/*call, callback*/)
         ciudad:            call.request.ciudad,
         provincia:         call.request.provincia,
         habilitado:        call.request.habilitado,
-        central:           call.request.central
-    }*/
+        central:           call.request.central // ACÁ NO SE SI SE DEBERÍA PODER MODIFICAR ESTE CAMPO
+    }
     
-    const registro = // DATO HARDCODEADO PARA PRUEBAS
+    /*const registro = // DATO HARDCODEADO PARA PRUEBAS
     {
         tiendaAModificar: 'asdfgh987',
         codigo:           'asdfgh987',
@@ -108,40 +110,164 @@ async function modificarTienda(/*call, callback*/)
         provincia:        'Buenos Aires',
         habilitado:       false, // CAMBIA ACÁ CON RESPECTO A LOS DATOS DE PRUEBA
         central:          0
-    }
+    }*/
 
     var existeTiendaAModificar  = await conexionDataBase.chequearExistenciaTienda(registro.tiendaAModificar);
     if(!existeTiendaAModificar) return callback(null, { mensaje: `ERROR: No existe la tienda ${registro.tiendaAModificar} ` });
 
     if(existeTiendaAModificar)
     {
-        console.log('Datos antes de la modificación');
+        console.log('Modificación solicitada: Modificar tienda');
+        console.log('Tienda a modificar: ' + registro.tiendaAModificar);
 
+        console.log('Datos antes de la modificación');
         var resultados = await conexionDataBase.query(
             `SELECT *
             FROM tienda
             WHERE codigo = '${registro.tiendaAModificar}' `, {}
         );
-
         console.log(resultados);
 
 
         console.log('Datos después de la modificación');
-
         await conexionDataBase.query(
             `UPDATE tienda
             SET codigo = '${registro.codigo}', direccion = '${registro.direccion}', ciudad = '${registro.ciudad}', provincia = '${registro.provincia}', habilitado = ${registro.habilitado}, central = '${registro.central}'
             WHERE codigo = '${registro.tiendaAModificar}' `, {}
         );
-
         console.log(registro);
+
+        return callback(null, { mensaje: `Modificación de la tienda ${registro.tiendaAModificar} realizada correctamente` });
     }
 
 }
 
 
+// PUNTO 4.C
+// 1° NOTA: ESTE PUNTO ESTE REPETIDO EN EL PDF. EL PUNTO 1.D TAMBIÉN PIDE MODIFICAR STOCK
+// ACÁ LO HICE DE VUELTA PERO MEJORADO. LA DIFERENCIA ES QUE AHORA SI HACE LOS CHEQUEOS QUE TIENE QUE HACER
+
+// 2° NOTA: ESTE PUNTO LO DIVIDO EN DOS FUNCIONES, UNA PARA LOS USUARIOS DE TIENDA Y OTRO PARA USUARIOS DE TIENDA CENTRAL
+
+// Como usuario de tienda, modificar el stock de los productos de mi tienda
+async function modificarStock(call, callback) {
+    
+    console.log('************************************************************');
+    console.log('Modificando datos');
+
+    // Acá van los datos que nos llegan del cliente desde gRPC
+    /*const registro =
+    {
+        usuario:         call.request.usuario,
+        stock:           call.request.stock,
+        producto_codigo: call.request.producto_codigo
+    }*/
+    
+    const registro = // DATO HARDCODEADO PARA PRUEBAS
+    {
+        usuario: 'Racing Campeon',
+        stock:   10,
+        producto_codigo: 'CB123'
+    }
+
+    var existeUsuario = await conexionDataBase.chequearExistenciaUsuario(registro.usuario);
+    if(!existeUsuario) return callback(null, { mensaje: `ERROR: No existe el usuario ${registro.usuario} ` });
+
+    var existeProducto = await conexionDataBase.chequearExistenciaProducto(registro.producto_codigo);
+    if(!existeProducto) return callback(null, { mensaje: `ERROR: No existe el producto ${registro.producto_codigo} ` });
+
+
+    var resultados = await conexionDataBase.query( // Averiguo a que tienda pertenece el usuario
+        `SELECT (tienda.codigo) AS tienda_codigo
+        FROM usuario
+        INNER JOIN tienda 
+        ON usuario.tienda_codigo = tienda.codigo
+        WHERE usuario.usuario = '${registro.usuario}' AND usuario.habilitado = 1`, {}
+    )
+    var usuarioTiendaCodigo = resultados[0].tienda_codigo;
+
+    resultados = await conexionDataBase.query( // Averiguo a que tiendas pertenece el producto
+        `SELECT tienda_codigo
+        FROM tienda_x_producto
+        WHERE producto_codigo = '${registro.producto_codigo}' `, {}
+    )
+    
+    var existenEnLaMismaTienda = false; // Averiguo si el usuario y el producto están en la misma tienda
+    for(var i = 0; i < resultados.length; i++) 
+    {
+        if(usuarioTiendaCodigo == resultados[i].tienda_codigo) existenEnLaMismaTienda = true
+    }
+    if(!existenEnLaMismaTienda) return callback(null, { mensaje: `ERROR: El usuario y el producto no se encuentran en la misma tienda` });
+
+
+    if(existeUsuario && existeProducto && existenEnLaMismaTienda)
+    {
+        console.log('Modificación solicitada: Modificar stock del producto');
+        console.log('Producto a modificar: ' + registro.producto_codigo);
+
+        console.log('Datos antes de la modificación');
+        resultados = await conexionDataBase.query(
+            `SELECT *
+            FROM tienda_x_producto
+            WHERE tienda_codigo = '${usuarioTiendaCodigo}' AND producto_codigo = '${registro.producto_codigo}' `, {}
+        );
+        console.log(resultados);
+
+
+        await conexionDataBase.query( // Actualizo el stock
+            `UPDATE tienda_x_producto
+            SET stock = ${registro.stock}
+            WHERE tienda_codigo = '${usuarioTiendaCodigo}' AND producto_codigo = '${registro.producto_codigo}' `, {}
+        )
+
+
+        console.log('Datos después de la modificación');
+        resultados = await conexionDataBase.query(
+            `SELECT *
+            FROM tienda_x_producto
+            WHERE tienda_codigo = '${usuarioTiendaCodigo}' AND producto_codigo = '${registro.producto_codigo}' `, {}
+        );
+        console.log(resultados);
+
+        return callback(null, { mensaje: `Modificación del stock del producto ${registro.producto_codigo} realizada correctamente` });
+    }
+
+}
+
+// INCOMPLETO
+// Como usuario de casa cental, modificar todos los campos de cualquier producto de cualquier tienda (excepto el código)
+async function modificarProducto(call, callback)
+{
+    console.log('************************************************************');
+    console.log('Modificando datos');
+
+    // Acá van los datos que nos llegan del cliente desde gRPC
+    /*const registro =
+    {
+        productoAModificar: call.request.productoAModificar
+        codigo:             call.request.codigo,
+        direccion:          call.request.direccion,
+        ciudad:             call.request.ciudad,
+        provincia:          call.request.provincia,
+        habilitado:         call.request.habilitado,
+        central:            call.request.central
+    }*/
+    
+    const registro = // DATO HARDCODEADO PARA PRUEBAS
+    {
+        productoAModificar: 'CB123',
+        codigo:             'CB123',
+        nombre:             'Camisa Básica',
+        talle:              'M',
+        foto:               'base64string1',
+        color:              'Naranja' // CAMBIA ACÁ CON RESPECTO A LOS DATOS DE PRUEBA
+    }
+
+}
 
 
 /*********************************** EXPORTACIÓN DE LA LÓGICA ***********************************/
 exports.modificarUsuario = modificarUsuario
 exports.modificarTienda = modificarTienda
+exports.modificarStock = modificarStock
+exports.modificarProducto = modificarProducto

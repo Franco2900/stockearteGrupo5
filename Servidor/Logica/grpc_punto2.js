@@ -51,6 +51,7 @@ async function buscarUsuario_X_Usuario(call, callback)
             var respuesta = { usuario: resultados[0].usuario, password: resultados[0].password, nombre: resultados[0].nombre, apellido: resultados[0].apellido, habilitado: resultados[0].habilitado, tienda_codigo: resultados[0].tienda_codigo };
             
             console.log('************************************************************');
+            console.log('Consultando datos');
             console.log('Consulta solicitada: Buscar usuario por su nombre de usuario');
             console.log('Usuario que solicito los datos: ' + usuarioCentral);
             console.log('Usuario que consulto: ' + usuarioABuscar);
@@ -104,6 +105,7 @@ async function buscarUsuario_X_TiendaCodigo(call, callback)
             }
 
             console.log('************************************************************');
+            console.log('Consultando datos');
             console.log('Consulta solicitada: Buscar usuario por codigo de tienda');
             console.log('Usuario que solicito los datos: ' + usuarioCentral);
             console.log('Tienda que consulto: ' + tiendaABuscar);
@@ -155,6 +157,7 @@ async function buscarTienda_X_TiendaCodigo(call, callback)
             var respuesta = { codigo: resultados[0].codigo, direccion: resultados[0].direccion, ciudad: resultados[0].ciudad, provincia: resultados[0].provincia, habilitado: resultados[0].habilitado, central: resultados[0].central };
             
             console.log('************************************************************');
+            console.log('Consultando datos');
             console.log('Consulta solicitada: Buscar tienda por su codigo');
             console.log('Usuario que solicito los datos: ' + usuarioCentral);
             console.log('Tienda que consulto: ' + tiendaABuscar);
@@ -199,6 +202,7 @@ async function buscarTienda_X_Habilitado(call, callback)
             }
 
             console.log('************************************************************');
+            console.log('Consultando datos');
             console.log('Consulta solicitada: Buscar tienda por habilitado');
             console.log('Usuario que solicito los datos: ' + usuarioCentral);
             console.log('Habilitado consultado: ' + habilitado);
@@ -212,73 +216,137 @@ async function buscarTienda_X_Habilitado(call, callback)
 
 }
 
-// NOTA: OPTIMIZAR LO DE ARRIBA
 
-// FUNCIONES INCOMPLETAS
 // PUNTO 2.C
 // Buscar productos. Se pueden filtrar por nombre, código, talle, color.
+// NOTA: ESTAS BÚSQUEDAS NO PIDEN CHEQUEO DE USUARIO CENTRAL
 
-async function buscarProductoXNombre(/*call, callback*/)
+async function buscarProducto_X_Nombre(call, callback)
 {
-    // var nombre = call.request.nombre;
-    var nombre = 'Remera'; // DATO HARDCODEADO PARA PRUEBAS
+    var nombre = call.request.nombre;
+    //var nombre = 'Camisa Básica'; // DATO HARDCODEADO PARA PRUEBAS
 
     try
     {
-        var resultados = await query(`SELECT nombre, codigoProducto, talle, foto, color FROM productos WHERE nombre = '${nombre}' `, {});
-        console.log(resultados);
+        var resultados = await conexionDataBase.query(
+            `SELECT codigo, nombre, talle, foto, color
+            FROM producto
+            WHERE nombre = '${nombre}' `, {}
+        );
+
+        // Puede haber muchos productos con el mismo nombre pero en distinto talle o color
+        var respuesta = [];
+        for(var i = 0; i < resultados.length; i++)
+        {
+            respuesta[i] = { codigo: resultados[i].codigo, nombre: resultados[i].nombre, talle: resultados[i].talle, foto: resultados[i].foto, color: resultados[i].color };
+        }
+
+        console.log('************************************************************');
+        console.log('Consultando datos');
+        console.log('Consulta solicitada: Buscar producto por nombre');
+        console.log('Nombre consultado: ' + nombre);
+        console.log('Datos devueltos al cliente:');
+        console.log(respuesta);
+        return callback(null, respuesta);
+
     }
     catch(error) {console.log(error);}
     
-    // AGREGAR COMO DEVOLVER TODOS LOS DATOS MEDIANTE GRPC
 }
 
 
-async function buscarProductoXCodigo(/*call, callback*/)
+async function buscarProducto_X_Codigo(call, callback)
 {
-    // var codigoProducto = call.request.codigoProducto;
-    var codigoProducto = 'YOoKyaALaI'; // DATO HARDCODEADO PARA PRUEBAS
+    var codigo = call.request.codigo;
+    //var codigo = 'PJ456'; // DATO HARDCODEADO PARA PRUEBAS
 
     try
     {
-        var resultados = await query(`SELECT nombre, codigoProducto, talle, foto, color FROM productos WHERE codigoProducto = '${codigoProducto}' `, {});
-        console.log(resultados);
+        var resultados = await conexionDataBase.query(
+            `SELECT codigo, nombre, talle, foto, color
+            FROM producto
+            WHERE codigo = '${codigo}' `, {}
+        );
+
+        // Solo puede haber un producto con dicho codigo
+        var respuesta = { codigo: resultados[0].codigo, nombre: resultados[0].nombre, talle: resultados[0].talle, foto: resultados[0].foto, color: resultados[0].color };
+
+        console.log('************************************************************');
+        console.log('Consultando datos');
+        console.log('Consulta solicitada: Buscar producto por codigo');
+        console.log('Codigo consultado: ' + codigo);
+        console.log('Datos devueltos al cliente:');
+        console.log(respuesta);
+        return callback(null, respuesta);
+
     }
     catch(error) {console.log(error);}
-    
-    // AGREGAR COMO DEVOLVER TODOS LOS DATOS MEDIANTE GRPC
 }
 
 
-async function buscarProductoXTalle(/*call, callback*/)
+async function buscarProducto_X_Talle(call, callback)
 {
-    // var talle = call.request.talle;
-    var talle = 'L'; // DATO HARDCODEADO PARA PRUEBAS
+    var talle = call.request.talle;
+    //var talle = 'L'; // DATO HARDCODEADO PARA PRUEBAS
 
     try
     {
-        var resultados = await query(`SELECT nombre, codigoProducto, talle, foto, color FROM productos WHERE talle = '${talle}' `, {});
-        console.log(resultados);
+        var resultados = await conexionDataBase.query(
+            `SELECT codigo, nombre, talle, foto, color
+            FROM producto
+            WHERE talle = '${talle}' `, {}
+        );
+
+        // Puede haber muchos productos con el mismo talle
+        var respuesta = [];
+        for(var i = 0; i < resultados.length; i++)
+        {
+            respuesta[i] = { codigo: resultados[i].codigo, nombre: resultados[i].nombre, talle: resultados[i].talle, foto: resultados[i].foto, color: resultados[i].color };
+        }
+
+        console.log('************************************************************');
+        console.log('Consultando datos');
+        console.log('Consulta solicitada: Buscar producto por talle');
+        console.log('Talle consultado: ' + talle);
+        console.log('Datos devueltos al cliente:');
+        console.log(respuesta);
+        return callback(null, respuesta);
+
     }
     catch(error) {console.log(error);}
-    
-    // AGREGAR COMO DEVOLVER TODOS LOS DATOS MEDIANTE GRPC
 }
 
 
-async function buscarProductoXColor(/*call, callback*/)
+async function buscarProducto_X_Color(call, callback)
 {
-    // var color = call.request.color;
-    var color = 'Verde'; // DATO HARDCODEADO PARA PRUEBAS
+    var color = call.request.color;
+    //var color = 'Rojo'; // DATO HARDCODEADO PARA PRUEBAS
 
     try
     {
-        var resultados = await query(`SELECT nombre, codigoProducto, talle, foto, color FROM productos WHERE color = '${color}' `, {});
-        console.log(resultados);
+        var resultados = await conexionDataBase.query(
+            `SELECT codigo, nombre, talle, foto, color
+            FROM producto
+            WHERE color = '${color}' `, {}
+        );
+
+        // Puede haber muchos productos con el mismo color
+        var respuesta = [];
+        for(var i = 0; i < resultados.length; i++)
+        {
+            respuesta[i] = { codigo: resultados[i].codigo, nombre: resultados[i].nombre, talle: resultados[i].talle, foto: resultados[i].foto, color: resultados[i].color };
+        }
+
+        console.log('************************************************************');
+        console.log('Consultando datos');
+        console.log('Consulta solicitada: Buscar producto por color');
+        console.log('Color consultado: ' + color);
+        console.log('Datos devueltos al cliente:');
+        console.log(respuesta);
+        return callback(null, respuesta);
+
     }
     catch(error) {console.log(error);}
-    
-    // AGREGAR COMO DEVOLVER TODOS LOS DATOS MEDIANTE GRPC
 }
 
 
@@ -288,3 +356,8 @@ exports.buscarUsuario_X_TiendaCodigo = buscarUsuario_X_TiendaCodigo
 
 exports.buscarTienda_X_TiendaCodigo = buscarTienda_X_TiendaCodigo
 exports.buscarTienda_X_Habilitado = buscarTienda_X_Habilitado
+
+exports.buscarProducto_X_Nombre = buscarProducto_X_Nombre
+exports.buscarProducto_X_Codigo = buscarProducto_X_Codigo
+exports.buscarProducto_X_Talle = buscarProducto_X_Talle
+exports.buscarProducto_X_Color = buscarProducto_X_Color

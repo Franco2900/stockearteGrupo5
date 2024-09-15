@@ -72,6 +72,20 @@ async function chequearExistenciaTienda(codigo)
 }
 
 
+async function chequearExistenciaProducto(codigo)
+{
+    var resultados = await query(
+        `SELECT EXISTS (
+            SELECT codigo 
+            FROM producto 
+            WHERE codigo = '${codigo}'
+        ) AS existeProducto`, {}
+    );
+
+    return resultados[0].existeProducto;
+}
+
+
 async function chequearCasaCentral(usuario)
 {
     var resultados = await query(
@@ -118,5 +132,6 @@ async function chequearEsUsuarioValido(usuario)
 exports.query = query
 exports.chequearExistenciaUsuario = chequearExistenciaUsuario
 exports.chequearExistenciaTienda = chequearExistenciaTienda
+exports.chequearExistenciaProducto = chequearExistenciaProducto
 exports.chequearCasaCentral = chequearCasaCentral
 exports.chequearEsUsuarioValido = chequearEsUsuarioValido

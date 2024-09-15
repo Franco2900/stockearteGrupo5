@@ -1,0 +1,53 @@
+syntax = "proto3"; 
+
+package servicios_grpc_punto4_package;
+
+service servicios_grpc_punto4_Service
+{ 
+    // PUNTO 4.A
+    rpc modificarUsuario (modificarUsuarioRequest) returns (mensajeSimple) {} 
+
+    // PUNTO 4.B
+    rpc modificarTienda (modificarTiendaRequest) returns (mensajeSimple) {}
+
+    // PUNTO 4.C
+    rpc modificarStock (modificarStockRequest) returns (mensajeSimple) {}
+    // FALTAN FUNCIONES ACÁ
+}
+
+/*********************************************************************************************/
+// DEFINICIÓN DE TIPOS DE DATOS
+
+message mensajeSimple
+{
+    string mensaje = 1;
+}
+
+message modificarUsuarioRequest
+{
+    string usuarioAModificar = 1;
+    string usuario           = 2;
+    string password          = 3;
+    string nombre            = 4; 
+    string apellido          = 5;
+    bool   habilitado        = 6;
+    string tienda_codigo     = 7;    
+}
+
+message modificarTiendaRequest
+{
+    string tiendaAModificar = 1;
+    string codigo           = 2;
+    string direccion        = 3;
+    string ciudad           = 4;
+    string provincia        = 5;
+    bool   habilitado       = 6;
+    bool   central          = 7;
+}
+
+message modificarStockRequest
+{
+    string usuario         = 1;
+    int32  stock           = 2;
+    string producto_codigo = 3;
+}

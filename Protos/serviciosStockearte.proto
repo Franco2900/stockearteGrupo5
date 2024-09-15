@@ -16,8 +16,9 @@ service stockearteService // Creo el servicio y los métodos que va a tener
     rpc altaProducto (altaProductoRequest) returns (mensajeSimple) {}
 
     // PUNTO 1.D
-    rpc modificacionProducto (modificacionProductoRequest) returns (mensajeSimple) {}
-
+    // ESTA FUNCIÓN ES PARA MODIFICAR EL STOCK DE UN PRODUCTO, PERO LA HICE MAL. EN SU LUGAR SE USA LA FUNCIÓN modificarStock
+    // VERIFICAR SI ESTA NO SE HACE PORQUE ESTA REPETIDA EN EL PUNTO 4.C
+    //rpc modificacionProducto (modificacionProductoRequest) returns (mensajeSimple) {}
 
 
     // PUNTO 2.A
@@ -29,7 +30,10 @@ service stockearteService // Creo el servicio y los métodos que va a tener
     rpc buscarTienda_X_Habilitado (buscarTienda_X_HabilitadoRequest) returns (arregloTiendas) {}
 
     // PUNTO 2.C
-    // SIN HACER TODAVÍA
+    rpc buscarProducto_X_Nombre (buscarProducto_X_NombreRequest) returns (arregloProductos) {}
+    rpc buscarProducto_X_Codigo (buscarProducto_X_CodigoRequest) returns (producto) {}
+    rpc buscarProducto_X_Talle (buscarProducto_X_TalleRequest) returns (arregloProductos) {}
+    rpc buscarProducto_X_Color (buscarProducto_X_ColorRequest) returns (arregloProductos) {}
 
 
 
@@ -42,8 +46,17 @@ service stockearteService // Creo el servicio y los métodos que va a tener
     // PUNTO 3.C
     rpc buscarTodasLasTiendas (mensajeVacio) returns (arregloTiendas) {}
 
-    // PUNTO 4
-    // SIN HACER TODAVÍA
+
+
+    // PUNTO 4.A
+    rpc modificarUsuario (modificarUsuarioRequest) returns (mensajeSimple) {} 
+
+    // PUNTO 4.B
+    rpc modificarTienda (modificarTiendaRequest) returns (mensajeSimple) {}
+
+    // PUNTO 4.C
+    rpc modificarStock (modificarStockRequest) returns (mensajeSimple) {}
+    // FALTAN FUNCIONES ACÁ
 }
 
 /*********************************************************************************************/
@@ -158,11 +171,11 @@ message altaProductoRequest
 
 
 // PUNTO 1.D
-message modificacionProductoRequest
+/*message modificacionProductoRequest
 {
     string codigoProducto = 1;
     int32  nuevoStock     = 2;
-}
+}*/
 
 // PUNTO 2.A
 message buscarUsuario_X_UsuarioRequest   
@@ -191,3 +204,54 @@ message buscarTienda_X_HabilitadoRequest
 }
 
 // PUNTO 2.C
+message buscarProducto_X_NombreRequest
+{
+    string nombre = 1;
+}
+
+message buscarProducto_X_CodigoRequest
+{
+    string codigo = 1;
+}
+
+message buscarProducto_X_TalleRequest
+{
+    string talle = 1;
+}
+
+message buscarProducto_X_ColorRequest
+{
+    string color = 1;
+}
+
+// PUNTO 4.A
+message modificarUsuarioRequest
+{
+    string usuarioAModificar = 1;
+    string usuario           = 2;
+    string password          = 3;
+    string nombre            = 4; 
+    string apellido          = 5;
+    bool   habilitado        = 6;
+    string tienda_codigo     = 7;    
+}
+
+// PUNTO 4.B
+message modificarTiendaRequest
+{
+    string tiendaAModificar = 1;
+    string codigo           = 2;
+    string direccion        = 3;
+    string ciudad           = 4;
+    string provincia        = 5;
+    bool   habilitado       = 6;
+    bool   central          = 7;
+}
+
+// PUNTO 4.C
+message modificarStockRequest
+{
+    string usuario         = 1;
+    int32  stock           = 2;
+    string producto_codigo = 3;
+}
