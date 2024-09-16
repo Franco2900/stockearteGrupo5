@@ -1,0 +1,1 @@
+Para algunas pruebas es necesario iniciar el servidor y/o el cliente
