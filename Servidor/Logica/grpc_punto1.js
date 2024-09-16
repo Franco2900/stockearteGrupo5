@@ -60,7 +60,7 @@ async function altaTienda(call, callback)
     if(existeTienda)
     {
         console.log('ERROR: Ya existe la tienda');
-        //return callback(null, { mensaje: 'ERROR: Ya existe la tienda' });
+        return callback(null, { mensaje: 'ERROR: Ya existe la tienda' });
     }
 
 
