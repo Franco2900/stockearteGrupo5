@@ -53,7 +53,7 @@ async function altaTienda(call, callback)
     }*/
 
     var esUsuarioValido = await conexionDataBase.chequearEsUsuarioValido(registro.usuarioCentral);
-    var existeTienda    = await conexionDataBase.chequearExistenciaTienda(registro.tienda_codigo);
+    var existeTienda    = await conexionDataBase.chequearExistenciaTienda(registro.codigo);
     
     if(esUsuarioValido !== true) return callback(null, { mensaje: esUsuarioValido });
     
@@ -63,6 +63,7 @@ async function altaTienda(call, callback)
         return callback(null, { mensaje: 'ERROR: Ya existe la tienda' });
     }
 
+    console.log(esUsuarioValido + " " + existeTienda);
 
     if(esUsuarioValido && !existeTienda) 
     {
@@ -199,6 +200,13 @@ async function altaUsuario(call, callback)
     var existeUsuario   = await conexionDataBase.chequearExistenciaUsuario(registro.usuario);
     var existeTienda    = await conexionDataBase.chequearExistenciaTienda(registro.tienda_codigo);
 
+    // DEBUG - BORRAR DESPUES
+    console.log(call.request);
+    console.log(esUsuarioValido + " " + existeUsuario + " " + existeTienda)
+    console.log(registro);
+
+
+
     if(esUsuarioValido !== true) return callback(null, { mensaje: esUsuarioValido });
     
     if(existeUsuario)
@@ -209,8 +217,8 @@ async function altaUsuario(call, callback)
 
     if(!existeTienda) 
     {
-        console.log('ERROR: No existe la tienda');
-        return callback(null, { mensaje: 'ERROR: No existe la tienda' });
+        console.log(`ERROR: No existe la tienda con el codigo: ${registro.tienda_codigo} `);
+        return callback(null, { mensaje: `ERROR: No existe la tienda con el codigo: ${registro.tienda_codigo} ` });
     }
 
     if(esUsuarioValido && !existeUsuario && existeTienda) // Si el usuario que ingresa los datos es válido, si no existe el usuario nuevo y si existe la tienda

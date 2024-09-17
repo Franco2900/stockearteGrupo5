@@ -54,7 +54,7 @@ async function chequearExistenciaUsuario(usuario)
         ) AS existeUsuario`, {}
     );
 
-    return resultados[0].existeUsuario;
+    return Boolean(resultados[0].existeUsuario);
 }
 
 
@@ -68,7 +68,7 @@ async function chequearExistenciaTienda(codigo)
         ) AS existeTienda`, {}
     );
 
-    return resultados[0].existeTienda;
+    return Boolean(resultados[0].existeTienda);
 }
 
 
@@ -82,7 +82,7 @@ async function chequearExistenciaProducto(codigo)
         ) AS existeProducto`, {}
     );
 
-    return resultados[0].existeProducto;
+    return Boolean(resultados[0].existeProducto);
 }
 
 
@@ -98,13 +98,13 @@ async function chequearCasaCentral(usuario)
         ) AS usuarioEsDeCasaCentral`, {}
     );
 
-    return resultados[0].usuarioEsDeCasaCentral;
+    return Boolean(resultados[0].usuarioEsDeCasaCentral);
 }
 
 
 async function chequearEsUsuarioValido(usuario)
 {
-    var respuesta = "";
+    var respuesta = false;
 
     var existeUsuarioQueSolicita = await chequearExistenciaUsuario(usuario);
     var usuarioEsDeCasaCentral   = await chequearCasaCentral(usuario); 
