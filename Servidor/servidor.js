@@ -8,7 +8,7 @@ var servidor = new gRPC.Server(); // Creo el servidor gRPC
 
 var archivoProto = path.join(__dirname, '/../Protos/serviciosStockearte.proto');
 
-var packageDefinition = protoLoader.loadSync(archivoProto, {});  // Cargo el archivo .proto y lo configuro. Acá no le configure nada pero si queremos podemos cargar opciones
+var packageDefinition = protoLoader.loadSync(archivoProto, {keepCase: true});  // Cargo el archivo .proto y lo configuro
 const stockeartePackage = gRPC.loadPackageDefinition(packageDefinition).stockeartePackage; // Cargo el paquete
 
 /*************************************** LÓGICA DEL NEGOCIO *************************************************/
