@@ -200,13 +200,6 @@ async function altaUsuario(call, callback)
     var existeUsuario   = await conexionDataBase.chequearExistenciaUsuario(registro.usuario);
     var existeTienda    = await conexionDataBase.chequearExistenciaTienda(registro.tienda_codigo);
 
-    // DEBUG - BORRAR DESPUES
-    console.log(call.request);
-    console.log(esUsuarioValido + " " + existeUsuario + " " + existeTienda)
-    console.log(registro);
-
-
-
     if(esUsuarioValido !== true) return callback(null, { mensaje: esUsuarioValido });
     
     if(existeUsuario)
@@ -269,7 +262,11 @@ function generadorCodigo()
 }
 
 
-async function altaProducto(call, callback) {
+async function altaProducto(call, callback) 
+{
+    console.log('************************************************************');
+    console.log('Haciendo alta de producto');
+
     // Acá van los datos que nos llegan del cliente desde gRPC
     const { nombre, talle, foto, color, tiendaObject } = call.request;
     const codigoProducto = generadorCodigo();
@@ -305,9 +302,9 @@ async function altaProducto(call, callback) {
                 })
             );
 
-            var mensajeExitoso = 'Se hizo el alta del producto: ' + codigoProducto;
-            console.log(mensajeExitoso);
-            return callback(null, { mensaje: mensajeExitoso });
+            console.log('Se hizo el alta de la tienda con los siguientes datos');
+            console.log(call.request);
+            return callback(null, { mensaje: `Se hizo el alta del producto: ${codigoProducto} ` });
         } 
         catch (error) 
         {
