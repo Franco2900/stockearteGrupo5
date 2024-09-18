@@ -36,7 +36,7 @@ service stockearteService // Creo el servicio y los métodos que va a tener
     rpc buscarProducto_X_Codigo (buscarProducto_X_CodigoRequest) returns (producto) {} //SACAR
     rpc buscarProducto_X_Talle (buscarProducto_X_TalleRequest) returns (arregloProductos) {} //SACAR
     rpc buscarProducto_X_Color (buscarProducto_X_ColorRequest) returns (arregloProductos) {} //SACAR
-    rpc buscarProductos (buscarProductosRequest) return (arregloProd) {}
+    rpc buscarProductos (buscarProductosRequest) returns (arregloProd) {}
 
     
     // PUNTO 3.A

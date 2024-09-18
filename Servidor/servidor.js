@@ -29,6 +29,9 @@ const buscarUsuario_X_Usuario      = grpc_punto2.buscarUsuario_X_Usuario.bind({}
 const buscarUsuario_X_TiendaCodigo = grpc_punto2.buscarUsuario_X_TiendaCodigo.bind({});
 const buscarTienda_X_TiendaCodigo  = grpc_punto2.buscarTienda_X_TiendaCodigo.bind({});
 const buscarTienda_X_Habilitado    = grpc_punto2.buscarTienda_X_Habilitado.bind({});
+const buscarUsuarios = grpc_punto2.buscarProductos.bind({});
+const buscarTiendas =  grpc_punto2.buscarTiendas.bind({});
+const buscarProductos = grpc_punto2.buscarProductos.bind({});
 
 // Lógica Punto 3
 const grpc_punto3 = require('./Logica/grpc_punto3.js');
