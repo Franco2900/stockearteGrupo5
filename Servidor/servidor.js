@@ -53,6 +53,9 @@ servidor.addService(stockeartePackage.stockearteService.service, {
     buscarUsuario_X_TiendaCodigo,
     buscarTienda_X_TiendaCodigo,
     buscarTienda_X_Habilitado,
+    buscarUsuarios,
+    buscarTiendas,
+    buscarProductos,
 
     // Lógica Punto 3
     buscarTodosLosProductos,

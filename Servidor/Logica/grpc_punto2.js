@@ -349,15 +349,197 @@ async function buscarProducto_X_Color(call, callback)
     catch(error) {console.log(error);}
 }
 
+/************************************ CAMBIOS FER ************************************ */
+
+
+/*Usuarios (solo disponible para usuarios de casa central): se pueden filtrar por nombre de 
+usuario y/o tienda. */
+
+async function buscarUsuarios(call, callback) {
+
+    try
+    {
+        var usuarioCentralEsValido = conexionDataBase.chequearEsUsuarioValido(usuarioCentral);
+        if(usuarioCentralEsValido !== true) return callback(null, { mensaje: usuarioCentralEsValido });
+
+        const registro =
+        {
+            usuarioCentral:     call.request.usuarioCentral,
+            nombre_usuario:     call.request.usuarioABuscar,
+            codigo_tienda:      call.request.tiendaABuscar
+        }
+
+        var resultados = await conexionDataBase.query(armarQueryUsuarios(registro.nombre_usuario, registro.codigo_tienda), {}
+        );
+
+        var respuesta = [];
+        for(var i = 0; i < resultados.length; i++){
+            respuesta[i] = { usuario: resultados[i].usuario, password: resultados[i].password, nombre: resultados[i].nombre, apellido: resultados[i].apellido, habilitado: resultados[i].habilitado, tienda_codigo: resultados[i].tienda_codigo };
+        }
+
+        console.log('************************************************************');
+        console.log('Consultando datos');
+        console.log('Consulta solicitada: Buscar usuarios por nombre de usuario y/o tienda');
+        console.log('Nombre de usuario consultado: ' + registro.nombre_usuario);
+        console.log('Codigo tienda consultado: ' + registro.codigo_tienda);
+        console.log('Datos devueltos al cliente:');
+        console.log(respuesta);
+        return callback(null, respuesta);
+
+    } catch(error) {console.log(error);}
+
+}
+
+
+function armarQueryUsuarios(nombre_usuario, nombre_tienda) {
+    let consulta = "SELECT u.* FROM usuario, tienda t u WHERE 1=1 AND u.tienda_codigo=t.codigo";
+    
+    if (nombre_usuario && nombre_usuario !== '') {
+        consulta += " AND u.usuario LIKE ?";
+    }
+    if (nombre_tienda && nombre_tienda !== '') {
+        consulta += " AND t.cogido = ?";
+    }
+
+    const params = [];
+    if (nombre_usuario && nombre_usuario !== '') params.push(`%${nombre_usuario}%`);
+    if (nombre_tienda && nombre_tienda !== '') params.push(nombre_tienda);
+
+    console.log(consulta);
+    return { query: consulta, values: params };
+}
+
+
+/*b. Tiendas (solo disponible para usuarios de casa central): se pueden filtrar por código y/o estado 
+(habilitada/deshabilitada). */
+
+async function buscarTiendas(call, callback) {
+
+    try
+    {
+        var usuarioCentralEsValido = conexionDataBase.chequearEsUsuarioValido(usuarioCentral);
+        if(usuarioCentralEsValido !== true) return callback(null, { mensaje: usuarioCentralEsValido });
+
+        const registro =
+        {
+            usuarioCentral:     call.request.usuarioCentral,
+            codigo_tienda:      call.request.codigo,
+            estado_tienda:      call.request.estado
+        }
+
+        var resultados = await conexionDataBase.query(armarQueryTiendas(registro.codigo_tienda, registro.estado_tienda ), {}
+        );
+
+        var respuesta = [];
+        for(var i = 0; i < resultados.length; i++){
+            respuesta[i] = { codigo: resultados[i].codigo, direccion: resultados[i].direccion, ciudad: resultados[i].ciudad, provincia: resultados[i].provincia, habilitado: resultados[i].habilitado, central: resultados[i].central };
+        }
+
+        console.log('************************************************************');
+        console.log('Consultando datos');
+        console.log('Consulta solicitada: Buscar tienda por código y/o estado');
+        console.log('Codigo tienda consultado: ' + registro.codigo_tienda);
+        console.log('Estado consultado: ' + registro.estado);
+        console.log('Datos devueltos al cliente:');
+        console.log(respuesta);
+        return callback(null, respuesta);
+
+    } catch(error) {console.log(error);}
+
+}
+
+function armarQueryTiendas(codigo_tienda, estado) {
+    let consulta = "SELECT * FROM tienda WHERE 1=1";
+    
+    if (codigo_tienda && codigo_tienda !== '') {
+        consulta += " AND codigo_tienda = ?";
+    }
+    if (estado && estado !== '') {
+        consulta += " AND estado = ?";
+    }
+
+    const params = [];
+    if (codigo_tienda && codigo_tienda !== '') params.push(codigo_tienda);
+    if (estado && estado !== '') params.push(estado);
+
+    console.log(consulta);
+    return { query: consulta, values: params };
+}
+
+/*Productos: se pueden filtrar por nombre, código, talle, color. */
+async function buscarProductos(call, callback) {
+
+    try
+    {
+        const registro =
+        {
+            nombre:      call.request.nombre,
+            codigo:      call.request.codigo,
+            talle:       call.request.talle,
+            color:       call.request.color,
+        }
+
+        var resultados = await conexionDataBase.query(armarQueryProductos(registro.nombre, registro.codigo, registro.talle, registro.color ), {}
+        );
+
+        var respuesta = [];
+        for(var i = 0; i < resultados.length; i++){
+            respuesta[i] = { nombre: resultados[i].nombre, codigo: resultados[i].codigo, talle: resultados[i].talle, color: resultados[i].color };
+        }
+
+        console.log('************************************************************');
+        console.log('Consultando datos');
+        console.log('Consulta solicitada: Buscar producto por nombre, código, talle, color');
+        console.log('Nombre consultado: ' + registro.nombre);
+        console.log('Codigo consultado: ' + registro.codigo);
+        console.log('Talle consultado: ' + registro.talle);
+        console.log('Color consultado: ' + registro.color);
+        console.log('Datos devueltos al cliente:');
+        console.log(respuesta);
+        return callback(null, respuesta);
+
+    } catch(error) {console.log(error);}
+
+}
+
+
+function armarQueryProductos(nombre, codigo, talle, color) {
+    let consulta = "SELECT * FROM producto WHERE 1=1";
+    
+    if (nombre && nombre !== '') {
+        consulta += " AND nombre = ?";
+    }
+    if (codigo && codigo !== '') {
+        consulta += " AND codigo = ?";
+    }
+    if (talle && talle !== '') {
+        consulta += " AND talle = ?";
+    }
+    if (color && color !== '') {
+        consulta += " AND color = ?";
+    }
+    const params = [];
+    if (nombre && nombre !== '') params.push(nombre);
+    if (codigo && codigo !== '') params.push(codigo);
+    if (talle && talle !== '') params.push(talle);
+    if (color && color !== '') params.push(color);
+
+    console.log(consulta);
+    return { query: consulta, values: params };
+}
 
 /*********************************** EXPORTACIÓN DE LA LÓGICA ***********************************/
-exports.buscarUsuario_X_Usuario = buscarUsuario_X_Usuario
-exports.buscarUsuario_X_TiendaCodigo = buscarUsuario_X_TiendaCodigo
+exports.buscarUsuario_X_Usuario = buscarUsuario_X_Usuario //SACAR
+exports.buscarUsuario_X_TiendaCodigo = buscarUsuario_X_TiendaCodigo //SACAR
 
-exports.buscarTienda_X_TiendaCodigo = buscarTienda_X_TiendaCodigo
-exports.buscarTienda_X_Habilitado = buscarTienda_X_Habilitado
+exports.buscarTienda_X_TiendaCodigo = buscarTienda_X_TiendaCodigo //SACAR
+exports.buscarTienda_X_Habilitado = buscarTienda_X_Habilitado //SACAR
 
-exports.buscarProducto_X_Nombre = buscarProducto_X_Nombre
-exports.buscarProducto_X_Codigo = buscarProducto_X_Codigo
-exports.buscarProducto_X_Talle = buscarProducto_X_Talle
-exports.buscarProducto_X_Color = buscarProducto_X_Color
+exports.buscarProducto_X_Nombre = buscarProducto_X_Nombre //SACAR
+exports.buscarProducto_X_Codigo = buscarProducto_X_Codigo //SACAR
+exports.buscarProducto_X_Talle = buscarProducto_X_Talle //SACAR
+exports.buscarProducto_X_Color = buscarProducto_X_Color //SACAR
+
+exports.buscarUsuarios = buscarUsuarios
+exports.buscarTiendas = buscarTiendas
+exports.buscarProductos = buscarProductos
