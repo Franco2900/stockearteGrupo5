@@ -15,6 +15,9 @@ app = Flask(__name__)
 # Crea una conexión de canal insegura con el servidor gRPC en una determinada dirección IP y puerto
 canal = grpc.insecure_channel("localhost:8000") 
 
+# Se crea un stub para interactuar con los servicios
+stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
+
 # Definir una ruta para la página principal
 @app.route('/')
 def hello():
@@ -23,9 +26,6 @@ def hello():
     
 @app.route('/altaTienda', methods=['POST'])
 def altaTienda():
-
-    # Se crea un stub para interactuar con los servicios
-    stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
 
     #Desempaquetamos el diccionario en argumentos con nombre y valor
     solicitud= serviciosStockearte_pb2.altaTiendaRequest(**request.json)
@@ -36,8 +36,7 @@ def altaTienda():
 
 @app.route('/bajaLogicaTienda', methods=['POST'])
 def bajaLogicaTienda():
-    stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
-
+    
     solicitud= serviciosStockearte_pb2.bajaLogicaTiendaRequest(**request.json)
 
     response=stub.bajaLogicaTienda(solicitud)
@@ -45,7 +44,6 @@ def bajaLogicaTienda():
 
 @app.route('/altaLogicaTienda', methods=['POST'])
 def altaLogicaTienda():
-    stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
 
     solicitud= serviciosStockearte_pb2.altaLogicaTiendaRequest(**request.json)
 
@@ -55,7 +53,6 @@ def altaLogicaTienda():
 
 @app.route('/altaUsuario', methods=['POST'])
 def altaUsuario():
-    stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
 
     solicitud= serviciosStockearte_pb2.altaUsuarioRequest(**request.json)
     print(request.json)
@@ -73,7 +70,7 @@ def altaProducto():
     data = json.loads(request.form['data'])
     data['foto']=foto_base64
 
-    stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
+    
 
     # Crear la solicitud gRPC con la imagen en bytes
     solicitud= serviciosStockearte_pb2.altaProductoRequest(**data)
@@ -86,8 +83,6 @@ def altaProducto():
 @app.route('/modificarProducto', methods=['POST'])
 def modificarProducto():
 
-    stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
-
     solicitud= serviciosStockearte_pb2.modificacionProductoRequest(**request.json)
 
     response=stub.modificacionProducto(solicitud)
@@ -96,8 +91,6 @@ def modificarProducto():
 
 @app.route('/buscarUsuarioXUsuario', methods=['GET'])
 def buscarUsuario_X_Usuario():
-
-    stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
 
     solicitud= serviciosStockearte_pb2.buscarUsuario_X_UsuarioRequest(**request.json)
 
@@ -108,8 +101,6 @@ def buscarUsuario_X_Usuario():
 @app.route('/buscarUsuarioXTiendaCodigo', methods=['GET'])
 def buscarUsuario_X_TiendaCodigo():
 
-    stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
-
     solicitud= serviciosStockearte_pb2.buscarUsuario_X_TiendaCodigoRequest(**request.json)
 
     response=stub.buscarUsuario_X_TiendaCodigo(solicitud)
@@ -118,8 +109,6 @@ def buscarUsuario_X_TiendaCodigo():
 
 @app.route('/buscarUsuarios', methods=['GET'])
 def buscarUsuarios():
-
-    stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
 
     solicitud= serviciosStockearte_pb2.buscarUsuarioRequest(**request.json)
 
@@ -130,8 +119,6 @@ def buscarUsuarios():
 @app.route('/buscarTiendaXTiendaCodigo', methods=['GET'])
 def buscarTienda_X_TiendaCodigo():
 
-    stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
-
     solicitud= serviciosStockearte_pb2.buscarTienda_X_TiendaCodigoRequest(**request.json)
 
     response=stub.buscarTienda_X_TiendaCodigo(solicitud)
@@ -141,8 +128,6 @@ def buscarTienda_X_TiendaCodigo():
 @app.route('/buscarTiendaXHabilitado', methods=['GET'])
 def  buscarTienda_X_Habilitado():
 
-    stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
-
     solicitud= serviciosStockearte_pb2.buscarTienda_X_HabilitadoRequest(**request.json)
 
     response=stub.buscarTienda_X_Habilitado(solicitud)
@@ -150,8 +135,6 @@ def  buscarTienda_X_Habilitado():
 
 @app.route('/buscarTiendas', methods=['GET'])
 def  buscarTiendas():
-
-    stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
 
     solicitud= serviciosStockearte_pb2.buscarTiendaRequest(**request.json)
 
@@ -162,8 +145,6 @@ def  buscarTiendas():
 @app.route('/buscarProductoXNombre', methods=['GET'])
 def  buscarProducto_X_Nombre():
 
-    stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
-
     solicitud= serviciosStockearte_pb2.buscarProducto_X_NombreRequest(**request.json)
 
     response=stub.buscarProducto_X_Nombre(solicitud)
@@ -173,8 +154,6 @@ def  buscarProducto_X_Nombre():
 @app.route('/buscarProductoXCodigo', methods=['GET'])
 def  buscarProducto_X_Codigo():
 
-    stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
-
     solicitud= serviciosStockearte_pb2.buscarProducto_X_CodigoRequest(**request.json)
 
     response=stub.buscarProducto_X_Codigo(solicitud)
@@ -182,9 +161,7 @@ def  buscarProducto_X_Codigo():
 
 
 @app.route('/buscarProductoXTalle', methods=['GET'])
-def  buscarProducto_X_Talle():
-
-    stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
+def  buscarProducto_X_Talle():    
 
     solicitud= serviciosStockearte_pb2.buscarProducto_X_TalleRequest(**request.json)
 
@@ -195,8 +172,6 @@ def  buscarProducto_X_Talle():
 @app.route('/buscarProductoXColor', methods=['GET'])
 def  buscarProducto_X_Color():
 
-    stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
-
     solicitud= serviciosStockearte_pb2.buscarProducto_X_ColorRequest(**request.json)
 
     response=stub.buscarProducto_X_Color(solicitud)
@@ -205,8 +180,6 @@ def  buscarProducto_X_Color():
 @app.route('/buscarProductos', methods=['GET'])
 def  buscarProductos():
 
-    stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
-
     solicitud= serviciosStockearte_pb2.buscarProductosRequest(**request.json)
 
     response=stub.buscarProductos(solicitud)
@@ -214,9 +187,7 @@ def  buscarProductos():
 
 
 @app.route('/buscarTodosLosProductos', methods=['GET'])
-def  buscarTodosLosProductos():
-
-    stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
+def  buscarTodosLosProductos():    
 
     solicitud= serviciosStockearte_pb2.mensajeVacio(**request.json)
 
@@ -227,8 +198,6 @@ def  buscarTodosLosProductos():
 @app.route('/buscarTodosLosUsuarios', methods=['GET'])
 def  buscarTodosLosUsuarios():
 
-    stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
-
     solicitud= serviciosStockearte_pb2.mensajeVacio(**request.json)
 
     response=stub.buscarTodosLosUsuarios(solicitud)
@@ -237,8 +206,6 @@ def  buscarTodosLosUsuarios():
 
 @app.route('/buscarTodasLasTiendas', methods=['GET'])
 def  buscarTodasLasTiendas():
-
-    stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
 
     solicitud= serviciosStockearte_pb2.mensajeVacio(**request.json)
 
@@ -249,8 +216,6 @@ def  buscarTodasLasTiendas():
 @app.route('/modificarUsuario', methods=['POST'])
 def  modificarUsuario():
 
-    stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
-
     solicitud= serviciosStockearte_pb2.modificarUsuarioRequest(**request.json)
 
     response=stub.modificarUsuario(solicitud)
@@ -258,9 +223,7 @@ def  modificarUsuario():
 
 
 @app.route('/modificarTienda', methods=['POST'])
-def  modificarTienda():
-
-    stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
+def  modificarTienda():    
 
     solicitud= serviciosStockearte_pb2.modificarTiendaRequest(**request.json)
 
@@ -270,8 +233,6 @@ def  modificarTienda():
 
 @app.route('/modificarStock', methods=['POST'])
 def  modificarStock():
-
-    stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
 
     solicitud= serviciosStockearte_pb2.modificarStockRequest(**request.json)
 
