@@ -12,11 +12,12 @@ data = {
     "direccion": "Hogwarts",
     "ciudad": "Caballito",
     "provincia": "Buenos Aires",
-    "habilitado": True,
+    "habilitado": True
 }
 
 response = requests.post(url, json=data)
-print(response.json())
+print(response.json() )
+
 
 data = {
     "usuarioCentral": "Racing Campeon",
@@ -24,7 +25,7 @@ data = {
     "direccion": "Larroque",
     "ciudad": "Lomas",
     "provincia": "Buenos Aires",
-    "habilitado": True,
+    "habilitado": True
 }
 
 response = requests.post(url, json=data)
@@ -37,7 +38,7 @@ data = {
     "direccion": "Pavon",
     "ciudad": "Banfield",
     "provincia": "Buenos Aires",
-    "habilitado": True,
+    "habilitado": True
 }
 
 response = requests.post(url, json=data)
@@ -85,7 +86,7 @@ data={
     "nombre": "Ricardo",
     "apellido": "Fort",
     "habilitado": True,
-    "tienda_codigo": "9"
+    "tienda_codigo": "lmno456stu"
 }
 
 
@@ -138,7 +139,6 @@ print(r.json())
 
 
 # ====================================================================================
-
 """
 url = "http://localhost:5000/modificarProducto"
 

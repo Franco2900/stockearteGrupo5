@@ -25,7 +25,15 @@ git status
 
 /**************************************************************************/
 
-Restaurar un archivo con cambios locales a la última version
+Deshacer un git add
+
+Deshacer git add de un solo archivo:    git reset NombreDelArchivo
+Deshacer git add de múltiples archivos: git reset NombreDelArchivo NombreDelArchivo
+Deshacer git add de todos los archivos: git reset
+
+/**************************************************************************/
+
+Deshacer cambios locales a un archivo
 
 Quitar un archivo:          git restore NombreDelArchivo
 Quitar múltiples archivos:  git restore NombreDelArchivo1 NombreDelArchivo2
