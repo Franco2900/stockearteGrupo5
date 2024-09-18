@@ -29,7 +29,7 @@ service stockearteService // Creo el servicio y los métodos que va a tener
     // PUNTO 2.B
     rpc buscarTienda_X_TiendaCodigo (buscarTienda_X_TiendaCodigoRequest) returns (tienda) {} //SACAR
     rpc buscarTienda_X_Habilitado (buscarTienda_X_HabilitadoRequest) returns (arregloTiendas) {} //SACAR
-    rpc buscarTiendas(buscarTiendaRequest) return (arregloTiendas) {}
+    rpc buscarTiendas(buscarTiendaRequest) returns (arregloTiendas) {}
 
     // PUNTO 2.C
     rpc buscarProducto_X_Nombre (buscarProducto_X_NombreRequest) returns (arregloProductos) {} //SACAR
