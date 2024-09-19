@@ -318,7 +318,8 @@ async function altaProducto(call, callback)
 
 // PUNTO 1.D
 // Como usuario de tienda: Modificar el stock de los productos de la tienda a la que pertenece
-
+// SACAR DE ACÁ PORQUE ESTA REPETIDO EN EL PUNTO 4.C
+/*
 async function modificacionProducto(call, callback)
 {
     var nuevoStock     = call.request.nuevoStock;
@@ -354,7 +355,7 @@ async function modificacionProducto(call, callback)
     } 
 
 }
-
+*/
 
 /*********************************** EXPORTACIÓN DE LA LÓGICA ***********************************/
 exports.altaTienda = altaTienda
@@ -364,4 +365,4 @@ exports.altaLogicaTienda = altaLogicaTienda
 exports.altaUsuario = altaUsuario
 
 exports.altaProducto = altaProducto
-exports.modificacionProducto = modificacionProducto
+//exports.modificacionProducto = modificacionProducto

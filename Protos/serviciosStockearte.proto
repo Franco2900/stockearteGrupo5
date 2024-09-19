@@ -22,20 +22,20 @@ service stockearteService // Creo el servicio y los métodos que va a tener
 
 
     // PUNTO 2.A
-    rpc buscarUsuario_X_Usuario (buscarUsuario_X_UsuarioRequest) returns (usuario) {} //SACAR
-    rpc buscarUsuario_X_TiendaCodigo (buscarUsuario_X_TiendaCodigoRequest) returns (arregloUsuarios) {} //SACAR
+    //rpc buscarUsuario_X_Usuario (buscarUsuario_X_UsuarioRequest) returns (usuario) {} //SACAR
+    //rpc buscarUsuario_X_TiendaCodigo (buscarUsuario_X_TiendaCodigoRequest) returns (arregloUsuarios) {} //SACAR
     rpc buscarUsuarios (buscarUsuarioRequest) returns (arregloUsuarios) {}
 
     // PUNTO 2.B
-    rpc buscarTienda_X_TiendaCodigo (buscarTienda_X_TiendaCodigoRequest) returns (tienda) {} //SACAR
-    rpc buscarTienda_X_Habilitado (buscarTienda_X_HabilitadoRequest) returns (arregloTiendas) {} //SACAR
+    //rpc buscarTienda_X_TiendaCodigo (buscarTienda_X_TiendaCodigoRequest) returns (tienda) {} //SACAR
+    //rpc buscarTienda_X_Habilitado (buscarTienda_X_HabilitadoRequest) returns (arregloTiendas) {} //SACAR
     rpc buscarTiendas(buscarTiendaRequest) returns (arregloTiendas) {}
 
     // PUNTO 2.C
-    rpc buscarProducto_X_Nombre (buscarProducto_X_NombreRequest) returns (arregloProductos) {} //SACAR
-    rpc buscarProducto_X_Codigo (buscarProducto_X_CodigoRequest) returns (producto) {} //SACAR
-    rpc buscarProducto_X_Talle (buscarProducto_X_TalleRequest) returns (arregloProductos) {} //SACAR
-    rpc buscarProducto_X_Color (buscarProducto_X_ColorRequest) returns (arregloProductos) {} //SACAR
+    //rpc buscarProducto_X_Nombre (buscarProducto_X_NombreRequest) returns (arregloProductos) {} //SACAR
+    //rpc buscarProducto_X_Codigo (buscarProducto_X_CodigoRequest) returns (producto) {} //SACAR
+    //rpc buscarProducto_X_Talle (buscarProducto_X_TalleRequest) returns (arregloProductos) {} //SACAR
+    //rpc buscarProducto_X_Color (buscarProducto_X_ColorRequest) returns (arregloProductos) {} //SACAR
     rpc buscarProductos (buscarProductosRequest) returns (arregloProd) {}
 
     
@@ -192,27 +192,27 @@ message altaProductoRequest
 }*/
 
 // PUNTO 2.A
-message buscarUsuario_X_UsuarioRequest   
+/*message buscarUsuario_X_UsuarioRequest   
 {   
     string usuarioCentral = 1;       
     string usuarioABuscar  = 2;
 }
 
-message buscarUsuarioRequest
-{
-    string usuarioCentral = 1;
-    string usuarioABuscar = 2;
-    string tiendaABuscar = 3;
-}
-
 message buscarUsuario_X_TiendaCodigoRequest
 {
     string usuarioCentral = 1;  
-    string tiendaABuscar   = 2;
+    string tiendaABuscar  = 2;
+}*/
+
+message buscarUsuarioRequest
+{
+    string usuarioCentral      = 1;
+    string usuarioABuscar      = 2;
+    string codigoTiendaABuscar = 3;
 }
 
 // PUNTO 2.B
-message buscarTienda_X_TiendaCodigoRequest
+/*message buscarTienda_X_TiendaCodigoRequest
 {
     string usuarioCentral = 1;  
     string tiendaABuscar  = 2;
@@ -222,7 +222,7 @@ message buscarTienda_X_HabilitadoRequest
 {
     string usuarioCentral = 1;
     bool   habilitado     = 2;
-}
+}*/
 
 message buscarTiendaRequest
 {
@@ -232,7 +232,7 @@ message buscarTiendaRequest
 }
 
 // PUNTO 2.C
-message buscarProducto_X_NombreRequest
+/*message buscarProducto_X_NombreRequest
 {
     string nombre = 1;
 }
@@ -250,7 +250,7 @@ message buscarProducto_X_TalleRequest
 message buscarProducto_X_ColorRequest
 {
     string color = 1;
-}
+}*/
 
 message buscarProductosRequest
 {

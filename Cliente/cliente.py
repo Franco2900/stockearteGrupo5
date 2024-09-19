@@ -23,7 +23,11 @@ stub  = serviciosStockearte_pb2_grpc.stockearteServiceStub(canal)
 def hello():
     return "¡Hola, Mundo!"
 
-    
+#####################################################################################################
+#  PUNTO 1: HACER ALTAS  
+#####################################################################################################
+
+# PUNTO 1.A
 @app.route('/altaTienda', methods=['POST'])
 def altaTienda():
 
@@ -51,6 +55,7 @@ def altaLogicaTienda():
     return MessageToJson(response)
 
 
+# PUNTO 1.B
 @app.route('/altaUsuario', methods=['POST'])
 def altaUsuario():
 
@@ -60,6 +65,7 @@ def altaUsuario():
     return MessageToJson(response)
 
 
+# PUNTO 1.C
 @app.route('/altaProducto', methods=['POST'])
 def altaProducto():
     # Convertir la imagen a base64
@@ -79,7 +85,7 @@ def altaProducto():
     return MessageToJson(response)
 
 
-
+# PUNTO 1.D
 @app.route('/modificarProducto', methods=['POST'])
 def modificarProducto():
 
@@ -88,7 +94,12 @@ def modificarProducto():
     response=stub.modificacionProducto(solicitud)
     return MessageToJson(response)
 
+#####################################################################################################
+#  PUNTO 2: TRAER BUSQUEDA ESPECIFICA  
+#####################################################################################################
 
+# PUNTO 2.A
+"""
 @app.route('/buscarUsuarioXUsuario', methods=['GET'])
 def buscarUsuario_X_Usuario():
 
@@ -105,7 +116,7 @@ def buscarUsuario_X_TiendaCodigo():
 
     response=stub.buscarUsuario_X_TiendaCodigo(solicitud)
     return MessageToJson(response)
-
+"""
 
 @app.route('/buscarUsuarios', methods=['GET'])
 def buscarUsuarios():
@@ -116,6 +127,8 @@ def buscarUsuarios():
     return MessageToJson(response)
 
 
+# PUNTO 2.B
+"""
 @app.route('/buscarTiendaXTiendaCodigo', methods=['GET'])
 def buscarTienda_X_TiendaCodigo():
 
@@ -132,7 +145,8 @@ def  buscarTienda_X_Habilitado():
 
     response=stub.buscarTienda_X_Habilitado(solicitud)
     return MessageToJson(response)
-
+"""
+    
 @app.route('/buscarTiendas', methods=['GET'])
 def  buscarTiendas():
 
@@ -142,6 +156,8 @@ def  buscarTiendas():
     return MessageToJson(response)
 
 
+# PUNTO 2.C
+"""
 @app.route('/buscarProductoXNombre', methods=['GET'])
 def  buscarProducto_X_Nombre():
 
@@ -176,6 +192,7 @@ def  buscarProducto_X_Color():
 
     response=stub.buscarProducto_X_Color(solicitud)
     return MessageToJson(response)
+"""
 
 @app.route('/buscarProductos', methods=['GET'])
 def  buscarProductos():
@@ -185,7 +202,11 @@ def  buscarProductos():
     response=stub.buscarProductos(solicitud)
     return MessageToJson(response)
 
+#####################################################################################################
+#  PUNTO 3: TRAER LISTADOS  
+#####################################################################################################
 
+# PUNTO 3.A
 @app.route('/buscarTodosLosProductos', methods=['GET'])
 def  buscarTodosLosProductos():    
 
@@ -195,6 +216,7 @@ def  buscarTodosLosProductos():
     return MessageToJson(response)
 
 
+# PUNTO 3.B
 @app.route('/buscarTodosLosUsuarios', methods=['GET'])
 def  buscarTodosLosUsuarios():
 
@@ -204,6 +226,7 @@ def  buscarTodosLosUsuarios():
     return MessageToJson(response)
 
 
+# PUNTO 3.C
 @app.route('/buscarTodasLasTiendas', methods=['GET'])
 def  buscarTodasLasTiendas():
 
@@ -212,7 +235,11 @@ def  buscarTodasLasTiendas():
     response=stub.buscarTodasLasTiendas(solicitud)
     return MessageToJson(response)
 
+#####################################################################################################
+#  PUNTO 4: HACER MODIFICACIONES
+#####################################################################################################
 
+# PUNTO 4.A
 @app.route('/modificarUsuario', methods=['POST'])
 def  modificarUsuario():
 
@@ -222,6 +249,8 @@ def  modificarUsuario():
     return MessageToJson(response)
 
 
+
+# PUNTO 4.B
 @app.route('/modificarTienda', methods=['POST'])
 def  modificarTienda():    
 
@@ -231,6 +260,7 @@ def  modificarTienda():
     return MessageToJson(response)
 
 
+# PUNTO 4.C
 @app.route('/modificarStock', methods=['POST'])
 def  modificarStock():
 

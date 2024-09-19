@@ -28,8 +28,11 @@ data = {
     "habilitado": True
 }
 
-response = requests.post(url, json=data)
-print(response.json())
+try:
+    response = requests.get(url, json=data)
+    print(response.json())
+except json.JSONDecodeError:
+    print("La respuesta no es un JSON válido")
 
 
 data = {
@@ -41,8 +44,11 @@ data = {
     "habilitado": True
 }
 
-response = requests.post(url, json=data)
-print(response.json())
+try:
+    response = requests.get(url, json=data)
+    print(response.json())
+except json.JSONDecodeError:
+    print("La respuesta no es un JSON válido")
 
 # ====================================================================================
 
@@ -50,13 +56,19 @@ url = "http://localhost:5000/bajaLogicaTienda"
 
 data = {"codigo": "9"}
 
-response = requests.post(url, json=data)
-print(response.json())
+try:
+    response = requests.get(url, json=data)
+    print(response.json())
+except json.JSONDecodeError:
+    print("La respuesta no es un JSON válido")
 
 data = {"codigo": "10"}
 
-response = requests.post(url, json=data)
-print(response.json())
+try:
+    response = requests.get(url, json=data)
+    print(response.json())
+except json.JSONDecodeError:
+    print("La respuesta no es un JSON válido")
 # ====================================================================================
 
 
@@ -64,13 +76,19 @@ url = "http://localhost:5000/altaLogicaTienda"
 
 data = {"codigo": "9"}
 
-response = requests.post(url, json=data)
-print(response.json())
+try:
+    response = requests.get(url, json=data)
+    print(response.json())
+except json.JSONDecodeError:
+    print("La respuesta no es un JSON válido")
 
 data=  {"codigo": "10"}
 
-response = requests.post(url, json=data)
-print(response.json())
+try:
+    response = requests.get(url, json=data)
+    print(response.json())
+except json.JSONDecodeError:
+    print("La respuesta no es un JSON válido")
 
 # ====================================================================================
 # ====================================================================================
@@ -90,8 +108,11 @@ data={
 }
 
 
-response = requests.post(url, json=data)
-print(response.json())
+try:
+    response = requests.get(url, json=data)
+    print(response.json())
+except json.JSONDecodeError:
+    print("La respuesta no es un JSON válido")
 
 data={
     "usuarioCentral": "Racing Campeon",
@@ -104,8 +125,11 @@ data={
 }
 
 
-response = requests.post(url, json=data)
-print(response.json())
+try:
+    response = requests.get(url, json=data)
+    print(response.json())
+except json.JSONDecodeError:
+    print("La respuesta no es un JSON válido")
 
 # ====================================================================================
 # ====================================================================================
@@ -144,13 +168,19 @@ url = "http://localhost:5000/modificarProducto"
 
 data = {"codigoProducto": "iXqBlBDGSc", "nuevoStock": 12}
 
-response = requests.post(url, json=data)
-print(response.json())
+try:
+    response = requests.get(url, json=data)
+    print(response.json())
+except json.JSONDecodeError:
+    print("La respuesta no es un JSON válido")
 
 data = {"codigoProducto": "TZYdjxMAat", "nuevoStock": 23}
 
-response = requests.post(url, json=data)
-print(response.json())
+try:
+    response = requests.get(url, json=data)
+    print(response.json())
+except json.JSONDecodeError:
+    print("La respuesta no es un JSON válido")
 """
 # ====================================================================================
 # ====================================================================================

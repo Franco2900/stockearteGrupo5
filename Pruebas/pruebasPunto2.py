@@ -2,100 +2,199 @@ import requests
 import json
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
-
+"""
 # TESTEO PUNTO 2.A: Buscar usuarios
-url = "http://localhost:5000/buscarUsuario_X_Usuario"
+url = "http://localhost:5000/buscarUsuarioXUsuario"
 
 data = {
     "usuarioCentral": "Racing Campeon",
     "usuarioABuscar": "La Peluca"
 }
 
-response = requests.post(url, json=data)
-print(response.json())
+try:
+    response = requests.get(url, json=data)
+    print(response.json())
+except json.JSONDecodeError:
+    print("La respuesta no es un JSON válido")
 
 # ====================================================================================
 
-url = "http://localhost:5000/buscarUsuario_X_TiendaCodigo"
+url = "http://localhost:5000/buscarUsuarioXTiendaCodigo"
 
 data = {
     "usuarioCentral": "Racing Campeon",
-    "tiendaABuscar": "lmno456st"
+    "tiendaABuscar": "sanji32542"
 }
 
-response = requests.post(url, json=data)
-print(response.json())
+try:
+    response = requests.get(url, json=data)
+    print(response.json())
+except json.JSONDecodeError:
+    print("La respuesta no es un JSON válido")
+"""
+
+# ====================================================================================
+
+url = "http://localhost:5000/buscarUsuarios"
+
+data = {
+    "usuarioCentral": "Racing Campeon",
+    "usuarioABuscar": "La Peluca",
+    "codigoTiendaABuscar": "asdfgh987"
+}
+
+try:
+    response = requests.get(url, json=data)
+    print(response.json())
+except json.JSONDecodeError:
+    print("La respuesta no es un JSON válido")
+
+# El usuario a buscar no esta en esa tienda
+data = {
+    "usuarioCentral": "Racing Campeon",
+    "usuarioABuscar": "La Peluca",
+    "codigoTiendaABuscar": "sanji32542"
+}
+
+try:
+    response = requests.get(url, json=data)
+    print(response.json())
+except json.JSONDecodeError:
+    print("La respuesta no es un JSON válido")
+
+# Solo se pasa la tienda
+data = {
+    "usuarioCentral": "Racing Campeon",
+    "usuarioABuscar": "",
+    "codigoTiendaABuscar": "sanji32542"
+}
+
+try:
+    response = requests.get(url, json=data)
+    print(response.json())
+except json.JSONDecodeError:
+    print("La respuesta no es un JSON válido")
+
+# Solo se pasa el usuario
+data = {
+    "usuarioCentral": "Racing Campeon",
+    "usuarioABuscar": "La Peluca",
+    "codigoTiendaABuscar": ""
+}
+
+try:
+    response = requests.get(url, json=data)
+    print(response.json())
+except json.JSONDecodeError:
+    print("La respuesta no es un JSON válido")
 
 # ====================================================================================
 # ====================================================================================
 # ====================================================================================
-
+"""
 # TESTEO PUNTO 2.B: Buscar tiendas
-url = "http://localhost:5000/buscarTienda_X_TiendaCodigo"
+url = "http://localhost:5000/buscarTiendaXTiendaCodigo"
 
 data = {
     "usuarioCentral": "Racing Campeon",
-    "tiendaABuscar": "lmno456st"
+    "tiendaABuscar": "xcbewu13"
 }
 
-response = requests.post(url, json=data)
-print(response.json())
+try:
+    response = requests.get(url, json=data)
+    print(response.json())
+except json.JSONDecodeError:
+    print("La respuesta no es un JSON válido")
+
 
 # ====================================================================================
 
-url = "http://localhost:5000/buscarTienda_X_Habilitado"
+url = "http://localhost:5000/buscarTiendaXHabilitado"
+
+data = {
+    "usuarioCentral": "Racing Campeon",
+    "habilitado": True
+}
+
+try:
+    response = requests.get(url, json=data)
+    print(response.json())
+except json.JSONDecodeError:
+    print("La respuesta no es un JSON válido")
+
 
 data = {
     "usuarioCentral": "Racing Campeon",
     "habilitado": False
 }
 
-response = requests.post(url, json=data)
-print(response.json())
+#json_data = json.dumps(data)
+
+try:
+    response = requests.get(url, json=data)
+    print(response.json())
+except json.JSONDecodeError:
+    print("La respuesta no es un JSON válido")
 
 # ====================================================================================
 # ====================================================================================
 # ====================================================================================
 
 # TESTEO PUNTO 2.C: Buscar productos
-url = "http://localhost:5000/buscarProducto_X_Nombre"
+url = "http://localhost:5000/buscarProductoXNombre"
 
 data = {
-    "nombre": "            ",
+    "nombre": "Camisa Básica",
 }
 
-response = requests.post(url, json=data)
-print(response.json())
+try:
+    response = requests.get(url, json=data)
+    print(response.json())
+except json.JSONDecodeError:
+    print("La respuesta no es un JSON válido")
+
 
 # ====================================================================================
 
-url = "http://localhost:5000/buscarProducto_X_Codigo"
+url = "http://localhost:5000/buscarProductoXCodigo"
 
 data = {
-    "codigo": "            ",
+    "codigo": "CB123",
 }
 
-response = requests.post(url, json=data)
-print(response.json())
+try:
+    response = requests.get(url, json=data)
+    print(response.json())
+except json.JSONDecodeError:
+    print("La respuesta no es un JSON válido")
+
 
 # ====================================================================================
 
-url = "http://localhost:5000/buscarProducto_X_Talle"
+url = "http://localhost:5000/buscarProductoXTalle"
 
 data = {
-    "talle": "            ",
+    "talle": "L",
 }
 
-response = requests.post(url, json=data)
-print(response.json())
+try:
+    response = requests.get(url, json=data)
+    print(response.json())
+except json.JSONDecodeError:
+    print("La respuesta no es un JSON válido")
+
 
 # ====================================================================================
 
-url = "http://localhost:5000/buscarProducto_X_Color"
+url = "http://localhost:5000/buscarProductoXColor"
 
 data = {
-    "color": "            ",
+    "color": "Azul",
 }
 
-response = requests.post(url, json=data)
-print(response.json())
+try:
+    response = requests.get(url, json=data)
+    print(response.json())
+except json.JSONDecodeError:
+    print("La respuesta no es un JSON válido")
+"""

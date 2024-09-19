@@ -59,55 +59,15 @@ class stockearteServiceStub(object):
                 request_serializer=serviciosStockearte__pb2.altaProductoRequest.SerializeToString,
                 response_deserializer=serviciosStockearte__pb2.mensajeSimple.FromString,
                 _registered_method=True)
-        self.buscarUsuario_X_Usuario = channel.unary_unary(
-                '/stockeartePackage.stockearteService/buscarUsuario_X_Usuario',
-                request_serializer=serviciosStockearte__pb2.buscarUsuario_X_UsuarioRequest.SerializeToString,
-                response_deserializer=serviciosStockearte__pb2.usuario.FromString,
-                _registered_method=True)
-        self.buscarUsuario_X_TiendaCodigo = channel.unary_unary(
-                '/stockeartePackage.stockearteService/buscarUsuario_X_TiendaCodigo',
-                request_serializer=serviciosStockearte__pb2.buscarUsuario_X_TiendaCodigoRequest.SerializeToString,
-                response_deserializer=serviciosStockearte__pb2.arregloUsuarios.FromString,
-                _registered_method=True)
         self.buscarUsuarios = channel.unary_unary(
                 '/stockeartePackage.stockearteService/buscarUsuarios',
                 request_serializer=serviciosStockearte__pb2.buscarUsuarioRequest.SerializeToString,
                 response_deserializer=serviciosStockearte__pb2.arregloUsuarios.FromString,
                 _registered_method=True)
-        self.buscarTienda_X_TiendaCodigo = channel.unary_unary(
-                '/stockeartePackage.stockearteService/buscarTienda_X_TiendaCodigo',
-                request_serializer=serviciosStockearte__pb2.buscarTienda_X_TiendaCodigoRequest.SerializeToString,
-                response_deserializer=serviciosStockearte__pb2.tienda.FromString,
-                _registered_method=True)
-        self.buscarTienda_X_Habilitado = channel.unary_unary(
-                '/stockeartePackage.stockearteService/buscarTienda_X_Habilitado',
-                request_serializer=serviciosStockearte__pb2.buscarTienda_X_HabilitadoRequest.SerializeToString,
-                response_deserializer=serviciosStockearte__pb2.arregloTiendas.FromString,
-                _registered_method=True)
         self.buscarTiendas = channel.unary_unary(
                 '/stockeartePackage.stockearteService/buscarTiendas',
                 request_serializer=serviciosStockearte__pb2.buscarTiendaRequest.SerializeToString,
                 response_deserializer=serviciosStockearte__pb2.arregloTiendas.FromString,
-                _registered_method=True)
-        self.buscarProducto_X_Nombre = channel.unary_unary(
-                '/stockeartePackage.stockearteService/buscarProducto_X_Nombre',
-                request_serializer=serviciosStockearte__pb2.buscarProducto_X_NombreRequest.SerializeToString,
-                response_deserializer=serviciosStockearte__pb2.arregloProductos.FromString,
-                _registered_method=True)
-        self.buscarProducto_X_Codigo = channel.unary_unary(
-                '/stockeartePackage.stockearteService/buscarProducto_X_Codigo',
-                request_serializer=serviciosStockearte__pb2.buscarProducto_X_CodigoRequest.SerializeToString,
-                response_deserializer=serviciosStockearte__pb2.producto.FromString,
-                _registered_method=True)
-        self.buscarProducto_X_Talle = channel.unary_unary(
-                '/stockeartePackage.stockearteService/buscarProducto_X_Talle',
-                request_serializer=serviciosStockearte__pb2.buscarProducto_X_TalleRequest.SerializeToString,
-                response_deserializer=serviciosStockearte__pb2.arregloProductos.FromString,
-                _registered_method=True)
-        self.buscarProducto_X_Color = channel.unary_unary(
-                '/stockeartePackage.stockearteService/buscarProducto_X_Color',
-                request_serializer=serviciosStockearte__pb2.buscarProducto_X_ColorRequest.SerializeToString,
-                response_deserializer=serviciosStockearte__pb2.arregloProductos.FromString,
                 _registered_method=True)
         self.buscarProductos = channel.unary_unary(
                 '/stockeartePackage.stockearteService/buscarProductos',
@@ -182,76 +142,36 @@ class stockearteServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def buscarUsuario_X_Usuario(self, request, context):
+    def buscarUsuarios(self, request, context):
         """PUNTO 1.D
         ESTA FUNCIÓN ES PARA MODIFICAR EL STOCK DE UN PRODUCTO, PERO LA HICE MAL. EN SU LUGAR SE USA LA FUNCIÓN modificarStock
         VERIFICAR SI ESTA NO SE HACE PORQUE ESTA REPETIDA EN EL PUNTO 4.C
         rpc modificacionProducto (modificacionProductoRequest) returns (mensajeSimple) {}
 
         PUNTO 2.A
+        rpc buscarUsuario_X_Usuario (buscarUsuario_X_UsuarioRequest) returns (usuario) {} //SACAR
+        rpc buscarUsuario_X_TiendaCodigo (buscarUsuario_X_TiendaCodigoRequest) returns (arregloUsuarios) {} //SACAR
         """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def buscarUsuario_X_TiendaCodigo(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def buscarUsuarios(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def buscarTienda_X_TiendaCodigo(self, request, context):
-        """PUNTO 2.B
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def buscarTienda_X_Habilitado(self, request, context):
-        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def buscarTiendas(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def buscarProducto_X_Nombre(self, request, context):
-        """PUNTO 2.C
+        """PUNTO 2.B
+        rpc buscarTienda_X_TiendaCodigo (buscarTienda_X_TiendaCodigoRequest) returns (tienda) {} //SACAR
+        rpc buscarTienda_X_Habilitado (buscarTienda_X_HabilitadoRequest) returns (arregloTiendas) {} //SACAR
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def buscarProducto_X_Codigo(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def buscarProducto_X_Talle(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def buscarProducto_X_Color(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
     def buscarProductos(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """PUNTO 2.C
+        rpc buscarProducto_X_Nombre (buscarProducto_X_NombreRequest) returns (arregloProductos) {} //SACAR
+        rpc buscarProducto_X_Codigo (buscarProducto_X_CodigoRequest) returns (producto) {} //SACAR
+        rpc buscarProducto_X_Talle (buscarProducto_X_TalleRequest) returns (arregloProductos) {} //SACAR
+        rpc buscarProducto_X_Color (buscarProducto_X_ColorRequest) returns (arregloProductos) {} //SACAR
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -326,55 +246,15 @@ def add_stockearteServiceServicer_to_server(servicer, server):
                     request_deserializer=serviciosStockearte__pb2.altaProductoRequest.FromString,
                     response_serializer=serviciosStockearte__pb2.mensajeSimple.SerializeToString,
             ),
-            'buscarUsuario_X_Usuario': grpc.unary_unary_rpc_method_handler(
-                    servicer.buscarUsuario_X_Usuario,
-                    request_deserializer=serviciosStockearte__pb2.buscarUsuario_X_UsuarioRequest.FromString,
-                    response_serializer=serviciosStockearte__pb2.usuario.SerializeToString,
-            ),
-            'buscarUsuario_X_TiendaCodigo': grpc.unary_unary_rpc_method_handler(
-                    servicer.buscarUsuario_X_TiendaCodigo,
-                    request_deserializer=serviciosStockearte__pb2.buscarUsuario_X_TiendaCodigoRequest.FromString,
-                    response_serializer=serviciosStockearte__pb2.arregloUsuarios.SerializeToString,
-            ),
             'buscarUsuarios': grpc.unary_unary_rpc_method_handler(
                     servicer.buscarUsuarios,
                     request_deserializer=serviciosStockearte__pb2.buscarUsuarioRequest.FromString,
                     response_serializer=serviciosStockearte__pb2.arregloUsuarios.SerializeToString,
             ),
-            'buscarTienda_X_TiendaCodigo': grpc.unary_unary_rpc_method_handler(
-                    servicer.buscarTienda_X_TiendaCodigo,
-                    request_deserializer=serviciosStockearte__pb2.buscarTienda_X_TiendaCodigoRequest.FromString,
-                    response_serializer=serviciosStockearte__pb2.tienda.SerializeToString,
-            ),
-            'buscarTienda_X_Habilitado': grpc.unary_unary_rpc_method_handler(
-                    servicer.buscarTienda_X_Habilitado,
-                    request_deserializer=serviciosStockearte__pb2.buscarTienda_X_HabilitadoRequest.FromString,
-                    response_serializer=serviciosStockearte__pb2.arregloTiendas.SerializeToString,
-            ),
             'buscarTiendas': grpc.unary_unary_rpc_method_handler(
                     servicer.buscarTiendas,
                     request_deserializer=serviciosStockearte__pb2.buscarTiendaRequest.FromString,
                     response_serializer=serviciosStockearte__pb2.arregloTiendas.SerializeToString,
-            ),
-            'buscarProducto_X_Nombre': grpc.unary_unary_rpc_method_handler(
-                    servicer.buscarProducto_X_Nombre,
-                    request_deserializer=serviciosStockearte__pb2.buscarProducto_X_NombreRequest.FromString,
-                    response_serializer=serviciosStockearte__pb2.arregloProductos.SerializeToString,
-            ),
-            'buscarProducto_X_Codigo': grpc.unary_unary_rpc_method_handler(
-                    servicer.buscarProducto_X_Codigo,
-                    request_deserializer=serviciosStockearte__pb2.buscarProducto_X_CodigoRequest.FromString,
-                    response_serializer=serviciosStockearte__pb2.producto.SerializeToString,
-            ),
-            'buscarProducto_X_Talle': grpc.unary_unary_rpc_method_handler(
-                    servicer.buscarProducto_X_Talle,
-                    request_deserializer=serviciosStockearte__pb2.buscarProducto_X_TalleRequest.FromString,
-                    response_serializer=serviciosStockearte__pb2.arregloProductos.SerializeToString,
-            ),
-            'buscarProducto_X_Color': grpc.unary_unary_rpc_method_handler(
-                    servicer.buscarProducto_X_Color,
-                    request_deserializer=serviciosStockearte__pb2.buscarProducto_X_ColorRequest.FromString,
-                    response_serializer=serviciosStockearte__pb2.arregloProductos.SerializeToString,
             ),
             'buscarProductos': grpc.unary_unary_rpc_method_handler(
                     servicer.buscarProductos,
@@ -558,60 +438,6 @@ class stockearteService(object):
             _registered_method=True)
 
     @staticmethod
-    def buscarUsuario_X_Usuario(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/stockeartePackage.stockearteService/buscarUsuario_X_Usuario',
-            serviciosStockearte__pb2.buscarUsuario_X_UsuarioRequest.SerializeToString,
-            serviciosStockearte__pb2.usuario.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def buscarUsuario_X_TiendaCodigo(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/stockeartePackage.stockearteService/buscarUsuario_X_TiendaCodigo',
-            serviciosStockearte__pb2.buscarUsuario_X_TiendaCodigoRequest.SerializeToString,
-            serviciosStockearte__pb2.arregloUsuarios.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
     def buscarUsuarios(request,
             target,
             options=(),
@@ -639,60 +465,6 @@ class stockearteService(object):
             _registered_method=True)
 
     @staticmethod
-    def buscarTienda_X_TiendaCodigo(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/stockeartePackage.stockearteService/buscarTienda_X_TiendaCodigo',
-            serviciosStockearte__pb2.buscarTienda_X_TiendaCodigoRequest.SerializeToString,
-            serviciosStockearte__pb2.tienda.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def buscarTienda_X_Habilitado(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/stockeartePackage.stockearteService/buscarTienda_X_Habilitado',
-            serviciosStockearte__pb2.buscarTienda_X_HabilitadoRequest.SerializeToString,
-            serviciosStockearte__pb2.arregloTiendas.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
     def buscarTiendas(request,
             target,
             options=(),
@@ -709,114 +481,6 @@ class stockearteService(object):
             '/stockeartePackage.stockearteService/buscarTiendas',
             serviciosStockearte__pb2.buscarTiendaRequest.SerializeToString,
             serviciosStockearte__pb2.arregloTiendas.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def buscarProducto_X_Nombre(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/stockeartePackage.stockearteService/buscarProducto_X_Nombre',
-            serviciosStockearte__pb2.buscarProducto_X_NombreRequest.SerializeToString,
-            serviciosStockearte__pb2.arregloProductos.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def buscarProducto_X_Codigo(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/stockeartePackage.stockearteService/buscarProducto_X_Codigo',
-            serviciosStockearte__pb2.buscarProducto_X_CodigoRequest.SerializeToString,
-            serviciosStockearte__pb2.producto.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def buscarProducto_X_Talle(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/stockeartePackage.stockearteService/buscarProducto_X_Talle',
-            serviciosStockearte__pb2.buscarProducto_X_TalleRequest.SerializeToString,
-            serviciosStockearte__pb2.arregloProductos.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def buscarProducto_X_Color(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/stockeartePackage.stockearteService/buscarProducto_X_Color',
-            serviciosStockearte__pb2.buscarProducto_X_ColorRequest.SerializeToString,
-            serviciosStockearte__pb2.arregloProductos.FromString,
             options,
             channel_credentials,
             insecure,
