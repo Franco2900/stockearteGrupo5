@@ -32,12 +32,12 @@ const grpc_punto2 = require('./Logica/grpc_punto2.js');
 const buscarUsuarios                 = grpc_punto2.buscarUsuarios.bind({});
 //const buscarTienda_X_TiendaCodigo  = grpc_punto2.buscarTienda_X_TiendaCodigo.bind({});
 //const buscarTienda_X_Habilitado    = grpc_punto2.buscarTienda_X_Habilitado.bind({});
-//const buscarTiendas =  grpc_punto2.buscarTiendas.bind({});
+const buscarTiendas                  =  grpc_punto2.buscarTiendas.bind({});
 //const buscarProducto_X_Nombre      = grpc_punto2.buscarProducto_X_Nombre.bind({});
 //const buscarProducto_X_Codigo      = grpc_punto2.buscarProducto_X_Codigo.bind({});
 //const buscarProducto_X_Talle       = grpc_punto2.buscarProducto_X_Talle.bind({});
 //const buscarProducto_X_Color       = grpc_punto2.buscarProducto_X_Color.bind({});
-//const buscarProductos = grpc_punto2.buscarProductos.bind({});
+const buscarProductos                = grpc_punto2.buscarProductos.bind({});
 
 // Lógica Punto 3
 const grpc_punto3 = require('./Logica/grpc_punto3.js');
@@ -63,12 +63,12 @@ servidor.addService(stockeartePackage.stockearteService.service, {
     buscarUsuarios,
     //buscarTienda_X_TiendaCodigo,
     //buscarTienda_X_Habilitado,
-    //buscarTiendas,
+    buscarTiendas,
     //buscarProducto_X_Nombre,
     //buscarProducto_X_Codigo,
     //buscarProducto_X_Talle,
     //buscarProducto_X_Color, 
-    //buscarProductos,
+    buscarProductos,
 
     // Lógica Punto 3: Listados
     buscarTodosLosProductos,

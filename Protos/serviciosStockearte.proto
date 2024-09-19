@@ -36,7 +36,7 @@ service stockearteService // Creo el servicio y los métodos que va a tener
     //rpc buscarProducto_X_Codigo (buscarProducto_X_CodigoRequest) returns (producto) {} //SACAR
     //rpc buscarProducto_X_Talle (buscarProducto_X_TalleRequest) returns (arregloProductos) {} //SACAR
     //rpc buscarProducto_X_Color (buscarProducto_X_ColorRequest) returns (arregloProductos) {} //SACAR
-    rpc buscarProductos (buscarProductosRequest) returns (arregloProd) {}
+    rpc buscarProductos (buscarProductosRequest) returns (arregloProductos) {}
 
     
     // PUNTO 3.A
@@ -79,7 +79,7 @@ message usuario
     string password      = 2;
     string nombre        = 3;
     string apellido      = 4;
-    bool   habilitado    = 5;
+    optional bool   habilitado    = 5;
     string tienda_codigo = 6;
 }
 
@@ -94,8 +94,8 @@ message tienda
     string direccion  = 2;
     string ciudad     = 3;
     string provincia  = 4;
-    bool   habilitado = 5;
-    bool   central    = 6;
+    optional bool   habilitado = 5;
+    optional bool   central    = 6;
 }
 
 message arregloTiendas
@@ -109,27 +109,12 @@ message producto
     string nombre        = 2;
     string talle         = 3;
     string color         = 4;
-    string tienda_codigo = 5;
 }
 
 message arregloProductos
 {
     repeated producto arregloProductos = 1;
 }
-
-message prod
-{
-    string codigo        = 1;
-    string nombre        = 2;
-    string talle         = 3;
-    string color         = 4;
-}
-
-message arregloProd
-{
-    repeated prod arregloProd = 1;
-}
-
 
 // TIPOS DE DATOS ESPECÍFICOS
 
@@ -141,7 +126,7 @@ message altaTiendaRequest     // Defino que datos va a tener este tipo de dato
     string direccion      = 3;
     string ciudad         = 4;
     string provincia      = 5;
-    bool   habilitado     = 6;
+    optional bool   habilitado     = 6;
 }
 
 message bajaLogicaTiendaRequest 
@@ -163,7 +148,7 @@ message altaUsuarioRequest
     string password       = 3;
     string nombre         = 4;
     string apellido       = 5;
-    bool   habilitado     = 6;
+    optional bool   habilitado     = 6;
     string tienda_codigo  = 7; 
 }
 
@@ -221,14 +206,14 @@ message buscarUsuarioRequest
 message buscarTienda_X_HabilitadoRequest
 {
     string usuarioCentral = 1;
-    bool   habilitado     = 2;
+    optional bool   habilitado     = 2;
 }*/
 
 message buscarTiendaRequest
 {
-    string usuarioCentral = 1;
-    string codigo = 2;
-    bool estado = 3;
+    string usuarioCentral      = 1;
+    string codigoTiendaABuscar = 2;
+    optional bool   habilitado          = 3;
 }
 
 // PUNTO 2.C
@@ -254,10 +239,11 @@ message buscarProducto_X_ColorRequest
 
 message buscarProductosRequest
 {
-    string nombre = 1;
-    string codigo = 2;
-    string talle = 3;
-    string color = 4;
+    string usuarioCentral = 1;
+    string codigo         = 2;
+    string nombre         = 3;
+    string talle          = 4;
+    string color          = 5;
 }
 
 // PUNTO 4.A
@@ -268,7 +254,7 @@ message modificarUsuarioRequest
     string password          = 3;
     string nombre            = 4; 
     string apellido          = 5;
-    bool   habilitado        = 6;
+    optional bool   habilitado        = 6;
     string tienda_codigo     = 7;    
 }
 
@@ -280,8 +266,8 @@ message modificarTiendaRequest
     string direccion        = 3;
     string ciudad           = 4;
     string provincia        = 5;
-    bool   habilitado       = 6;
-    bool   central          = 7;
+    optional bool   habilitado       = 6;
+    optional bool   central          = 7;
 }
 
 // PUNTO 4.C

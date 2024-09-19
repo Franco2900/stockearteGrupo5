@@ -112,12 +112,14 @@ async function chequearEsUsuarioValido(usuario)
     if (!existeUsuarioQueSolicita) 
     {
         var mensajeDeError = `ERROR: No existe el usuario que solicita los datos: ${usuario}`;
+        console.log('************************************************************');
         console.log(mensajeDeError);
         respuesta = mensajeDeError;
     }
     if (!usuarioEsDeCasaCentral)
     {
         var mensajeDeError = `ERROR: El usuario ${usuario} no pertenece a la casa central`;
+        console.log('************************************************************');
         console.log(mensajeDeError);
         respuesta = mensajeDeError;
     }

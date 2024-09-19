@@ -7,7 +7,7 @@ import json
 #make_response lo podemos usar para un mensaje estático
 from flask import Flask,request,make_response
 from google.protobuf.json_format import MessageToJson
-
+from google.protobuf.wrappers_pb2 import BoolValue
 
 # Crear una instancia de la aplicación Flask
 app = Flask(__name__)

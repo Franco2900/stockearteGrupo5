@@ -16,7 +16,7 @@ const conexionDataBase = require('./conexionDataBase.js');
 
 // PUNTO 2.A
 // Como usuario de casa central: Buscar usuarios por nombre de usuario y/o tienda.
-
+/*
 async function buscarUsuario_X_Usuario(call, callback)
 {
     try
@@ -132,12 +132,13 @@ async function buscarUsuario_X_TiendaCodigo(call, callback)
     catch(error) {console.log(error);}
 
 }
-
+*/
 
 async function buscarUsuarios(call, callback) 
 {
     try
     {
+        // Recibo los datos
         const registro =
         {
             usuarioCentral:        call.request.usuarioCentral,
@@ -148,27 +149,30 @@ async function buscarUsuarios(call, callback)
         var usuarioCentralEsValido = await conexionDataBase.chequearEsUsuarioValido(registro.usuarioCentral);
         if(usuarioCentralEsValido !== true) return callback(null, { mensaje: usuarioCentralEsValido });
 
+
+        // Armado de la consulta
         let consultaSQL = `SELECT usuario, password, nombre, apellido, habilitado, tienda_codigo 
                            FROM usuario 
                            WHERE 1=1`;
 
         let parametros = [];
 
-        if (registro.usuarioABuscar) // Si hay un dato de usuario a buscar
+        if (registro.usuarioABuscar) // Si hay un dato a buscar
         {
             consultaSQL += ` AND usuario = ?`;
             parametros.push(registro.usuarioABuscar);
         }
 
-        if (registro.codigoTiendaABuscar)  // Si hay un dato del codigo de la tienda
+        if (registro.codigoTiendaABuscar)  
         {
             consultaSQL += ` AND tienda_codigo = ?`;
             parametros.push(registro.codigoTiendaABuscar);
         }
+        
+        if (parametros.length === 0) return callback(null, { mensaje: "ERROR: La consulta está vacía" }); // Si no hay ningún dato
 
-        // Si no hay ningún dato
-        if (parametros.length === 0) return callback(null, { mensaje: "ERROR: La consulta está vacía" });
 
+        // Se realiza la consulta
         var resultadosConsulta = await conexionDataBase.query(consultaSQL, parametros);
 
         var respuesta = [];
@@ -184,6 +188,8 @@ async function buscarUsuarios(call, callback)
             });
         }
 
+
+        // Muestro los resultados y se los envio al cliente
         console.log('************************************************************');
         console.log('Consultando datos');
         console.log('Consulta solicitada: Buscar usuarios por nombre de usuario y/o tienda');
@@ -193,7 +199,8 @@ async function buscarUsuarios(call, callback)
         console.log(respuesta);
         return callback(null, {arregloUsuarios: respuesta} );
 
-    } catch(error) {
+    } catch(error) 
+    {
         console.log(error);
         return callback(error);
     }
@@ -202,7 +209,7 @@ async function buscarUsuarios(call, callback)
 
 // PUNTO 2.B
 // Como usuario de casa central: Buscar tiendas por código y/o estado (habilitada/deshabilitada).
-
+/*
 async function buscarTienda_X_TiendaCodigo(call, callback)
 {
     var usuarioCentral = call.request.usuarioCentral;
@@ -309,12 +316,85 @@ async function buscarTienda_X_Habilitado(call, callback)
     catch(error) {console.log(error);}
 
 }
+*/
+
+async function buscarTiendas(call, callback) {
+
+    try
+    {
+        // Recibo los datos
+        const registro =
+        {
+            usuarioCentral:       call.request.usuarioCentral,
+            codigoTiendaABuscar:  call.request.codigoTiendaABuscar,
+            habilitado:           call.request.habilitado
+        }
+
+        var usuarioCentralEsValido = await conexionDataBase.chequearEsUsuarioValido(registro.usuarioCentral);
+        if(usuarioCentralEsValido !== true) return callback(null, { mensaje: usuarioCentralEsValido });
+
+        // Armado de la consulta
+        let consultaSQL = `SELECT codigo, direccion, ciudad, provincia, habilitado, central 
+                           FROM tienda 
+                           WHERE 1=1`;
+
+        let parametros = [];
+
+        if (registro.codigoTiendaABuscar) // Si hay un dato a buscar
+        {
+            consultaSQL += ` AND codigo = ?`;
+            parametros.push(registro.codigoTiendaABuscar);
+        }
+
+        if (registro.habilitado !== undefined) // ACÁ CAMBIA PORQUE ES BOOLEANO
+        {
+            consultaSQL += ` AND habilitado = ?`;
+            parametros.push(registro.habilitado);
+        }
+
+        if (parametros.length === 0) return callback(null, { mensaje: "ERROR: La consulta está vacía" }); // Si no hay ningún dato
+
+
+        // Se realiza la consulta
+        var resultadosConsulta = await conexionDataBase.query(consultaSQL, parametros);
+
+        var respuesta = [];
+        for(var i = 0; i < resultadosConsulta.length; i++)
+        {
+            respuesta.push({
+                codigo:     resultadosConsulta[i].codigo, 
+                direccion:  resultadosConsulta[i].direccion, 
+                ciudad:     resultadosConsulta[i].ciudad, 
+                provincia:  resultadosConsulta[i].provincia, 
+                habilitado: Boolean(resultadosConsulta[i].habilitado), 
+                central:    Boolean(resultadosConsulta[i].central)
+            });
+        }
+
+
+        // Muestro los resultados y se los envio al cliente
+        console.log('************************************************************');
+        console.log('Consultando datos');
+        console.log('Consulta solicitada: Buscar tienda por código y/o estado habilitado');
+        console.log('Codigo tienda consultado: ' + registro.codigoTiendaABuscar);
+        console.log('Estado habilitado consultado: ' + registro.habilitado);
+        console.log('Datos devueltos al cliente:');
+        console.log(respuesta);
+        return callback(null, {arregloTiendas: respuesta});
+
+    } catch(error) 
+    {
+        console.log(error);
+        return callback(error);
+    }
+
+}
 
 
 // PUNTO 2.C
 // Buscar productos. Se pueden filtrar por nombre, código, talle, color.
 // NOTA: ESTAS BÚSQUEDAS NO PIDEN CHEQUEO DE USUARIO CENTRAL
-
+/*
 async function buscarProducto_X_Nombre(call, callback)
 {
     var nombre = call.request.nombre;
@@ -466,133 +546,94 @@ async function buscarProducto_X_Color(call, callback)
     }
     catch(error) {console.log(error);}
 }
+*/
 
-/************************************ CAMBIOS FER ************************************ */
-
-
-/*Usuarios (solo disponible para usuarios de casa central): se pueden filtrar por nombre de 
-usuario y/o tienda. */
-
-
-
-
-/*b. Tiendas (solo disponible para usuarios de casa central): se pueden filtrar por código y/o estado 
-(habilitada/deshabilitada). */
-
-/*async function buscarTiendas(call, callback) {
-
-    try
-    {
-        var usuarioCentralEsValido = conexionDataBase.chequearEsUsuarioValido(usuarioCentral);
-        if(usuarioCentralEsValido !== true) return callback(null, { mensaje: usuarioCentralEsValido });
-
-        const registro =
-        {
-            usuarioCentral:     call.request.usuarioCentral,
-            codigo_tienda:      call.request.codigo,
-            estado_tienda:      call.request.estado
-        }
-
-        var resultadosConsulta = await conexionDataBase.query(armarQueryTiendas(registro.codigo_tienda, registro.estado_tienda ), {}
-        );
-
-        var respuesta = [];
-        for(var i = 0; i < resultadosConsulta.length; i++){
-            respuesta[i] = { codigo: resultadosConsulta[i].codigo, direccion: resultadosConsulta[i].direccion, ciudad: resultadosConsulta[i].ciudad, provincia: resultadosConsulta[i].provincia, habilitado: resultadosConsulta[i].habilitado, central: resultadosConsulta[i].central };
-        }
-
-        console.log('************************************************************');
-        console.log('Consultando datos');
-        console.log('Consulta solicitada: Buscar tienda por código y/o estado');
-        console.log('Codigo tienda consultado: ' + registro.codigo_tienda);
-        console.log('Estado consultado: ' + registro.estado);
-        console.log('Datos devueltos al cliente:');
-        console.log(respuesta);
-        return callback(null, respuesta);
-
-    } catch(error) {console.log(error);}
-
-}
-
-function armarQueryTiendas(codigo_tienda, estado) {
-    let consulta = "SELECT * FROM tienda WHERE 1=1";
-    
-    if (codigo_tienda && codigo_tienda !== '') {
-        consulta += " AND codigo_tienda = ?";
-    }
-    if (estado && estado !== '') {
-        consulta += " AND estado = ?";
-    }
-
-    const params = [];
-    if (codigo_tienda && codigo_tienda !== '') params.push(codigo_tienda);
-    if (estado && estado !== '') params.push(estado);
-
-    console.log(consulta);
-    return { query: consulta, values: params };
-}
-
-//Productos: se pueden filtrar por nombre, código, talle, color.
 async function buscarProductos(call, callback) {
 
     try
     {
+        // Recibo los datos
         const registro =
         {
-            nombre:      call.request.nombre,
-            codigo:      call.request.codigo,
-            talle:       call.request.talle,
-            color:       call.request.color,
+            usuarioCentral: call.request.usuarioCentral,
+            codigo:         call.request.codigo,
+            nombre:         call.request.nombre,
+            talle:          call.request.talle,
+            color:          call.request.color
         }
 
-        var resultadosConsulta = await conexionDataBase.query(armarQueryProductos(registro.nombre, registro.codigo, registro.talle, registro.color ), {}
-        );
+        var usuarioCentralEsValido = await conexionDataBase.chequearEsUsuarioValido(registro.usuarioCentral);
+        if(usuarioCentralEsValido !== true) return callback(null, { mensaje: usuarioCentralEsValido });
+
+        // Armado de la consulta
+        let consultaSQL = `SELECT codigo, nombre, talle, foto, color 
+                           FROM producto 
+                           WHERE 1=1`;
+
+        let parametros = [];
+
+        if (registro.codigo) // Si hay un dato a buscar
+        {
+            consultaSQL += ` AND codigo = ?`;
+            parametros.push(registro.codigo);
+        }
+
+        if (registro.nombre)
+        {
+            consultaSQL += ` AND nombre = ?`;
+            parametros.push(registro.nombre);
+        }
+
+        if (registro.talle) 
+        {
+            consultaSQL += ` AND talle = ?`;
+            parametros.push(registro.talle);
+        }
+
+        if (registro.color) 
+        {
+            consultaSQL += ` AND color = ?`;
+            parametros.push(registro.color);
+        }
+
+        if (parametros.length === 0) return callback(null, { mensaje: "ERROR: La consulta está vacía" }); // Si no hay ningún dato
+
+
+        // Se realiza la consulta
+        var resultadosConsulta = await conexionDataBase.query(consultaSQL, parametros);
 
         var respuesta = [];
-        for(var i = 0; i < resultadosConsulta.length; i++){
-            respuesta[i] = { nombre: resultadosConsulta[i].nombre, codigo: resultadosConsulta[i].codigo, talle: resultadosConsulta[i].talle, color: resultadosConsulta[i].color };
+        for(var i = 0; i < resultadosConsulta.length; i++)
+        {
+            respuesta.push({
+                codigo:     resultadosConsulta[i].codigo, 
+                nombre:     resultadosConsulta[i].nombre, 
+                talle:      resultadosConsulta[i].talle, 
+                foto:       resultadosConsulta[i].foto, 
+                color:      resultadosConsulta[i].color
+            });
         }
 
+
+        // Muestro los resultados y se los envio al cliente
         console.log('************************************************************');
         console.log('Consultando datos');
-        console.log('Consulta solicitada: Buscar producto por nombre, código, talle, color');
+        console.log('Consulta solicitada: Buscar producto por código y/o nombre y/o talle y/o color');
+        console.log('Codigo producto consultado: ' + registro.codigo);
         console.log('Nombre consultado: ' + registro.nombre);
-        console.log('Codigo consultado: ' + registro.codigo);
         console.log('Talle consultado: ' + registro.talle);
         console.log('Color consultado: ' + registro.color);
         console.log('Datos devueltos al cliente:');
         console.log(respuesta);
-        return callback(null, respuesta);
+        return callback(null, {arregloProductos: respuesta});
 
-    } catch(error) {console.log(error);}
+    } catch(error) 
+    {
+        console.log(error);
+        return callback(error);
+    }
 
 }
-
-
-function armarQueryProductos(nombre, codigo, talle, color) {
-    let consulta = "SELECT * FROM producto WHERE 1=1";
-    
-    if (nombre && nombre !== '') {
-        consulta += " AND nombre = ?";
-    }
-    if (codigo && codigo !== '') {
-        consulta += " AND codigo = ?";
-    }
-    if (talle && talle !== '') {
-        consulta += " AND talle = ?";
-    }
-    if (color && color !== '') {
-        consulta += " AND color = ?";
-    }
-    const params = [];
-    if (nombre && nombre !== '') params.push(nombre);
-    if (codigo && codigo !== '') params.push(codigo);
-    if (talle && talle !== '') params.push(talle);
-    if (color && color !== '') params.push(color);
-
-    console.log(consulta);
-    return { query: consulta, values: params };
-}*/
 
 /*********************************** EXPORTACIÓN DE LA LÓGICA ***********************************/
 //exports.buscarUsuario_X_Usuario = buscarUsuario_X_Usuario //SACAR
@@ -601,12 +642,10 @@ exports.buscarUsuarios = buscarUsuarios
 
 //exports.buscarTienda_X_TiendaCodigo = buscarTienda_X_TiendaCodigo //SACAR
 //exports.buscarTienda_X_Habilitado = buscarTienda_X_Habilitado //SACAR
-
-//exports.buscarTiendas = buscarTiendas
+exports.buscarTiendas = buscarTiendas
 
 //exports.buscarProducto_X_Nombre = buscarProducto_X_Nombre //SACAR
 //exports.buscarProducto_X_Codigo = buscarProducto_X_Codigo //SACAR
 //exports.buscarProducto_X_Talle = buscarProducto_X_Talle //SACAR
 //exports.buscarProducto_X_Color = buscarProducto_X_Color //SACAR
-
-//exports.buscarProductos = buscarProductos
+exports.buscarProductos = buscarProductos

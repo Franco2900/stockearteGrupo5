@@ -60,26 +60,6 @@ class arregloTiendas(_message.Message):
     def __init__(self, arregloTiendas: _Optional[_Iterable[_Union[tienda, _Mapping]]] = ...) -> None: ...
 
 class producto(_message.Message):
-    __slots__ = ("codigo", "nombre", "talle", "color", "tienda_codigo")
-    CODIGO_FIELD_NUMBER: _ClassVar[int]
-    NOMBRE_FIELD_NUMBER: _ClassVar[int]
-    TALLE_FIELD_NUMBER: _ClassVar[int]
-    COLOR_FIELD_NUMBER: _ClassVar[int]
-    TIENDA_CODIGO_FIELD_NUMBER: _ClassVar[int]
-    codigo: str
-    nombre: str
-    talle: str
-    color: str
-    tienda_codigo: str
-    def __init__(self, codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., color: _Optional[str] = ..., tienda_codigo: _Optional[str] = ...) -> None: ...
-
-class arregloProductos(_message.Message):
-    __slots__ = ("arregloProductos",)
-    ARREGLOPRODUCTOS_FIELD_NUMBER: _ClassVar[int]
-    arregloProductos: _containers.RepeatedCompositeFieldContainer[producto]
-    def __init__(self, arregloProductos: _Optional[_Iterable[_Union[producto, _Mapping]]] = ...) -> None: ...
-
-class prod(_message.Message):
     __slots__ = ("codigo", "nombre", "talle", "color")
     CODIGO_FIELD_NUMBER: _ClassVar[int]
     NOMBRE_FIELD_NUMBER: _ClassVar[int]
@@ -91,11 +71,11 @@ class prod(_message.Message):
     color: str
     def __init__(self, codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., color: _Optional[str] = ...) -> None: ...
 
-class arregloProd(_message.Message):
-    __slots__ = ("arregloProd",)
-    ARREGLOPROD_FIELD_NUMBER: _ClassVar[int]
-    arregloProd: _containers.RepeatedCompositeFieldContainer[prod]
-    def __init__(self, arregloProd: _Optional[_Iterable[_Union[prod, _Mapping]]] = ...) -> None: ...
+class arregloProductos(_message.Message):
+    __slots__ = ("arregloProductos",)
+    ARREGLOPRODUCTOS_FIELD_NUMBER: _ClassVar[int]
+    arregloProductos: _containers.RepeatedCompositeFieldContainer[producto]
+    def __init__(self, arregloProductos: _Optional[_Iterable[_Union[producto, _Mapping]]] = ...) -> None: ...
 
 class altaTiendaRequest(_message.Message):
     __slots__ = ("usuarioCentral", "codigo", "direccion", "ciudad", "provincia", "habilitado")
@@ -176,26 +156,28 @@ class buscarUsuarioRequest(_message.Message):
     def __init__(self, usuarioCentral: _Optional[str] = ..., usuarioABuscar: _Optional[str] = ..., codigoTiendaABuscar: _Optional[str] = ...) -> None: ...
 
 class buscarTiendaRequest(_message.Message):
-    __slots__ = ("usuarioCentral", "codigo", "estado")
+    __slots__ = ("usuarioCentral", "codigoTiendaABuscar", "habilitado")
     USUARIOCENTRAL_FIELD_NUMBER: _ClassVar[int]
-    CODIGO_FIELD_NUMBER: _ClassVar[int]
-    ESTADO_FIELD_NUMBER: _ClassVar[int]
+    CODIGOTIENDAABUSCAR_FIELD_NUMBER: _ClassVar[int]
+    HABILITADO_FIELD_NUMBER: _ClassVar[int]
     usuarioCentral: str
-    codigo: str
-    estado: bool
-    def __init__(self, usuarioCentral: _Optional[str] = ..., codigo: _Optional[str] = ..., estado: bool = ...) -> None: ...
+    codigoTiendaABuscar: str
+    habilitado: bool
+    def __init__(self, usuarioCentral: _Optional[str] = ..., codigoTiendaABuscar: _Optional[str] = ..., habilitado: bool = ...) -> None: ...
 
 class buscarProductosRequest(_message.Message):
-    __slots__ = ("nombre", "codigo", "talle", "color")
-    NOMBRE_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ("usuarioCentral", "codigo", "nombre", "talle", "color")
+    USUARIOCENTRAL_FIELD_NUMBER: _ClassVar[int]
     CODIGO_FIELD_NUMBER: _ClassVar[int]
+    NOMBRE_FIELD_NUMBER: _ClassVar[int]
     TALLE_FIELD_NUMBER: _ClassVar[int]
     COLOR_FIELD_NUMBER: _ClassVar[int]
-    nombre: str
+    usuarioCentral: str
     codigo: str
+    nombre: str
     talle: str
     color: str
-    def __init__(self, nombre: _Optional[str] = ..., codigo: _Optional[str] = ..., talle: _Optional[str] = ..., color: _Optional[str] = ...) -> None: ...
+    def __init__(self, usuarioCentral: _Optional[str] = ..., codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., color: _Optional[str] = ...) -> None: ...
 
 class modificarUsuarioRequest(_message.Message):
     __slots__ = ("usuarioAModificar", "usuario", "password", "nombre", "apellido", "habilitado", "tienda_codigo")
