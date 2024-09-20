@@ -2,9 +2,9 @@
 title Cliente
 
 echo Iniciando Cliente Python
-cd ../EntornoVirtualPython/Scripts
+cd ../EntornoVirtualPython/venv/Scripts
 call activate.bat
-cd ../../Cliente
+cd ../../../Cliente
 python cliente.py
 
 pause
