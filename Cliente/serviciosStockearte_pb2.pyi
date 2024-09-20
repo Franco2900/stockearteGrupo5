@@ -77,6 +77,26 @@ class arregloProductos(_message.Message):
     arregloProductos: _containers.RepeatedCompositeFieldContainer[producto]
     def __init__(self, arregloProductos: _Optional[_Iterable[_Union[producto, _Mapping]]] = ...) -> None: ...
 
+class producto_2(_message.Message):
+    __slots__ = ("codigo", "nombre", "talle", "color", "tienda_codigo")
+    CODIGO_FIELD_NUMBER: _ClassVar[int]
+    NOMBRE_FIELD_NUMBER: _ClassVar[int]
+    TALLE_FIELD_NUMBER: _ClassVar[int]
+    COLOR_FIELD_NUMBER: _ClassVar[int]
+    TIENDA_CODIGO_FIELD_NUMBER: _ClassVar[int]
+    codigo: str
+    nombre: str
+    talle: str
+    color: str
+    tienda_codigo: str
+    def __init__(self, codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., color: _Optional[str] = ..., tienda_codigo: _Optional[str] = ...) -> None: ...
+
+class arregloProductos_2(_message.Message):
+    __slots__ = ("arregloProductos_2",)
+    ARREGLOPRODUCTOS_2_FIELD_NUMBER: _ClassVar[int]
+    arregloProductos_2: _containers.RepeatedCompositeFieldContainer[producto_2]
+    def __init__(self, arregloProductos_2: _Optional[_Iterable[_Union[producto_2, _Mapping]]] = ...) -> None: ...
+
 class altaTiendaRequest(_message.Message):
     __slots__ = ("usuarioCentral", "codigo", "direccion", "ciudad", "provincia", "habilitado")
     USUARIOCENTRAL_FIELD_NUMBER: _ClassVar[int]
@@ -178,6 +198,16 @@ class buscarProductosRequest(_message.Message):
     talle: str
     color: str
     def __init__(self, usuarioCentral: _Optional[str] = ..., codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., color: _Optional[str] = ...) -> None: ...
+
+class buscarTodosLosProductosRequest(_message.Message):
+    __slots__ = ("usuarioCentral",)
+    USUARIOCENTRAL_FIELD_NUMBER: _ClassVar[int]
+    usuarioCentral: str
+    def __init__(self, usuarioCentral: _Optional[str] = ...) -> None: ...
+
+class buscarTodosLosProductosResponse(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...
 
 class modificarUsuarioRequest(_message.Message):
     __slots__ = ("usuarioAModificar", "usuario", "password", "nombre", "apellido", "habilitado", "tienda_codigo")

@@ -40,7 +40,7 @@ service stockearteService // Creo el servicio y los métodos que va a tener
 
     
     // PUNTO 3.A
-    rpc buscarTodosLosProductos (mensajeVacio) returns (arregloProductos) {} 
+    rpc buscarTodosLosProductos (buscarTodosLosProductosRequest) returns (arregloProductos_2) {} 
 
     // PUNTO 3.B
     rpc buscarTodosLosUsuarios (mensajeVacio) returns (arregloUsuarios) {}
@@ -114,6 +114,27 @@ message producto
 message arregloProductos
 {
     repeated producto arregloProductos = 1;
+}
+
+
+
+/*message arregloCodigosDeTienda
+{
+    string codigoTienda = 1;
+}*/
+
+message producto_2
+{
+    string codigo        = 1;
+    string nombre        = 2;
+    string talle         = 3;
+    string color         = 4;
+    string tienda_codigo = 5;
+}
+
+message arregloProductos_2
+{
+    repeated producto_2 arregloProductos_2 = 1;
 }
 
 // TIPOS DE DATOS ESPECÍFICOS
@@ -244,6 +265,17 @@ message buscarProductosRequest
     string nombre         = 3;
     string talle          = 4;
     string color          = 5;
+}
+
+// PUNTO 3.A
+message buscarTodosLosProductosRequest
+{
+    string usuarioCentral = 1;
+}
+
+message buscarTodosLosProductosResponse
+{
+
 }
 
 // PUNTO 4.A

@@ -24,16 +24,16 @@ const conexionDataBase = require('./conexionDataBase.js');
 //  Para usuarios de tienda, listar solo los productos de su tienda
 //      Campos a mostrar en ambos casos: nombre, código, tienda, talle, color
 
-async function buscarTodosLosProductos(call, callback) // FUNCIÓN SIN PROBAR
+async function buscarTodosLosProductos(call, callback) 
 {
-    var usuarioQueSolicita = call.request.usuarioQueSolicita;
-    //var usuarioQueSolicita = 'El Pepo';    // DATO HARDCODEADO PARA PRUEBAS
+    var usuarioCentral = call.request.usuarioCentral;
+    //var usuarioCentral = 'El Pepo';    // DATO HARDCODEADO PARA PRUEBAS
 
     try
     {
         // Compruebo si el usuario que solicita los datos es válido
-        var existeUsuario = conexionDataBase.chequearExistenciaUsuario(usuarioQueSolicita);
-        var usuarioEsDeCasaCentral = conexionDataBase.chequearCasaCentral(usuarioQueSolicita);
+        var existeUsuario = conexionDataBase.chequearExistenciaUsuario(usuarioCentral);
+        var usuarioEsDeCasaCentral = conexionDataBase.chequearCasaCentral(usuarioCentral);
     
         if(existeUsuario && usuarioEsDeCasaCentral)
         {
@@ -47,15 +47,21 @@ async function buscarTodosLosProductos(call, callback) // FUNCIÓN SIN PROBAR
             var respuesta = [];
             for(var i = 0; i < resultados.length; i++)
             {
-                respuesta[i] = { codigo: resultados[i].codigo, nombre: resultados[i].nombre, talle: resultados[i].talle, color: resultados[i].color, tienda_codigo: resultados[i].tienda_codigo };
+                respuesta.push({ 
+                    codigo:        resultados[i].codigo, 
+                    nombre:        resultados[i].nombre, 
+                    talle:         resultados[i].talle, 
+                    color:         resultados[i].color, 
+                    tienda_codigo: resultados[i].tienda_codigo 
+                });
             }
 
             console.log('************************************************************');
             console.log('Consulta solicitada: Listado de productos');
-            console.log('Usuario que solicito los datos: ' + usuarioQueSolicita);
+            console.log('Usuario que solicito los datos: ' + usuarioCentral);
             console.log('Datos devueltos al cliente:');
             console.log(respuesta);
-            return callback(null, respuesta);
+            return callback(null, {arregloProductos_2: respuesta} );
         }
 
         if(existeUsuario && !usuarioEsDeCasaCentral)
@@ -68,24 +74,30 @@ async function buscarTodosLosProductos(call, callback) // FUNCIÓN SIN PROBAR
                 WHERE tienda_x_producto.tienda_codigo = 
                     (SELECT usuario.tienda_codigo 
                     FROM usuario 
-                    WHERE usuario = ${usuarioQueSolicita} `, {}
+                    WHERE usuario = ${usuarioCentral} `, {}
             );
         
             var respuesta = [];
             for(var i = 0; i < resultados.length; i++)
             {
-                respuesta[i] = { codigo: resultados[i].codigo, nombre: resultados[i].nombre, talle: resultados[i].talle, color: resultados[i].color, tienda_codigo: resultados[i].tienda_codigo };
+                respuesta.push({
+                    codigo:        resultados[i].codigo, 
+                    nombre:        resultados[i].nombre, 
+                    talle:         resultados[i].talle, 
+                    color:         resultados[i].color, 
+                    tienda_codigo: resultados[i].tienda_codigo 
+                });
             }
 
             console.log('************************************************************');
             console.log('Consulta solicitada: Listado de productos');
-            console.log('Usuario que solicito los datos: ' + usuarioQueSolicita);
+            console.log('Usuario que solicito los datos: ' + usuarioCentral);
             console.log('Datos devueltos al cliente:');
             console.log(respuesta);
-            return callback(null, respuesta);
+            return callback(null, {arregloProductos_2: respuesta} );
         }
 
-        if(!existeUsuario) return callback(null, {mensaje: `ERROR: El usuario ${usuarioQueSolicita} no existe`} );
+        if(!existeUsuario) return callback(null, {mensaje: `ERROR: El usuario ${usuarioCentral} no existe`} );
     }
     catch(error) {console.log(error);}
 }
@@ -97,22 +109,29 @@ async function buscarTodosLosUsuarios(call, callback)
 {
     try
     {
-        var resultados = await conexionDataBase.query(
-            `SELECT usuario, habilitado, tienda_codigo 
+        var resultadosConsulta = await conexionDataBase.query(
+            `SELECT usuario, password, nombre, apellido, habilitado, tienda_codigo
             FROM usuario `, {}
         );
         
         var respuesta = [];
-        for(var i = 0; i < resultados.length; i++)
+        for(var i = 0; i < resultadosConsulta.length; i++)
         {
-            respuesta[i] = { usuario: resultados[i].usuario, habilitado: resultados[i].habilitado, tienda_codigo: resultados[i].tienda_codigo };
+            respuesta.push({
+                usuario:       resultadosConsulta[i].usuario, 
+                password:      resultadosConsulta[i].password, 
+                nombre:        resultadosConsulta[i].nombre, 
+                apellido:      resultadosConsulta[i].apellido, 
+                habilitado:    resultadosConsulta[i].habilitado, 
+                tienda_codigo: resultadosConsulta[i].tienda_codigo
+            });
         }
             
         console.log('************************************************************');
         console.log('Consulta solicitada: Listado de usuarios');
         console.log('Datos devueltos al cliente:');
         console.log(respuesta);
-        return callback(null, respuesta);
+        return callback(null, {arregloUsuarios: respuesta} );
     }
     catch(error) {console.log(error);}
 }
@@ -125,22 +144,29 @@ async function buscarTodasLasTiendas(call, callback)
 {
     try
     {
-        var resultados = await conexionDataBase.query(
-            `SELECT codigo, habilitado 
+        var resultadosConsulta = await conexionDataBase.query(
+            `SELECT codigo, direccion, ciudad, provincia, habilitado, central 
             FROM tienda `, {}
         );
         
         var respuesta = [];
-        for(var i = 0; i < resultados.length; i++)
+        for(var i = 0; i < resultadosConsulta.length; i++)
         {
-            respuesta[i] = { codigo: resultados[i].codigo, habilitado: resultados[i].habilitado };
+            respuesta.push({
+                codigo:     resultadosConsulta[i].codigo, 
+                direccion:  resultadosConsulta[i].direccion, 
+                ciudad:     resultadosConsulta[i].ciudad, 
+                provincia:  resultadosConsulta[i].provincia, 
+                habilitado: Boolean(resultadosConsulta[i].habilitado), 
+                central:    Boolean(resultadosConsulta[i].central)
+            });
         }
             
         console.log('************************************************************');
         console.log('Consulta solicitada: Listado de tiendas');
         console.log('Datos devueltos al cliente:');
         console.log(respuesta);
-        return callback(null, respuesta);
+        return callback(null, {arregloTiendas: respuesta} );
     }
     catch(error) {console.log(error);}
 }

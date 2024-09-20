@@ -210,7 +210,7 @@ def  buscarProductos():
 @app.route('/buscarTodosLosProductos', methods=['GET'])
 def  buscarTodosLosProductos():    
 
-    solicitud= serviciosStockearte_pb2.mensajeVacio(**request.json)
+    solicitud= serviciosStockearte_pb2.buscarTodosLosProductosRequest(**request.json)
 
     response=stub.buscarTodosLosProductos(solicitud)
     return MessageToJson(response)
@@ -220,7 +220,7 @@ def  buscarTodosLosProductos():
 @app.route('/buscarTodosLosUsuarios', methods=['GET'])
 def  buscarTodosLosUsuarios():
 
-    solicitud= serviciosStockearte_pb2.mensajeVacio(**request.json)
+    solicitud= serviciosStockearte_pb2.mensajeVacio()
 
     response=stub.buscarTodosLosUsuarios(solicitud)
     return MessageToJson(response)
@@ -230,7 +230,7 @@ def  buscarTodosLosUsuarios():
 @app.route('/buscarTodasLasTiendas', methods=['GET'])
 def  buscarTodasLasTiendas():
 
-    solicitud= serviciosStockearte_pb2.mensajeVacio(**request.json)
+    solicitud= serviciosStockearte_pb2.mensajeVacio()
 
     response=stub.buscarTodasLasTiendas(solicitud)
     return MessageToJson(response)

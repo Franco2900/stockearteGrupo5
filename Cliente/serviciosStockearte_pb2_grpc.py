@@ -76,8 +76,8 @@ class stockearteServiceStub(object):
                 _registered_method=True)
         self.buscarTodosLosProductos = channel.unary_unary(
                 '/stockeartePackage.stockearteService/buscarTodosLosProductos',
-                request_serializer=serviciosStockearte__pb2.mensajeVacio.SerializeToString,
-                response_deserializer=serviciosStockearte__pb2.arregloProductos.FromString,
+                request_serializer=serviciosStockearte__pb2.buscarTodosLosProductosRequest.SerializeToString,
+                response_deserializer=serviciosStockearte__pb2.arregloProductos_2.FromString,
                 _registered_method=True)
         self.buscarTodosLosUsuarios = channel.unary_unary(
                 '/stockeartePackage.stockearteService/buscarTodosLosUsuarios',
@@ -263,8 +263,8 @@ def add_stockearteServiceServicer_to_server(servicer, server):
             ),
             'buscarTodosLosProductos': grpc.unary_unary_rpc_method_handler(
                     servicer.buscarTodosLosProductos,
-                    request_deserializer=serviciosStockearte__pb2.mensajeVacio.FromString,
-                    response_serializer=serviciosStockearte__pb2.arregloProductos.SerializeToString,
+                    request_deserializer=serviciosStockearte__pb2.buscarTodosLosProductosRequest.FromString,
+                    response_serializer=serviciosStockearte__pb2.arregloProductos_2.SerializeToString,
             ),
             'buscarTodosLosUsuarios': grpc.unary_unary_rpc_method_handler(
                     servicer.buscarTodosLosUsuarios,
@@ -533,8 +533,8 @@ class stockearteService(object):
             request,
             target,
             '/stockeartePackage.stockearteService/buscarTodosLosProductos',
-            serviciosStockearte__pb2.mensajeVacio.SerializeToString,
-            serviciosStockearte__pb2.arregloProductos.FromString,
+            serviciosStockearte__pb2.buscarTodosLosProductosRequest.SerializeToString,
+            serviciosStockearte__pb2.arregloProductos_2.FromString,
             options,
             channel_credentials,
             insecure,
