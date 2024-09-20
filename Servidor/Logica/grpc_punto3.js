@@ -32,8 +32,8 @@ async function buscarTodosLosProductos(call, callback)
     try
     {
         // Compruebo si el usuario que solicita los datos es válido
-        var existeUsuario = conexionDataBase.chequearExistenciaUsuario(usuarioCentral);
-        var usuarioEsDeCasaCentral = conexionDataBase.chequearCasaCentral(usuarioCentral);
+        var existeUsuario          = await conexionDataBase.chequearExistenciaUsuario(usuarioCentral);
+        var usuarioEsDeCasaCentral = await conexionDataBase.chequearCasaCentral(usuarioCentral);
     
         if(existeUsuario && usuarioEsDeCasaCentral)
         {
@@ -74,7 +74,7 @@ async function buscarTodosLosProductos(call, callback)
                 WHERE tienda_x_producto.tienda_codigo = 
                     (SELECT usuario.tienda_codigo 
                     FROM usuario 
-                    WHERE usuario = ${usuarioCentral} `, {}
+                    WHERE usuario = '${usuarioCentral}' )`, {}
             );
         
             var respuesta = [];
