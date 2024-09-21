@@ -19,6 +19,7 @@ except json.JSONDecodeError:
     print("La respuesta no es un JSON válido")
 
 # ====================================================================================
+
 data = {
     "usuarioCentral": "La Peluca",
 }

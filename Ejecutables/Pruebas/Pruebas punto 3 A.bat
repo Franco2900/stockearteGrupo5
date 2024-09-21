@@ -2,8 +2,8 @@
 title Pruebas punto 3 A
 
 echo Pruebas de Busqueda
-cd ../../EntornoVirtualPython/Scripts
+cd ../../EntornoVirtualPython/venv/Scripts
 call activate.bat
-python ../../Pruebas/pruebasPunto3A.py
+python ../../../Pruebas/pruebasPunto3A.py
 
 pause

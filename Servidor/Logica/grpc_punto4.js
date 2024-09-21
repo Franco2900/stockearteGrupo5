@@ -92,13 +92,13 @@ async function modificarTienda(call, callback)
     // Acá van los datos que nos llegan del cliente desde gRPC
     const registro =
     {
-        tiendaAModificar:  call.request.tiendaAModificar, // ESTE CAMPO ES NUEVO
-        codigo:            call.request.codigo,
-        direccion:         call.request.direccion,
-        ciudad:            call.request.ciudad,
-        provincia:         call.request.provincia,
-        habilitado:        call.request.habilitado,
-        central:           call.request.central // ACÁ NO SE SI SE DEBERÍA PODER MODIFICAR ESTE CAMPO
+        codigoTiendaAModificar: call.request.codigoTiendaAModificar, // ESTE CAMPO ES NUEVO
+        codigo:                 call.request.codigo,
+        direccion:              call.request.direccion,
+        ciudad:                 call.request.ciudad,
+        provincia:              call.request.provincia,
+        habilitado:             call.request.habilitado,
+        central:                call.request.central // ACÁ NO SE SI SE DEBERÍA PODER MODIFICAR ESTE CAMPO
     }
     
     /*const registro = // DATO HARDCODEADO PARA PRUEBAS
@@ -112,19 +112,19 @@ async function modificarTienda(call, callback)
         central:          0
     }*/
 
-    var existeTiendaAModificar  = await conexionDataBase.chequearExistenciaTienda(registro.tiendaAModificar);
-    if(!existeTiendaAModificar) return callback(null, { mensaje: `ERROR: No existe la tienda ${registro.tiendaAModificar} ` });
+    var existeTiendaAModificar  = await conexionDataBase.chequearExistenciaTienda(registro.codigoTiendaAModificar);
+    if(!existeTiendaAModificar) return callback(null, { mensaje: `ERROR: No existe la tienda ${registro.codigoTiendaAModificar}` });
 
     if(existeTiendaAModificar)
     {
         console.log('Modificación solicitada: Modificar tienda');
-        console.log('Tienda a modificar: ' + registro.tiendaAModificar);
+        console.log('Tienda a modificar: ' + registro.codigoTiendaAModificar);
 
         console.log('Datos antes de la modificación');
         var resultados = await conexionDataBase.query(
             `SELECT *
             FROM tienda
-            WHERE codigo = '${registro.tiendaAModificar}' `, {}
+            WHERE codigo = '${registro.codigoTiendaAModificar}' `, {}
         );
         console.log(resultados);
 
@@ -133,11 +133,11 @@ async function modificarTienda(call, callback)
         await conexionDataBase.query(
             `UPDATE tienda
             SET codigo = '${registro.codigo}', direccion = '${registro.direccion}', ciudad = '${registro.ciudad}', provincia = '${registro.provincia}', habilitado = ${registro.habilitado}, central = '${registro.central}'
-            WHERE codigo = '${registro.tiendaAModificar}' `, {}
+            WHERE codigo = '${registro.codigoTiendaAModificar}' `, {}
         );
         console.log(registro);
 
-        return callback(null, { mensaje: `Modificación de la tienda ${registro.tiendaAModificar} realizada correctamente` });
+        return callback(null, { mensaje: `Modificación de la tienda ${registro.codigoTiendaAModificar} realizada correctamente` });
     }
 
 }

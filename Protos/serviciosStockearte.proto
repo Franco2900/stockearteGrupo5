@@ -293,11 +293,11 @@ message modificarUsuarioRequest
 // PUNTO 4.B
 message modificarTiendaRequest
 {
-    string tiendaAModificar = 1;
-    string codigo           = 2;
-    string direccion        = 3;
-    string ciudad           = 4;
-    string provincia        = 5;
+    string codigoTiendaAModificar = 1;
+    string codigo                 = 2;
+    string direccion              = 3;
+    string ciudad                 = 4;
+    string provincia              = 5;
     optional bool   habilitado       = 6;
     optional bool   central          = 7;
 }

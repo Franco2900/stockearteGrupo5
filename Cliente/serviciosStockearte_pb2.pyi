@@ -228,22 +228,22 @@ class modificarUsuarioRequest(_message.Message):
     def __init__(self, usuarioAModificar: _Optional[str] = ..., usuario: _Optional[str] = ..., password: _Optional[str] = ..., nombre: _Optional[str] = ..., apellido: _Optional[str] = ..., habilitado: bool = ..., tienda_codigo: _Optional[str] = ...) -> None: ...
 
 class modificarTiendaRequest(_message.Message):
-    __slots__ = ("tiendaAModificar", "codigo", "direccion", "ciudad", "provincia", "habilitado", "central")
-    TIENDAAMODIFICAR_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ("codigoTiendaAModificar", "codigo", "direccion", "ciudad", "provincia", "habilitado", "central")
+    CODIGOTIENDAAMODIFICAR_FIELD_NUMBER: _ClassVar[int]
     CODIGO_FIELD_NUMBER: _ClassVar[int]
     DIRECCION_FIELD_NUMBER: _ClassVar[int]
     CIUDAD_FIELD_NUMBER: _ClassVar[int]
     PROVINCIA_FIELD_NUMBER: _ClassVar[int]
     HABILITADO_FIELD_NUMBER: _ClassVar[int]
     CENTRAL_FIELD_NUMBER: _ClassVar[int]
-    tiendaAModificar: str
+    codigoTiendaAModificar: str
     codigo: str
     direccion: str
     ciudad: str
     provincia: str
     habilitado: bool
     central: bool
-    def __init__(self, tiendaAModificar: _Optional[str] = ..., codigo: _Optional[str] = ..., direccion: _Optional[str] = ..., ciudad: _Optional[str] = ..., provincia: _Optional[str] = ..., habilitado: bool = ..., central: bool = ...) -> None: ...
+    def __init__(self, codigoTiendaAModificar: _Optional[str] = ..., codigo: _Optional[str] = ..., direccion: _Optional[str] = ..., ciudad: _Optional[str] = ..., provincia: _Optional[str] = ..., habilitado: bool = ..., central: bool = ...) -> None: ...
 
 class modificarStockRequest(_message.Message):
     __slots__ = ("usuario", "stock", "producto_codigo")

@@ -17,11 +17,11 @@ const stockeartePackage = gRPC.loadPackageDefinition(packageDefinition).stockear
 // Lógica Punto 1
 const grpc_punto1 = require('./Logica/grpc_punto1.js');
 
-const altaTienda           = grpc_punto1.altaTienda.bind({}); // bind() crea una nueva función que tiene el mismo comportamiento que la original
-const bajaLogicaTienda     = grpc_punto1.bajaLogicaTienda.bind({}); // Como no se puede añadir el servicio directamente exportando desde el módulo, clono las funciones
-const altaLogicaTienda     = grpc_punto1.altaLogicaTienda.bind({});
-const altaUsuario          = grpc_punto1.altaUsuario.bind({});
-const altaProducto         = grpc_punto1.altaProducto.bind({});
+const altaTienda        = grpc_punto1.altaTienda.bind({}); // bind() crea una nueva función que tiene el mismo comportamiento que la original
+const bajaLogicaTienda  = grpc_punto1.bajaLogicaTienda.bind({}); // Como no se puede añadir el servicio directamente exportando desde el módulo, clono las funciones
+const altaLogicaTienda  = grpc_punto1.altaLogicaTienda.bind({});
+const altaUsuario       = grpc_punto1.altaUsuario.bind({});
+const altaProducto      = grpc_punto1.altaProducto.bind({});
 //const modificacionProducto = grpc_punto1.modificacionProducto.bind({}); // SACAR DE ACÁ PORQUE ESTA REPETIDO EN EL PUNTO 4.C
 
 // Lógica Punto 2
@@ -45,6 +45,15 @@ const grpc_punto3 = require('./Logica/grpc_punto3.js');
 const buscarTodosLosProductos = grpc_punto3.buscarTodosLosProductos.bind({});
 const buscarTodosLosUsuarios  = grpc_punto3.buscarTodosLosUsuarios.bind({});
 const buscarTodasLasTiendas   = grpc_punto3.buscarTodasLasTiendas.bind({});
+
+// Loógica Punto 4
+const grpc_punto4 = require('./Logica/grpc_punto4.js');
+
+const modificarUsuario  = grpc_punto4.modificarUsuario.bind({});
+const modificarTienda   = grpc_punto4.modificarTienda.bind({});
+const modificarStock    = grpc_punto4.modificarStock.bind({});
+const modificarProducto = grpc_punto4.modificarProducto.bind({});
+
 
 // Añado las funciones al servicio
 servidor.addService(stockeartePackage.stockearteService.service, { 
@@ -73,7 +82,13 @@ servidor.addService(stockeartePackage.stockearteService.service, {
     // Lógica Punto 3: Listados
     buscarTodosLosProductos,
     buscarTodosLosUsuarios,
-    buscarTodasLasTiendas
+    buscarTodasLasTiendas,
+
+    // Lógica Punto 4: Modificaciones
+    modificarUsuario,
+    modificarTienda,
+    modificarStock,
+    modificarProducto
 });
 
 /**************************************** INICIO SERVIDOR GRPC ********************************************************/
