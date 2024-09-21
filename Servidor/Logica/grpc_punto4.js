@@ -82,8 +82,7 @@ async function modificarUsuario(call, callback)
 
 
 // PUNTO 4.B
-// Modificar todos los campos de tienda. Asignar y desasignar usuarios y/o productos
-// NOTA: LA FUNCIÓN PARA MODIFICAR TODOS LOS CAMPOS DE TIENDA YA ESTA. FALTA LO DE ASIGNAR Y DESAGSINAR. FIJARSE SI SE EN OTRAS FUNCIONES NUEVAS O NO
+// Modificar todos los campos de tienda
 async function modificarTienda(call, callback)
 {
     console.log('************************************************************');
@@ -97,8 +96,7 @@ async function modificarTienda(call, callback)
         direccion:              call.request.direccion,
         ciudad:                 call.request.ciudad,
         provincia:              call.request.provincia,
-        habilitado:             call.request.habilitado,
-        central:                call.request.central // ACÁ NO SE SI SE DEBERÍA PODER MODIFICAR ESTE CAMPO
+        habilitado:             call.request.habilitado
     }
     
     /*const registro = // DATO HARDCODEADO PARA PRUEBAS
@@ -108,8 +106,7 @@ async function modificarTienda(call, callback)
         direccion:        'Juan Justo 200',
         ciudad:           'Monte Chingolo',
         provincia:        'Buenos Aires',
-        habilitado:       false, // CAMBIA ACÁ CON RESPECTO A LOS DATOS DE PRUEBA
-        central:          0
+        habilitado:       false // CAMBIA ACÁ CON RESPECTO A LOS DATOS DE PRUEBA
     }*/
 
     var existeTiendaAModificar  = await conexionDataBase.chequearExistenciaTienda(registro.codigoTiendaAModificar);
@@ -132,7 +129,7 @@ async function modificarTienda(call, callback)
         console.log('Datos después de la modificación');
         await conexionDataBase.query(
             `UPDATE tienda
-            SET codigo = '${registro.codigo}', direccion = '${registro.direccion}', ciudad = '${registro.ciudad}', provincia = '${registro.provincia}', habilitado = ${registro.habilitado}, central = '${registro.central}'
+            SET codigo = '${registro.codigo}', direccion = '${registro.direccion}', ciudad = '${registro.ciudad}', provincia = '${registro.provincia}', habilitado = ${registro.habilitado}
             WHERE codigo = '${registro.codigoTiendaAModificar}' `, {}
         );
         console.log(registro);
@@ -172,6 +169,7 @@ async function modificarStock(call, callback) {
 
     var existeUsuario = await conexionDataBase.chequearExistenciaUsuario(registro.usuario);
     if(!existeUsuario) return callback(null, { mensaje: `ERROR: No existe el usuario ${registro.usuario} ` });
+
 
     var existeProducto = await conexionDataBase.chequearExistenciaProducto(registro.producto_codigo);
     if(!existeProducto) return callback(null, { mensaje: `ERROR: No existe el producto ${registro.producto_codigo} ` });
