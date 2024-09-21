@@ -118,10 +118,10 @@ message arregloProductos
 
 
 
-/*message arregloCodigosDeTienda
+message arregloCodigosDeTienda
 {
     string codigoTienda = 1;
-}*/
+}
 
 message producto_2
 {
@@ -129,7 +129,7 @@ message producto_2
     string nombre        = 2;
     string talle         = 3;
     string color         = 4;
-    string tienda_codigo = 5;
+    repeated arregloCodigosDeTienda arregloCodigosDeTienda = 5;
 }
 
 message arregloProductos_2

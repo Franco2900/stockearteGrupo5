@@ -24,6 +24,7 @@ const conexionDataBase = require('./conexionDataBase.js');
 //  Para usuarios de tienda, listar solo los productos de su tienda
 //      Campos a mostrar en ambos casos: nombre, código, tienda, talle, color
 
+/* ESTA DEVUELVE LOS DATO MAL
 async function buscarTodosLosProductos(call, callback) 
 {
     var usuarioCentral = call.request.usuarioCentral;
@@ -94,6 +95,103 @@ async function buscarTodosLosProductos(call, callback)
             console.log('Usuario que solicito los datos: ' + usuarioCentral);
             console.log('Datos devueltos al cliente:');
             console.log(respuesta);
+            return callback(null, {arregloProductos_2: respuesta} );
+        }
+
+        if(!existeUsuario) return callback(null, {mensaje: `ERROR: El usuario ${usuarioCentral} no existe`} );
+    }
+    catch(error) {console.log(error);}
+}
+*/
+
+async function buscarTodosLosProductos(call, callback) 
+{
+    var usuarioCentral = call.request.usuarioCentral;
+    //var usuarioCentral = 'El Pepo';    // DATO HARDCODEADO PARA PRUEBAS
+
+    try
+    {
+        // Compruebo si el usuario que solicita los datos es válido
+        var existeUsuario          = await conexionDataBase.chequearExistenciaUsuario(usuarioCentral);
+        var usuarioEsDeCasaCentral = await conexionDataBase.chequearCasaCentral(usuarioCentral);
+    
+        if(existeUsuario && usuarioEsDeCasaCentral)
+        {
+            var resultados = await conexionDataBase.query(
+                `SELECT p.codigo, p.nombre, p.talle, p.color, subconsulta.tiendas 
+                FROM producto p
+                JOIN (
+                    SELECT tienda_x_producto.producto_codigo, GROUP_CONCAT(tienda_x_producto.tienda_codigo) AS tiendas
+                    FROM tienda_x_producto
+                    GROUP BY tienda_x_producto.producto_codigo
+                ) subconsulta
+                ON p.codigo = subconsulta.producto_codigo;`, {}
+            );
+        
+            var respuesta = [];
+            for(var i = 0; i < resultados.length; i++)
+            {
+                var auxArregloCodigosDeTienda = resultados[i].tiendas.split(",").map(codigo => ({ codigoTienda: codigo }));
+
+                respuesta.push({ 
+                    codigo:                 resultados[i].codigo, 
+                    nombre:                 resultados[i].nombre, 
+                    talle:                  resultados[i].talle, 
+                    color:                  resultados[i].color, 
+                    arregloCodigosDeTienda: auxArregloCodigosDeTienda  
+                });
+            }
+
+            console.log('************************************************************');
+            console.log('Consulta solicitada: Listado de productos');
+            console.log('Usuario que solicito los datos: ' + usuarioCentral);
+            console.log('Datos devueltos al cliente:');
+            console.log(JSON.stringify(respuesta, null, 2));
+            return callback(null, {arregloProductos_2: respuesta} );
+        }
+
+        if(existeUsuario && !usuarioEsDeCasaCentral)
+        {
+            var resultados = await conexionDataBase.query(
+                `SELECT p.codigo, p.nombre, p.talle, p.color, subconsulta.tiendas 
+                FROM producto p
+                JOIN (
+                    SELECT tienda_x_producto.producto_codigo, GROUP_CONCAT(tienda_x_producto.tienda_codigo) AS tiendas
+                    FROM tienda_x_producto
+                    GROUP BY tienda_x_producto.producto_codigo
+                ) subconsulta
+                ON p.codigo = subconsulta.producto_codigo
+                WHERE
+                    p.codigo IN (
+                        SELECT tienda_x_producto.producto_codigo
+                        FROM tienda_x_producto
+                        WHERE tienda_x_producto.tienda_codigo = (
+                            SELECT u.tienda_codigo
+                            FROM usuario u
+                            WHERE u.usuario = '${usuarioCentral}'
+                        )
+                    )`, {}
+            );
+        
+            var respuesta = [];
+            for(var i = 0; i < resultados.length; i++)
+            {
+                var auxArregloCodigosDeTienda = resultados[i].tiendas.split(",").map(codigo => ({ codigoTienda: codigo }));
+
+                respuesta.push({
+                    codigo:                 resultados[i].codigo, 
+                    nombre:                 resultados[i].nombre, 
+                    talle:                  resultados[i].talle, 
+                    color:                  resultados[i].color, 
+                    arregloCodigosDeTienda: auxArregloCodigosDeTienda  
+                });
+            }
+
+            console.log('************************************************************');
+            console.log('Consulta solicitada: Listado de productos');
+            console.log('Usuario que solicito los datos: ' + usuarioCentral);
+            console.log('Datos devueltos al cliente:');
+            console.log(JSON.stringify(respuesta, null, 2));
             return callback(null, {arregloProductos_2: respuesta} );
         }
 

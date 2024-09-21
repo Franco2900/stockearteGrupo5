@@ -77,19 +77,25 @@ class arregloProductos(_message.Message):
     arregloProductos: _containers.RepeatedCompositeFieldContainer[producto]
     def __init__(self, arregloProductos: _Optional[_Iterable[_Union[producto, _Mapping]]] = ...) -> None: ...
 
+class arregloCodigosDeTienda(_message.Message):
+    __slots__ = ("codigoTienda",)
+    CODIGOTIENDA_FIELD_NUMBER: _ClassVar[int]
+    codigoTienda: str
+    def __init__(self, codigoTienda: _Optional[str] = ...) -> None: ...
+
 class producto_2(_message.Message):
-    __slots__ = ("codigo", "nombre", "talle", "color", "tienda_codigo")
+    __slots__ = ("codigo", "nombre", "talle", "color", "arregloCodigosDeTienda")
     CODIGO_FIELD_NUMBER: _ClassVar[int]
     NOMBRE_FIELD_NUMBER: _ClassVar[int]
     TALLE_FIELD_NUMBER: _ClassVar[int]
     COLOR_FIELD_NUMBER: _ClassVar[int]
-    TIENDA_CODIGO_FIELD_NUMBER: _ClassVar[int]
+    ARREGLOCODIGOSDETIENDA_FIELD_NUMBER: _ClassVar[int]
     codigo: str
     nombre: str
     talle: str
     color: str
-    tienda_codigo: str
-    def __init__(self, codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., color: _Optional[str] = ..., tienda_codigo: _Optional[str] = ...) -> None: ...
+    arregloCodigosDeTienda: _containers.RepeatedCompositeFieldContainer[arregloCodigosDeTienda]
+    def __init__(self, codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., color: _Optional[str] = ..., arregloCodigosDeTienda: _Optional[_Iterable[_Union[arregloCodigosDeTienda, _Mapping]]] = ...) -> None: ...
 
 class arregloProductos_2(_message.Message):
     __slots__ = ("arregloProductos_2",)
