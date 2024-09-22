@@ -153,19 +153,19 @@ async function modificarStock(call, callback) {
     console.log('Modificando datos');
 
     // Acá van los datos que nos llegan del cliente desde gRPC
-    /*const registro =
+    const registro =
     {
         usuario:         call.request.usuario,
         stock:           call.request.stock,
         producto_codigo: call.request.producto_codigo
-    }*/
-    
+    }
+    /*
     const registro = // DATO HARDCODEADO PARA PRUEBAS
     {
         usuario: 'Racing Campeon',
         stock:   10,
         producto_codigo: 'CB123'
-    }
+    }*/
 
     var existeUsuario = await conexionDataBase.chequearExistenciaUsuario(registro.usuario);
     if(!existeUsuario) return callback(null, { mensaje: `ERROR: No existe el usuario ${registro.usuario} ` });
@@ -240,26 +240,36 @@ async function modificarProducto(call, callback)
     console.log('Modificando datos');
 
     // Acá van los datos que nos llegan del cliente desde gRPC
-    /*const registro =
+    const registro =
     {
-        productoAModificar: call.request.productoAModificar
         codigo:             call.request.codigo,
-        direccion:          call.request.direccion,
-        ciudad:             call.request.ciudad,
-        provincia:          call.request.provincia,
-        habilitado:         call.request.habilitado,
-        central:            call.request.central
-    }*/
-    
-    const registro = // DATO HARDCODEADO PARA PRUEBAS
-    {
-        productoAModificar: 'CB123',
-        codigo:             'CB123',
-        nombre:             'Camisa Básica',
-        talle:              'M',
-        foto:               'base64string1',
-        color:              'Naranja' // CAMBIA ACÁ CON RESPECTO A LOS DATOS DE PRUEBA
+        nombre:             call.request.nombre,
+        talle:              call.request.talle,
+        foto:               call.request.foto,
+        color:              call.request.color
     }
+
+    console.log('Datos después de la modificación');
+    resultados = await conexionDataBase.query(
+        `SELECT *
+        FROM producto
+        WHERE codigo = '${registro.codigo}' `, {}
+    );
+
+    await conexionDataBase.query( // Actualizo el producto
+        `UPDATE producto
+        SET nombre = '${registro.nombre}', talle = '${registro.talle}', foto = '${registro.foto}', color = '${registro.color}'
+        WHERE codigo = '${registro.codigo}' `, {}
+    )
+
+
+    console.log('Datos después de la modificación');
+    resultados = await conexionDataBase.query(
+        `SELECT *
+        FROM producto
+        WHERE codigo = '${registro.codigo}' `, {}
+    );
+    console.log(resultados);
 
 }
 

@@ -59,6 +59,8 @@ service stockearteService // Creo el servicio y los métodos que va a tener
     // PUNTO 4.C
     rpc modificarStock (modificarStockRequest) returns (mensajeSimple) {}
     // FALTAN FUNCIONES ACÁ
+
+    rpc modificarProducto (modificarProductoRequest) returns (mensajeSimple) {}
 }
 
 /*********************************************************************************************/
@@ -308,4 +310,13 @@ message modificarStockRequest
     string usuario         = 1;
     int32  stock           = 2;
     string producto_codigo = 3;
+}
+
+message modificarProductoRequest
+{
+    string codigo   = 1;
+    string nombre   = 2;
+    string talle    = 3;
+    string foto     = 4;
+    string color    = 5;
 }
