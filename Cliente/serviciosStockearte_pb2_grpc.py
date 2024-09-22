@@ -104,6 +104,11 @@ class stockearteServiceStub(object):
                 request_serializer=serviciosStockearte__pb2.modificarStockRequest.SerializeToString,
                 response_deserializer=serviciosStockearte__pb2.mensajeSimple.FromString,
                 _registered_method=True)
+        self.modificarProducto = channel.unary_unary(
+                '/stockeartePackage.stockearteService/modificarProducto',
+                request_serializer=serviciosStockearte__pb2.modificarProductoRequest.SerializeToString,
+                response_deserializer=serviciosStockearte__pb2.mensajeSimple.FromString,
+                _registered_method=True)
 
 
 class stockearteServiceServicer(object):
@@ -218,6 +223,12 @@ class stockearteServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def modificarProducto(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_stockearteServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -289,6 +300,11 @@ def add_stockearteServiceServicer_to_server(servicer, server):
             'modificarStock': grpc.unary_unary_rpc_method_handler(
                     servicer.modificarStock,
                     request_deserializer=serviciosStockearte__pb2.modificarStockRequest.FromString,
+                    response_serializer=serviciosStockearte__pb2.mensajeSimple.SerializeToString,
+            ),
+            'modificarProducto': grpc.unary_unary_rpc_method_handler(
+                    servicer.modificarProducto,
+                    request_deserializer=serviciosStockearte__pb2.modificarProductoRequest.FromString,
                     response_serializer=serviciosStockearte__pb2.mensajeSimple.SerializeToString,
             ),
     }
@@ -669,6 +685,33 @@ class stockearteService(object):
             target,
             '/stockeartePackage.stockearteService/modificarStock',
             serviciosStockearte__pb2.modificarStockRequest.SerializeToString,
+            serviciosStockearte__pb2.mensajeSimple.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def modificarProducto(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/stockeartePackage.stockearteService/modificarProducto',
+            serviciosStockearte__pb2.modificarProductoRequest.SerializeToString,
             serviciosStockearte__pb2.mensajeSimple.FromString,
             options,
             channel_credentials,

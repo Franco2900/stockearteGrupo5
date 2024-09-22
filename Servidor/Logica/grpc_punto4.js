@@ -239,37 +239,46 @@ async function modificarProducto(call, callback)
     console.log('************************************************************');
     console.log('Modificando datos');
 
-    // Acá van los datos que nos llegan del cliente desde gRPC
-    const registro =
+    try
     {
-        codigo:             call.request.codigo,
-        nombre:             call.request.nombre,
-        talle:              call.request.talle,
-        foto:               call.request.foto,
-        color:              call.request.color
+        // Acá van los datos que nos llegan del cliente desde gRPC
+        const registro =
+        {
+            codigo:             call.request.codigo,
+            nombre:             call.request.nombre,
+            talle:              call.request.talle,
+            foto:               call.request.foto,
+            color:              call.request.color
+        }
+        
+
+        console.log('Datos antes de la modificación');
+        resultados = await conexionDataBase.query(
+            `SELECT *
+            FROM producto
+            WHERE codigo = '${registro.codigo}' `, {}
+        );
+        console.log(resultados);
+
+
+        await conexionDataBase.query( // Actualizo el producto
+            `UPDATE producto
+            SET nombre = '${registro.nombre}', talle = '${registro.talle}', foto = '${registro.foto}', color = '${registro.color}'
+            WHERE codigo = '${registro.codigo}' `, {}
+        )
+
+
+        console.log('Datos después de la modificación');
+        resultados = await conexionDataBase.query(
+            `SELECT *
+            FROM producto
+            WHERE codigo = '${registro.codigo}' `, {}
+        );
+        console.log(resultados);
+
+        return callback(null, { mensaje: `Modificación del producto ${registro.codigo} realizada correctamente` });
     }
-
-    console.log('Datos después de la modificación');
-    resultados = await conexionDataBase.query(
-        `SELECT *
-        FROM producto
-        WHERE codigo = '${registro.codigo}' `, {}
-    );
-
-    await conexionDataBase.query( // Actualizo el producto
-        `UPDATE producto
-        SET nombre = '${registro.nombre}', talle = '${registro.talle}', foto = '${registro.foto}', color = '${registro.color}'
-        WHERE codigo = '${registro.codigo}' `, {}
-    )
-
-
-    console.log('Datos después de la modificación');
-    resultados = await conexionDataBase.query(
-        `SELECT *
-        FROM producto
-        WHERE codigo = '${registro.codigo}' `, {}
-    );
-    console.log(resultados);
+    catch(error) {console.log(error);}
 
 }
 

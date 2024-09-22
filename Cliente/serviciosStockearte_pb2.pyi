@@ -260,3 +260,17 @@ class modificarStockRequest(_message.Message):
     stock: int
     producto_codigo: str
     def __init__(self, usuario: _Optional[str] = ..., stock: _Optional[int] = ..., producto_codigo: _Optional[str] = ...) -> None: ...
+
+class modificarProductoRequest(_message.Message):
+    __slots__ = ("codigo", "nombre", "talle", "foto", "color")
+    CODIGO_FIELD_NUMBER: _ClassVar[int]
+    NOMBRE_FIELD_NUMBER: _ClassVar[int]
+    TALLE_FIELD_NUMBER: _ClassVar[int]
+    FOTO_FIELD_NUMBER: _ClassVar[int]
+    COLOR_FIELD_NUMBER: _ClassVar[int]
+    codigo: str
+    nombre: str
+    talle: str
+    foto: str
+    color: str
+    def __init__(self, codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., foto: _Optional[str] = ..., color: _Optional[str] = ...) -> None: ...

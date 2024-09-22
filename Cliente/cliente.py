@@ -86,6 +86,7 @@ def altaProducto():
 
 
 # PUNTO 1.D
+"""
 @app.route('/modificarProducto', methods=['POST'])
 def modificarProducto():
 
@@ -93,7 +94,7 @@ def modificarProducto():
 
     response=stub.modificacionProducto(solicitud)
     return MessageToJson(response)
-
+"""
 #####################################################################################################
 #  PUNTO 2: TRAER BUSQUEDA ESPECIFICA  
 #####################################################################################################
@@ -266,7 +267,16 @@ def  modificarStock():
 
     solicitud= serviciosStockearte_pb2.modificarStockRequest(**request.json)
 
-    response=stub.modificarTienda(solicitud)
+    response=stub.modificarStock(solicitud)
+    return MessageToJson(response)
+
+
+@app.route('/modificarProducto', methods=['POST'])
+def  modificarProducto():
+
+    solicitud= serviciosStockearte_pb2.modificarProductoRequest(**request.json)
+
+    response=stub.modificarProducto(solicitud)
     return MessageToJson(response)
 
 
