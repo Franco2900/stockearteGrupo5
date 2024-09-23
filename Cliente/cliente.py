@@ -270,6 +270,33 @@ def  modificarStock():
     return MessageToJson(response)
 
 
+@app.route('/traerUsuarioPorId', methods=['GET'])
+def  traerUsuarioPorId():
+
+    solicitud= serviciosStockearte_pb2.(**request.json)
+
+    response=stub.(solicitud)
+    return MessageToJson(response)
+
+
+
+@app.route('/traerTiendaPorCodigo', methods=['GET'])
+def  traerTiendaPorCodigo():
+
+    solicitud= serviciosStockearte_pb2.(**request.json)
+
+    response=stub.(solicitud)
+    return MessageToJson(response)
+
+
+@app.route('/traerProductoPorCodigo', methods=['GET'])
+def  traerProductoPorCodigo():
+
+    solicitud= serviciosStockearte_pb2.(**request.json)
+
+    response=stub.(solicitud)
+    return MessageToJson(response)
+
 
 # Ejecutar la aplicación
 if __name__ == '__main__':
