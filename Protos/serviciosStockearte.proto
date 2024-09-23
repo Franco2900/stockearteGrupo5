@@ -61,6 +61,11 @@ service stockearteService // Creo el servicio y los métodos que va a tener
     // FALTAN FUNCIONES ACÁ
 
     rpc modificarProducto (modificarProductoRequest) returns (mensajeSimple) {}
+
+
+    rpc traerUsuarioPorId (buscarIdRequest) returns (usuario) {}
+    rpc traerTiendaPorCodigo (buscarCodigoRequest) returns (tienda) {}
+    rpc traerProductoPorCodigo (buscarCodigoRequest) returns (producto) {}
 }
 
 /*********************************************************************************************/
@@ -319,4 +324,12 @@ message modificarProductoRequest
     string talle    = 3;
     string foto     = 4;
     string color    = 5;
+}
+
+message buscarCodigoRequest {
+    string codigo = 1;
+}
+
+message buscarIdRequest {
+    int32 id = 1;
 }

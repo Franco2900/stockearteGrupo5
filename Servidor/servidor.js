@@ -55,8 +55,17 @@ const modificarStock    = grpc_punto4.modificarStock.bind({});
 const modificarProducto = grpc_punto4.modificarProducto.bind({});
 
 
+//Funciones complementarias
+const grpc_complementario = require('./Logica/grpc_complementario.js');
+
+const traerUsuarioPorId = grpc_complementario.traerUsuarioPorId.bind({});
+const traerTiendaPorCodigo = grpc_complementario.traerTiendaPorCodigo.bind({});
+const traerProductoPorCodigo = grpc_complementario.traerProductoPorCodigo.bind({});
+
+
 // Añado las funciones al servicio
 servidor.addService(stockeartePackage.stockearteService.service, { 
+
 
     // Lógica Punto 1: Altas
     altaTienda,
@@ -88,7 +97,12 @@ servidor.addService(stockeartePackage.stockearteService.service, {
     modificarUsuario,
     modificarTienda,
     modificarStock,
-    modificarProducto
+    modificarProducto,
+
+    //Funciones complementarias
+    traerUsuarioPorId,
+    traerTiendaPorCodigo,
+    traerProductoPorCodigo
 });
 
 /**************************************** INICIO SERVIDOR GRPC ********************************************************/
