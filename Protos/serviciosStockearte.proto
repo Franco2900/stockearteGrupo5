@@ -58,14 +58,14 @@ service stockearteService // Creo el servicio y los métodos que va a tener
 
     // PUNTO 4.C
     rpc modificarStock (modificarStockRequest) returns (mensajeSimple) {}
-    // FALTAN FUNCIONES ACÁ
-
     rpc modificarProducto (modificarProductoRequest) returns (mensajeSimple) {}
 
-
+    // Funciones complementarias
     rpc traerUsuarioPorId (buscarIdRequest) returns (usuario) {}
     rpc traerTiendaPorCodigo (buscarCodigoRequest) returns (tienda) {}
     rpc traerProductoPorCodigo (buscarCodigoRequest) returns (producto) {}
+    rpc hacerLogin (hacerLoginRequest) returns (hacerLoginResponse) {}
+    rpc traerProductosDeLaTienda (traerProductosDeLaTiendaRequest) returns (traerProductosDeLaTiendaResponse) {}
 }
 
 /*********************************************************************************************/
@@ -116,6 +116,7 @@ message producto
     string nombre        = 2;
     string talle         = 3;
     string color         = 4;
+    string foto          = 5;
 }
 
 message arregloProductos
@@ -326,10 +327,49 @@ message modificarProductoRequest
     string color    = 5;
 }
 
+// Funciones complementarias
 message buscarCodigoRequest {
     string codigo = 1;
 }
 
 message buscarIdRequest {
     int32 id = 1;
+}
+
+message hacerLoginRequest
+{
+    string usuario  = 1;
+    string password = 2;
+}
+
+message hacerLoginResponse
+{
+    string usuario    = 1;
+    string password   = 2;
+    string nombre     = 3;
+    string apellido   = 4;
+    optional bool   habilitado = 5;
+    string tienda_codigo       = 6;
+    optional bool   central    = 7;
+}
+
+message traerProductosDeLaTiendaRequest
+{
+    string tienda_codigo = 1;
+}
+
+message productoDeLaTienda
+{
+    string codigo        = 1;
+    string nombre        = 2;
+    string talle         = 3;
+    string color         = 4;
+    string foto          = 5;
+    string tienda_codigo = 6;
+    optional int32  stock         = 7;
+}
+
+message traerProductosDeLaTiendaResponse
+{
+    repeated productoDeLaTienda arregloProductoDeLaTienda = 1;
 }

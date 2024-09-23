@@ -124,6 +124,16 @@ class stockearteServiceStub(object):
                 request_serializer=serviciosStockearte__pb2.buscarCodigoRequest.SerializeToString,
                 response_deserializer=serviciosStockearte__pb2.producto.FromString,
                 _registered_method=True)
+        self.hacerLogin = channel.unary_unary(
+                '/stockeartePackage.stockearteService/hacerLogin',
+                request_serializer=serviciosStockearte__pb2.hacerLoginRequest.SerializeToString,
+                response_deserializer=serviciosStockearte__pb2.hacerLoginResponse.FromString,
+                _registered_method=True)
+        self.traerProductosDeLaTienda = channel.unary_unary(
+                '/stockeartePackage.stockearteService/traerProductosDeLaTienda',
+                request_serializer=serviciosStockearte__pb2.traerProductosDeLaTiendaRequest.SerializeToString,
+                response_deserializer=serviciosStockearte__pb2.traerProductosDeLaTiendaResponse.FromString,
+                _registered_method=True)
 
 
 class stockearteServiceServicer(object):
@@ -245,7 +255,8 @@ class stockearteServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def traerUsuarioPorId(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Funciones complementarias
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -257,6 +268,18 @@ class stockearteServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def traerProductoPorCodigo(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def hacerLogin(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def traerProductosDeLaTienda(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -354,6 +377,16 @@ def add_stockearteServiceServicer_to_server(servicer, server):
                     servicer.traerProductoPorCodigo,
                     request_deserializer=serviciosStockearte__pb2.buscarCodigoRequest.FromString,
                     response_serializer=serviciosStockearte__pb2.producto.SerializeToString,
+            ),
+            'hacerLogin': grpc.unary_unary_rpc_method_handler(
+                    servicer.hacerLogin,
+                    request_deserializer=serviciosStockearte__pb2.hacerLoginRequest.FromString,
+                    response_serializer=serviciosStockearte__pb2.hacerLoginResponse.SerializeToString,
+            ),
+            'traerProductosDeLaTienda': grpc.unary_unary_rpc_method_handler(
+                    servicer.traerProductosDeLaTienda,
+                    request_deserializer=serviciosStockearte__pb2.traerProductosDeLaTiendaRequest.FromString,
+                    response_serializer=serviciosStockearte__pb2.traerProductosDeLaTiendaResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -842,6 +875,60 @@ class stockearteService(object):
             '/stockeartePackage.stockearteService/traerProductoPorCodigo',
             serviciosStockearte__pb2.buscarCodigoRequest.SerializeToString,
             serviciosStockearte__pb2.producto.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def hacerLogin(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/stockeartePackage.stockearteService/hacerLogin',
+            serviciosStockearte__pb2.hacerLoginRequest.SerializeToString,
+            serviciosStockearte__pb2.hacerLoginResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def traerProductosDeLaTienda(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/stockeartePackage.stockearteService/traerProductosDeLaTienda',
+            serviciosStockearte__pb2.traerProductosDeLaTiendaRequest.SerializeToString,
+            serviciosStockearte__pb2.traerProductosDeLaTiendaResponse.FromString,
             options,
             channel_credentials,
             insecure,

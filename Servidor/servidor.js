@@ -58,9 +58,11 @@ const modificarProducto = grpc_punto4.modificarProducto.bind({});
 //Funciones complementarias
 const grpc_complementario = require('./Logica/grpc_complementario.js');
 
-const traerUsuarioPorId = grpc_complementario.traerUsuarioPorId.bind({});
-const traerTiendaPorCodigo = grpc_complementario.traerTiendaPorCodigo.bind({});
-const traerProductoPorCodigo = grpc_complementario.traerProductoPorCodigo.bind({});
+const traerUsuarioPorId        = grpc_complementario.traerUsuarioPorId.bind({});
+const traerTiendaPorCodigo     = grpc_complementario.traerTiendaPorCodigo.bind({});
+const traerProductoPorCodigo   = grpc_complementario.traerProductoPorCodigo.bind({});
+const hacerLogin               = grpc_complementario.hacerLogin.bind({});
+const traerProductosDeLaTienda = grpc_complementario.traerProductosDeLaTienda.bind({});
 
 
 // Añado las funciones al servicio
@@ -102,7 +104,9 @@ servidor.addService(stockeartePackage.stockearteService.service, {
     //Funciones complementarias
     traerUsuarioPorId,
     traerTiendaPorCodigo,
-    traerProductoPorCodigo
+    traerProductoPorCodigo,
+    hacerLogin,
+    traerProductosDeLaTienda
 });
 
 /**************************************** INICIO SERVIDOR GRPC ********************************************************/

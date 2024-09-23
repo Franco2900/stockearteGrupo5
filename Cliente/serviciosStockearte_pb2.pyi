@@ -60,16 +60,18 @@ class arregloTiendas(_message.Message):
     def __init__(self, arregloTiendas: _Optional[_Iterable[_Union[tienda, _Mapping]]] = ...) -> None: ...
 
 class producto(_message.Message):
-    __slots__ = ("codigo", "nombre", "talle", "color")
+    __slots__ = ("codigo", "nombre", "talle", "color", "foto")
     CODIGO_FIELD_NUMBER: _ClassVar[int]
     NOMBRE_FIELD_NUMBER: _ClassVar[int]
     TALLE_FIELD_NUMBER: _ClassVar[int]
     COLOR_FIELD_NUMBER: _ClassVar[int]
+    FOTO_FIELD_NUMBER: _ClassVar[int]
     codigo: str
     nombre: str
     talle: str
     color: str
-    def __init__(self, codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., color: _Optional[str] = ...) -> None: ...
+    foto: str
+    def __init__(self, codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., color: _Optional[str] = ..., foto: _Optional[str] = ...) -> None: ...
 
 class arregloProductos(_message.Message):
     __slots__ = ("arregloProductos",)
@@ -286,3 +288,59 @@ class buscarIdRequest(_message.Message):
     ID_FIELD_NUMBER: _ClassVar[int]
     id: int
     def __init__(self, id: _Optional[int] = ...) -> None: ...
+
+class hacerLoginRequest(_message.Message):
+    __slots__ = ("usuario", "password")
+    USUARIO_FIELD_NUMBER: _ClassVar[int]
+    PASSWORD_FIELD_NUMBER: _ClassVar[int]
+    usuario: str
+    password: str
+    def __init__(self, usuario: _Optional[str] = ..., password: _Optional[str] = ...) -> None: ...
+
+class hacerLoginResponse(_message.Message):
+    __slots__ = ("usuario", "password", "nombre", "apellido", "habilitado", "tienda_codigo", "central")
+    USUARIO_FIELD_NUMBER: _ClassVar[int]
+    PASSWORD_FIELD_NUMBER: _ClassVar[int]
+    NOMBRE_FIELD_NUMBER: _ClassVar[int]
+    APELLIDO_FIELD_NUMBER: _ClassVar[int]
+    HABILITADO_FIELD_NUMBER: _ClassVar[int]
+    TIENDA_CODIGO_FIELD_NUMBER: _ClassVar[int]
+    CENTRAL_FIELD_NUMBER: _ClassVar[int]
+    usuario: str
+    password: str
+    nombre: str
+    apellido: str
+    habilitado: bool
+    tienda_codigo: str
+    central: bool
+    def __init__(self, usuario: _Optional[str] = ..., password: _Optional[str] = ..., nombre: _Optional[str] = ..., apellido: _Optional[str] = ..., habilitado: bool = ..., tienda_codigo: _Optional[str] = ..., central: bool = ...) -> None: ...
+
+class traerProductosDeLaTiendaRequest(_message.Message):
+    __slots__ = ("tienda_codigo",)
+    TIENDA_CODIGO_FIELD_NUMBER: _ClassVar[int]
+    tienda_codigo: str
+    def __init__(self, tienda_codigo: _Optional[str] = ...) -> None: ...
+
+class productoDeLaTienda(_message.Message):
+    __slots__ = ("codigo", "nombre", "talle", "color", "foto", "tienda_codigo", "stock")
+    CODIGO_FIELD_NUMBER: _ClassVar[int]
+    NOMBRE_FIELD_NUMBER: _ClassVar[int]
+    TALLE_FIELD_NUMBER: _ClassVar[int]
+    COLOR_FIELD_NUMBER: _ClassVar[int]
+    FOTO_FIELD_NUMBER: _ClassVar[int]
+    TIENDA_CODIGO_FIELD_NUMBER: _ClassVar[int]
+    STOCK_FIELD_NUMBER: _ClassVar[int]
+    codigo: str
+    nombre: str
+    talle: str
+    color: str
+    foto: str
+    tienda_codigo: str
+    stock: int
+    def __init__(self, codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., color: _Optional[str] = ..., foto: _Optional[str] = ..., tienda_codigo: _Optional[str] = ..., stock: _Optional[int] = ...) -> None: ...
+
+class traerProductosDeLaTiendaResponse(_message.Message):
+    __slots__ = ("arregloProductoDeLaTienda",)
+    ARREGLOPRODUCTODELATIENDA_FIELD_NUMBER: _ClassVar[int]
+    arregloProductoDeLaTienda: _containers.RepeatedCompositeFieldContainer[productoDeLaTienda]
+    def __init__(self, arregloProductoDeLaTienda: _Optional[_Iterable[_Union[productoDeLaTienda, _Mapping]]] = ...) -> None: ...

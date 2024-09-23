@@ -280,6 +280,11 @@ def  modificarProducto():
     return MessageToJson(response)
 
 
+#####################################################################################################
+#  FUNCIONES COMPLEMENTARIAS
+#####################################################################################################
+
+
 @app.route('/traerUsuarioPorId', methods=['GET'])
 def  traerUsuarioPorId():
 
@@ -306,6 +311,25 @@ def  traerProductoPorCodigo():
 
     response=stub.traerProductoPorCodigo(solicitud)
     return MessageToJson(response)
+
+
+@app.route('/hacerLogin', methods=['GET'])
+def  hacerLogin():
+
+    solicitud= serviciosStockearte_pb2.hacerLoginRequest(**request.json)
+
+    response=stub.hacerLogin(solicitud)
+    return MessageToJson(response)
+
+
+@app.route('/traerProductosDeLaTienda', methods=['GET'])
+def  traerProductosDeLaTienda():
+
+    solicitud= serviciosStockearte_pb2.traerProductosDeLaTiendaRequest(**request.json)
+
+    response=stub.traerProductosDeLaTienda(solicitud)
+    return MessageToJson(response)
+
 
 
 # Ejecutar la aplicación
