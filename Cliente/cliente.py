@@ -279,6 +279,7 @@ def  modificarProducto():
     response=stub.modificarProducto(solicitud)
     return MessageToJson(response)
 
+"""
 
 @app.route('/traerUsuarioPorId', methods=['GET'])
 def  traerUsuarioPorId():
@@ -306,7 +307,7 @@ def  traerProductoPorCodigo():
 
     response=stub.(solicitud)
     return MessageToJson(response)
-
+"""
 
 # Ejecutar la aplicación
 if __name__ == '__main__':
