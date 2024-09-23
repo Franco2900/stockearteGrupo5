@@ -279,14 +279,13 @@ def  modificarProducto():
     response=stub.modificarProducto(solicitud)
     return MessageToJson(response)
 
-"""
 
 @app.route('/traerUsuarioPorId', methods=['GET'])
 def  traerUsuarioPorId():
 
-    solicitud= serviciosStockearte_pb2.(**request.json)
+    solicitud= serviciosStockearte_pb2.buscarIdRequest(**request.json)
 
-    response=stub.(solicitud)
+    response=stub.traerUsuarioPorId(solicitud)
     return MessageToJson(response)
 
 
@@ -294,20 +293,20 @@ def  traerUsuarioPorId():
 @app.route('/traerTiendaPorCodigo', methods=['GET'])
 def  traerTiendaPorCodigo():
 
-    solicitud= serviciosStockearte_pb2.(**request.json)
+    solicitud= serviciosStockearte_pb2.buscarCodigoRequest(**request.json)
 
-    response=stub.(solicitud)
+    response=stub.traerTiendaPorCodigo(solicitud)
     return MessageToJson(response)
 
 
 @app.route('/traerProductoPorCodigo', methods=['GET'])
 def  traerProductoPorCodigo():
 
-    solicitud= serviciosStockearte_pb2.(**request.json)
+    solicitud= serviciosStockearte_pb2.buscarCodigoRequest(**request.json)
 
-    response=stub.(solicitud)
+    response=stub.traerProductoPorCodigo(solicitud)
     return MessageToJson(response)
-"""
+
 
 # Ejecutar la aplicación
 if __name__ == '__main__':
