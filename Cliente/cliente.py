@@ -119,7 +119,7 @@ def buscarUsuario_X_TiendaCodigo():
     return MessageToJson(response)
 """
 
-@app.route('/buscarUsuarios', methods=['GET'])
+@app.route('/buscarUsuarios', methods=['POST'])
 def buscarUsuarios():
 
     solicitud= serviciosStockearte_pb2.buscarUsuarioRequest(**request.json)
@@ -148,7 +148,7 @@ def  buscarTienda_X_Habilitado():
     return MessageToJson(response)
 """
     
-@app.route('/buscarTiendas', methods=['GET'])
+@app.route('/buscarTiendas', methods=['POST'])
 def  buscarTiendas():
 
     solicitud= serviciosStockearte_pb2.buscarTiendaRequest(**request.json)
@@ -195,7 +195,7 @@ def  buscarProducto_X_Color():
     return MessageToJson(response)
 """
 
-@app.route('/buscarProductos', methods=['GET'])
+@app.route('/buscarProductos', methods=['POST'])
 def  buscarProductos():
 
     solicitud= serviciosStockearte_pb2.buscarProductosRequest(**request.json)
@@ -285,7 +285,7 @@ def  modificarProducto():
 #####################################################################################################
 
 
-@app.route('/traerUsuarioPorId', methods=['GET'])
+@app.route('/traerUsuarioPorId', methods=['POST'])
 def  traerUsuarioPorId():
 
     solicitud= serviciosStockearte_pb2.buscarIdRequest(**request.json)
@@ -295,7 +295,7 @@ def  traerUsuarioPorId():
 
 
 
-@app.route('/traerTiendaPorCodigo', methods=['GET'])
+@app.route('/traerTiendaPorCodigo', methods=['POST'])
 def  traerTiendaPorCodigo():
 
     solicitud= serviciosStockearte_pb2.buscarCodigoRequest(**request.json)
@@ -304,7 +304,7 @@ def  traerTiendaPorCodigo():
     return MessageToJson(response)
 
 
-@app.route('/traerProductoPorCodigo', methods=['GET'])
+@app.route('/traerProductoPorCodigo', methods=['POST'])
 def  traerProductoPorCodigo():
 
     solicitud= serviciosStockearte_pb2.buscarCodigoRequest(**request.json)
@@ -313,7 +313,7 @@ def  traerProductoPorCodigo():
     return MessageToJson(response)
 
 
-@app.route('/hacerLogin', methods=['GET'])
+@app.route('/hacerLogin', methods=['POST'])
 def  hacerLogin():
 
     solicitud= serviciosStockearte_pb2.hacerLoginRequest(**request.json)
@@ -322,7 +322,7 @@ def  hacerLogin():
     return MessageToJson(response)
 
 
-@app.route('/traerProductosDeLaTienda', methods=['GET'])
+@app.route('/traerProductosDeLaTienda', methods=['POST'])
 def  traerProductosDeLaTienda():
 
     solicitud= serviciosStockearte_pb2.traerProductosDeLaTiendaRequest(**request.json)
