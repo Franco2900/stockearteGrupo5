@@ -14,45 +14,30 @@ var packageDefinition = protoLoader.loadSync(archivoProto, {keepCase: true, defa
 const stockeartePackage = gRPC.loadPackageDefinition(packageDefinition).stockeartePackage;     // Cargo el paquete
 
 /*************************************** LÓGICA DEL NEGOCIO *************************************************/
-// Lógica Punto 1
-const grpc_punto1 = require('./Logica/grpc_punto1.js');
+// tiendaService
+const tiendaService = require('./Logica/tiendaService.js');
 
-const altaTienda        = grpc_punto1.altaTienda.bind({}); // bind() crea una nueva función que tiene el mismo comportamiento que la original
-const bajaLogicaTienda  = grpc_punto1.bajaLogicaTienda.bind({}); // Como no se puede añadir el servicio directamente exportando desde el módulo, clono las funciones
-const altaLogicaTienda  = grpc_punto1.altaLogicaTienda.bind({});
-const altaUsuario       = grpc_punto1.altaUsuario.bind({});
-const altaProducto      = grpc_punto1.altaProducto.bind({});
-//const modificacionProducto = grpc_punto1.modificacionProducto.bind({}); // SACAR DE ACÁ PORQUE ESTA REPETIDO EN EL PUNTO 4.C
+const altaTienda            = tiendaService.altaTienda.bind({});   // bind() crea una nueva función que tiene el mismo comportamiento que la original
+const buscarTienda          = tiendaService.buscarTienda.bind({}); // Como no se puede añadir el servicio directamente exportando desde el módulo, clono las funciones
+const buscarTodasLasTiendas = tiendaService.buscarTodasLasTiendas.bind({});
+const modificarTienda       = tiendaService.modificarTienda.bind({});
 
-// Lógica Punto 2
-const grpc_punto2 = require('./Logica/grpc_punto2.js');
+// usuarioService
+const usuarioService = require('./Logica/usuarioService.js');
 
-//const buscarUsuario_X_Usuario      = grpc_punto2.buscarUsuario_X_Usuario.bind({});
-//const buscarUsuario_X_TiendaCodigo = grpc_punto2.buscarUsuario_X_TiendaCodigo.bind({});
-const buscarUsuarios                 = grpc_punto2.buscarUsuarios.bind({});
-//const buscarTienda_X_TiendaCodigo  = grpc_punto2.buscarTienda_X_TiendaCodigo.bind({});
-//const buscarTienda_X_Habilitado    = grpc_punto2.buscarTienda_X_Habilitado.bind({});
-const buscarTiendas                  =  grpc_punto2.buscarTiendas.bind({});
-//const buscarProducto_X_Nombre      = grpc_punto2.buscarProducto_X_Nombre.bind({});
-//const buscarProducto_X_Codigo      = grpc_punto2.buscarProducto_X_Codigo.bind({});
-//const buscarProducto_X_Talle       = grpc_punto2.buscarProducto_X_Talle.bind({});
-//const buscarProducto_X_Color       = grpc_punto2.buscarProducto_X_Color.bind({});
-const buscarProductos                = grpc_punto2.buscarProductos.bind({});
+const altaUsuario            = usuarioService.altaUsuario.bind({});
+const buscarUsuario         = usuarioService.buscarUsuario.bind({});
+const buscarTodosLosUsuarios = usuarioService.buscarTodosLosUsuarios.bind({});
+const modificarUsuario       = usuarioService.modificarUsuario.bind({});
 
-// Lógica Punto 3
-const grpc_punto3 = require('./Logica/grpc_punto3.js');
+// productoService
+const productoService = require('./Logica/productoService.js');
 
-const buscarTodosLosProductos = grpc_punto3.buscarTodosLosProductos.bind({});
-const buscarTodosLosUsuarios  = grpc_punto3.buscarTodosLosUsuarios.bind({});
-const buscarTodasLasTiendas   = grpc_punto3.buscarTodasLasTiendas.bind({});
-
-// Loógica Punto 4
-const grpc_punto4 = require('./Logica/grpc_punto4.js');
-
-const modificarUsuario  = grpc_punto4.modificarUsuario.bind({});
-const modificarTienda   = grpc_punto4.modificarTienda.bind({});
-const modificarStock    = grpc_punto4.modificarStock.bind({});
-const modificarProducto = grpc_punto4.modificarProducto.bind({});
+const altaProducto            = productoService.altaProducto.bind({});
+const buscarProducto          = productoService.buscarProducto.bind({});
+const buscarTodosLosProductos = productoService.buscarTodosLosProductos.bind({});
+const modificarStock          = productoService.modificarStock.bind({});
+const modificarProducto       = productoService.modificarProducto.bind({});
 
 
 //Funciones complementarias
@@ -68,36 +53,22 @@ const traerProductosDeLaTienda = grpc_complementario.traerProductosDeLaTienda.bi
 // Añado las funciones al servicio
 servidor.addService(stockeartePackage.stockearteService.service, { 
 
-
-    // Lógica Punto 1: Altas
+    // tiendaService
     altaTienda,
-    bajaLogicaTienda,
-    altaLogicaTienda,
-    altaUsuario,
-    altaProducto,
-    //modificacionProducto,
-
-    // Lógica Punto 2: Busquedas especificas
-    //buscarUsuario_X_Usuario,
-    //buscarUsuario_X_TiendaCodigo,
-    buscarUsuarios,
-    //buscarTienda_X_TiendaCodigo,
-    //buscarTienda_X_Habilitado,
-    buscarTiendas,
-    //buscarProducto_X_Nombre,
-    //buscarProducto_X_Codigo,
-    //buscarProducto_X_Talle,
-    //buscarProducto_X_Color, 
-    buscarProductos,
-
-    // Lógica Punto 3: Listados
-    buscarTodosLosProductos,
-    buscarTodosLosUsuarios,
+    buscarTienda,
     buscarTodasLasTiendas,
-
-    // Lógica Punto 4: Modificaciones
-    modificarUsuario,
     modificarTienda,
+
+    // usuarioService
+    altaUsuario,
+    buscarUsuario,
+    buscarTodosLosUsuarios,
+    modificarUsuario,
+
+    // productoService
+    altaProducto,
+    buscarProducto,
+    buscarTodosLosProductos,
     modificarStock,
     modificarProducto,
 

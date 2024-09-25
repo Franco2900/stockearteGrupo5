@@ -9,9 +9,10 @@ async function traerUsuarioPorId(call, callback)
 
     try
     {
-        var resultadosConsulta = await conexionDataBase.query(`SELECT usuario, password, nombre, apellido, habilitado, tienda_codigo FROM usuario where id = ${id}`, {});
+        var resultadosConsulta = await conexionDataBase.query(`SELECT id, usuario, password, nombre, apellido, habilitado, tienda_codigo FROM usuario where id = ${id}`, {});
         
         var respuesta = {
+            id:            resultadosConsulta[0].id,
             usuario:       resultadosConsulta[0].usuario, 
             password:      resultadosConsulta[0].password, 
             nombre:        resultadosConsulta[0].nombre, 
