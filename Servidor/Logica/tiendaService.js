@@ -91,12 +91,12 @@ async function buscarTienda(call, callback) {
         var resultadosConsulta = await conexionDataBase.query(consultaSQL, parametros);
 
         var respuesta = {
-            codigo:     resultadosConsulta[i].codigo, 
-            direccion:  resultadosConsulta[i].direccion, 
-            ciudad:     resultadosConsulta[i].ciudad, 
-            provincia:  resultadosConsulta[i].provincia, 
-            habilitado: Boolean(resultadosConsulta[i].habilitado), 
-            central:    Boolean(resultadosConsulta[i].central)
+            codigo:     resultadosConsulta[0].codigo, 
+            direccion:  resultadosConsulta[0].direccion, 
+            ciudad:     resultadosConsulta[0].ciudad, 
+            provincia:  resultadosConsulta[0].provincia, 
+            habilitado: Boolean(resultadosConsulta[0].habilitado), 
+            central:    Boolean(resultadosConsulta[0].central)
         }
 
 

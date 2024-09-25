@@ -105,13 +105,13 @@ async function buscarUsuario(call, callback)
         var resultadosConsulta = await conexionDataBase.query(consultaSQL, parametros);
 
         var respuesta = {
-            id:            resultadosConsulta[i].id, 
-            usuario:       resultadosConsulta[i].usuario, 
-            password:      resultadosConsulta[i].password, 
-            nombre:        resultadosConsulta[i].nombre, 
-            apellido:      resultadosConsulta[i].apellido, 
-            habilitado:    resultadosConsulta[i].habilitado, 
-            tienda_codigo: resultadosConsulta[i].tienda_codigo 
+            id:            resultadosConsulta[0].id, 
+            usuario:       resultadosConsulta[0].usuario, 
+            password:      resultadosConsulta[0].password, 
+            nombre:        resultadosConsulta[0].nombre, 
+            apellido:      resultadosConsulta[0].apellido, 
+            habilitado:    resultadosConsulta[0].habilitado, 
+            tienda_codigo: resultadosConsulta[0].tienda_codigo 
         }
 
 
