@@ -37,12 +37,12 @@ def altaTienda():
     return MessageToJson(response)
 
 
-@app.route('/buscarTiendas', methods=['POST'])
+@app.route('/buscarTienda', methods=['POST'])
 def  buscarTiendas():
 
     solicitud= serviciosStockearte_pb2.buscarTiendaRequest(**request.json)
 
-    response=stub.buscarTiendas(solicitud)
+    response=stub.buscarTienda(solicitud)
     return MessageToJson(response)
 
 
@@ -124,12 +124,12 @@ def altaProducto():
     return MessageToJson(response)
 
 
-@app.route('/buscarProductos', methods=['POST'])
+@app.route('/buscarProducto', methods=['POST'])
 def  buscarProductos():
 
-    solicitud= serviciosStockearte_pb2.buscarProductosRequest(**request.json)
+    solicitud= serviciosStockearte_pb2.buscarProductoRequest(**request.json)
 
-    response=stub.buscarProductos(solicitud)
+    response=stub.buscarProducto(solicitud)
     return MessageToJson(response)
 
 
