@@ -172,32 +172,28 @@ class TiendaObject(_message.Message):
     def __init__(self, codigo: _Optional[str] = ...) -> None: ...
 
 class buscarProductoRequest(_message.Message):
-    __slots__ = ("usuarioCentral", "codigo", "nombre", "talle", "color")
+    __slots__ = ("usuarioCentral", "codigoProductoABuscar")
     USUARIOCENTRAL_FIELD_NUMBER: _ClassVar[int]
-    CODIGO_FIELD_NUMBER: _ClassVar[int]
-    NOMBRE_FIELD_NUMBER: _ClassVar[int]
-    TALLE_FIELD_NUMBER: _ClassVar[int]
-    COLOR_FIELD_NUMBER: _ClassVar[int]
+    CODIGOPRODUCTOABUSCAR_FIELD_NUMBER: _ClassVar[int]
     usuarioCentral: str
-    codigo: str
-    nombre: str
-    talle: str
-    color: str
-    def __init__(self, usuarioCentral: _Optional[str] = ..., codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., color: _Optional[str] = ...) -> None: ...
+    codigoProductoABuscar: str
+    def __init__(self, usuarioCentral: _Optional[str] = ..., codigoProductoABuscar: _Optional[str] = ...) -> None: ...
 
 class producto(_message.Message):
-    __slots__ = ("codigo", "nombre", "talle", "color", "foto")
+    __slots__ = ("codigo", "nombre", "talle", "color", "foto", "tienda_codigo")
     CODIGO_FIELD_NUMBER: _ClassVar[int]
     NOMBRE_FIELD_NUMBER: _ClassVar[int]
     TALLE_FIELD_NUMBER: _ClassVar[int]
     COLOR_FIELD_NUMBER: _ClassVar[int]
     FOTO_FIELD_NUMBER: _ClassVar[int]
+    TIENDA_CODIGO_FIELD_NUMBER: _ClassVar[int]
     codigo: str
     nombre: str
     talle: str
     color: str
     foto: str
-    def __init__(self, codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., color: _Optional[str] = ..., foto: _Optional[str] = ...) -> None: ...
+    tienda_codigo: str
+    def __init__(self, codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., color: _Optional[str] = ..., foto: _Optional[str] = ..., tienda_codigo: _Optional[str] = ...) -> None: ...
 
 class arregloProductos(_message.Message):
     __slots__ = ("arregloProductos",)

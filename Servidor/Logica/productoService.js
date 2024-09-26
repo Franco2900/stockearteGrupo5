@@ -82,62 +82,33 @@ async function buscarProducto(call, callback) {
         // Recibo los datos
         const registro =
         {
-            usuarioCentral: call.request.usuarioCentral,
-            codigo:         call.request.codigo,
-            nombre:         call.request.nombre,
-            talle:          call.request.talle,
-            color:          call.request.color
+            usuarioCentral:         call.request.usuarioCentral,
+            codigoProductoABuscar:  call.request.codigoProductoABuscar
         }
 
         var usuarioCentralEsValido = await conexionDataBase.chequearEsUsuarioValido(registro.usuarioCentral);
         if(usuarioCentralEsValido !== true) return callback(null, { mensaje: usuarioCentralEsValido });
 
         // Armado de la consulta
-        let consultaSQL = `SELECT codigo, nombre, talle, foto, color 
+        let consultaSQL = `SELECT codigo, nombre, talle, foto, color, tienda_codigo 
                            FROM producto 
-                           WHERE 1=1`;
-
-        let parametros = [];
-
-        if (registro.codigo) // Si hay un dato a buscar
-        {
-            consultaSQL += ` AND codigo = ?`;
-            parametros.push(registro.codigo);
-        }
-
-        if (registro.nombre)
-        {
-            consultaSQL += ` AND nombre = ?`;
-            parametros.push(registro.nombre);
-        }
-
-        if (registro.talle) 
-        {
-            consultaSQL += ` AND talle = ?`;
-            parametros.push(registro.talle);
-        }
-
-        if (registro.color) 
-        {
-            consultaSQL += ` AND color = ?`;
-            parametros.push(registro.color);
-        }
-
-        if (parametros.length === 0) return callback(null, { mensaje: "ERROR: La consulta está vacía" }); // Si no hay ningún dato
-
+                           INNER JOIN tienda_x_producto
+                           ON producto.codigo = tienda_x_producto.producto_codigo
+                           WHERE 1=1 AND codigo = '${registro.codigoProductoABuscar}' `;
 
         // Se realiza la consulta
-        var resultadosConsulta = await conexionDataBase.query(consultaSQL, parametros);
+        var resultadosConsulta = await conexionDataBase.query(consultaSQL, {});
 
         var respuesta = [];
         for(var i = 0; i < resultadosConsulta.length; i++)
         {
             respuesta.push({
-                codigo:     resultadosConsulta[i].codigo, 
-                nombre:     resultadosConsulta[i].nombre, 
-                talle:      resultadosConsulta[i].talle, 
-                foto:       resultadosConsulta[i].foto, 
-                color:      resultadosConsulta[i].color
+                codigo:        resultadosConsulta[i].codigo, 
+                nombre:        resultadosConsulta[i].nombre, 
+                talle:         resultadosConsulta[i].talle, 
+                foto:          resultadosConsulta[i].foto, 
+                color:         resultadosConsulta[i].color,
+                tienda_codigo: resultadosConsulta[i].tienda_codigo,
             });
         }
 
@@ -146,10 +117,7 @@ async function buscarProducto(call, callback) {
         console.log('************************************************************');
         console.log('Consultando datos');
         console.log('Consulta solicitada: Buscar producto por código y/o nombre y/o talle y/o color');
-        console.log('Codigo producto consultado: ' + registro.codigo);
-        console.log('Nombre consultado: ' + registro.nombre);
-        console.log('Talle consultado: ' + registro.talle);
-        console.log('Color consultado: ' + registro.color);
+        console.log('Codigo producto consultado: ' + registro.codigoProductoABuscar);
         console.log('Datos devueltos al cliente:');
         console.log(respuesta);
         return callback(null, {arregloProductos: respuesta});

@@ -82,7 +82,7 @@ class stockearteServiceStub(object):
         self.buscarProducto = channel.unary_unary(
                 '/stockeartePackage.stockearteService/buscarProducto',
                 request_serializer=serviciosStockearte__pb2.buscarProductoRequest.SerializeToString,
-                response_deserializer=serviciosStockearte__pb2.producto.FromString,
+                response_deserializer=serviciosStockearte__pb2.arregloProductos.FromString,
                 _registered_method=True)
         self.buscarTodosLosProductos = channel.unary_unary(
                 '/stockeartePackage.stockearteService/buscarTodosLosProductos',
@@ -292,7 +292,7 @@ def add_stockearteServiceServicer_to_server(servicer, server):
             'buscarProducto': grpc.unary_unary_rpc_method_handler(
                     servicer.buscarProducto,
                     request_deserializer=serviciosStockearte__pb2.buscarProductoRequest.FromString,
-                    response_serializer=serviciosStockearte__pb2.producto.SerializeToString,
+                    response_serializer=serviciosStockearte__pb2.arregloProductos.SerializeToString,
             ),
             'buscarTodosLosProductos': grpc.unary_unary_rpc_method_handler(
                     servicer.buscarTodosLosProductos,
@@ -604,7 +604,7 @@ class stockearteService(object):
             target,
             '/stockeartePackage.stockearteService/buscarProducto',
             serviciosStockearte__pb2.buscarProductoRequest.SerializeToString,
-            serviciosStockearte__pb2.producto.FromString,
+            serviciosStockearte__pb2.arregloProductos.FromString,
             options,
             channel_credentials,
             insecure,

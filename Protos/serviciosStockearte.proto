@@ -18,7 +18,7 @@ service stockearteService // Creo el servicio y los métodos que va a tener
 
     // productoService
     rpc altaProducto (altaProductoRequest) returns (mensajeSimple) {}
-    rpc buscarProducto (buscarProductoRequest) returns (producto) {}
+    rpc buscarProducto (buscarProductoRequest) returns (arregloProductos) {}
     rpc buscarTodosLosProductos (buscarTodosLosProductosRequest) returns (arregloProductos_2) {} 
     rpc modificarStock (modificarStockRequest) returns (mensajeSimple) {}
     rpc modificarProducto (modificarProductoRequest) returns (mensajeSimple) {}
@@ -157,11 +157,8 @@ message TiendaObject {
 
 message buscarProductoRequest
 {
-    string usuarioCentral = 1;
-    string codigo         = 2;
-    string nombre         = 3;
-    string talle          = 4;
-    string color          = 5;
+    string usuarioCentral        = 1;
+    string codigoProductoABuscar = 2;
 }
 
 message producto
@@ -171,6 +168,7 @@ message producto
     string talle         = 3;
     string color         = 4;
     string foto          = 5;
+    string tienda_codigo = 6;
 }
 
 message arregloProductos
