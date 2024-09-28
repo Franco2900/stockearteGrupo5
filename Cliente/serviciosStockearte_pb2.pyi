@@ -160,10 +160,10 @@ class altaProductoRequest(_message.Message):
     nombre: str
     codigoProducto: str
     talle: str
-    foto: str
+    foto: bytes
     color: str
     tiendaObject: _containers.RepeatedCompositeFieldContainer[TiendaObject]
-    def __init__(self, nombre: _Optional[str] = ..., codigoProducto: _Optional[str] = ..., talle: _Optional[str] = ..., foto: _Optional[str] = ..., color: _Optional[str] = ..., tiendaObject: _Optional[_Iterable[_Union[TiendaObject, _Mapping]]] = ...) -> None: ...
+    def __init__(self, nombre: _Optional[str] = ..., codigoProducto: _Optional[str] = ..., talle: _Optional[str] = ..., foto: _Optional[bytes] = ..., color: _Optional[str] = ..., tiendaObject: _Optional[_Iterable[_Union[TiendaObject, _Mapping]]] = ...) -> None: ...
 
 class TiendaObject(_message.Message):
     __slots__ = ("codigo",)
@@ -191,9 +191,9 @@ class producto(_message.Message):
     nombre: str
     talle: str
     color: str
-    foto: str
+    foto: bytes
     tienda_codigo: str
-    def __init__(self, codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., color: _Optional[str] = ..., foto: _Optional[str] = ..., tienda_codigo: _Optional[str] = ...) -> None: ...
+    def __init__(self, codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., color: _Optional[str] = ..., foto: _Optional[bytes] = ..., tienda_codigo: _Optional[str] = ...) -> None: ...
 
 class arregloProductos(_message.Message):
     __slots__ = ("arregloProductos",)
@@ -253,9 +253,9 @@ class modificarProductoRequest(_message.Message):
     codigo: str
     nombre: str
     talle: str
-    foto: str
+    foto: bytes
     color: str
-    def __init__(self, codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., foto: _Optional[str] = ..., color: _Optional[str] = ...) -> None: ...
+    def __init__(self, codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., foto: _Optional[bytes] = ..., color: _Optional[str] = ...) -> None: ...
 
 class buscarCodigoRequest(_message.Message):
     __slots__ = ("codigo",)
@@ -314,10 +314,10 @@ class productoDeLaTienda(_message.Message):
     nombre: str
     talle: str
     color: str
-    foto: str
+    foto: bytes
     tienda_codigo: str
     stock: int
-    def __init__(self, codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., color: _Optional[str] = ..., foto: _Optional[str] = ..., tienda_codigo: _Optional[str] = ..., stock: _Optional[int] = ...) -> None: ...
+    def __init__(self, codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., color: _Optional[str] = ..., foto: _Optional[bytes] = ..., tienda_codigo: _Optional[str] = ..., stock: _Optional[int] = ...) -> None: ...
 
 class traerProductosDeLaTiendaResponse(_message.Message):
     __slots__ = ("arregloProductoDeLaTienda",)
