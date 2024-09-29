@@ -227,6 +227,30 @@ class producto_2(_message.Message):
     arregloCodigosDeTienda: _containers.RepeatedCompositeFieldContainer[arregloCodigosDeTienda]
     def __init__(self, codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., color: _Optional[str] = ..., arregloCodigosDeTienda: _Optional[_Iterable[_Union[arregloCodigosDeTienda, _Mapping]]] = ...) -> None: ...
 
+class arregloProductos_3(_message.Message):
+    __slots__ = ("arregloProductos_3",)
+    ARREGLOPRODUCTOS_3_FIELD_NUMBER: _ClassVar[int]
+    arregloProductos_3: _containers.RepeatedCompositeFieldContainer[producto_3]
+    def __init__(self, arregloProductos_3: _Optional[_Iterable[_Union[producto_3, _Mapping]]] = ...) -> None: ...
+
+class producto_3(_message.Message):
+    __slots__ = ("codigo", "nombre", "talle", "foto", "color", "codigoTienda", "stock")
+    CODIGO_FIELD_NUMBER: _ClassVar[int]
+    NOMBRE_FIELD_NUMBER: _ClassVar[int]
+    TALLE_FIELD_NUMBER: _ClassVar[int]
+    FOTO_FIELD_NUMBER: _ClassVar[int]
+    COLOR_FIELD_NUMBER: _ClassVar[int]
+    CODIGOTIENDA_FIELD_NUMBER: _ClassVar[int]
+    STOCK_FIELD_NUMBER: _ClassVar[int]
+    codigo: str
+    nombre: str
+    talle: str
+    foto: bytes
+    color: str
+    codigoTienda: str
+    stock: int
+    def __init__(self, codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., foto: _Optional[bytes] = ..., color: _Optional[str] = ..., codigoTienda: _Optional[str] = ..., stock: _Optional[int] = ...) -> None: ...
+
 class arregloCodigosDeTienda(_message.Message):
     __slots__ = ("codigoTienda",)
     CODIGOTIENDA_FIELD_NUMBER: _ClassVar[int]
@@ -256,6 +280,14 @@ class modificarProductoRequest(_message.Message):
     foto: bytes
     color: str
     def __init__(self, codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., foto: _Optional[bytes] = ..., color: _Optional[str] = ...) -> None: ...
+
+class asignarYDesasignarProductoRequest(_message.Message):
+    __slots__ = ("codigoTienda", "codigoProducto")
+    CODIGOTIENDA_FIELD_NUMBER: _ClassVar[int]
+    CODIGOPRODUCTO_FIELD_NUMBER: _ClassVar[int]
+    codigoTienda: str
+    codigoProducto: str
+    def __init__(self, codigoTienda: _Optional[str] = ..., codigoProducto: _Optional[str] = ...) -> None: ...
 
 class buscarCodigoRequest(_message.Message):
     __slots__ = ("codigo",)

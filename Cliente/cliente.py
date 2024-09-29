@@ -133,7 +133,7 @@ def  buscarProductos():
     return MessageToJson(response)
 
 
-@app.route('/buscarTodosLosProductos', methods=['GET'])
+@app.route('/buscarTodosLosProductos', methods=['POST'])
 def  buscarTodosLosProductos():    
 
     solicitud= serviciosStockearte_pb2.buscarTodosLosProductosRequest(**request.json)
