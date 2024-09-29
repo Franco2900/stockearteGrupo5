@@ -145,7 +145,7 @@ message altaProductoRequest
     string nombre         = 1;
     string codigoProducto = 2;
     string talle          = 3;
-    string foto           = 4;
+    bytes foto           = 4;
     string color          = 5;
     repeated TiendaObject tiendaObject = 6;
 }
@@ -167,7 +167,7 @@ message producto
     string nombre        = 2;
     string talle         = 3;
     string color         = 4;
-    string foto          = 5;
+    bytes foto          = 5;
     string tienda_codigo = 6;
 }
 
@@ -214,7 +214,7 @@ message modificarProductoRequest
     string codigo = 1;
     string nombre = 2;
     string talle  = 3;
-    string foto   = 4;
+    bytes foto   = 4;
     string color  = 5;
 }
 
@@ -258,7 +258,7 @@ message productoDeLaTienda
     string nombre        = 2;
     string talle         = 3;
     string color         = 4;
-    string foto          = 5;
+    bytes foto          = 5;
     string tienda_codigo = 6;
     optional int32  stock         = 7;
 }
