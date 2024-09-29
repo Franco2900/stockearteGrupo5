@@ -22,6 +22,8 @@ service stockearteService // Creo el servicio y los métodos que va a tener
     rpc buscarTodosLosProductos (buscarTodosLosProductosRequest) returns (arregloProductos_2) {} 
     rpc modificarStock (modificarStockRequest) returns (mensajeSimple) {}
     rpc modificarProducto (modificarProductoRequest) returns (mensajeSimple) {}
+    rpc asignarProducto (asignarYDesasignarProductoRequest) returns (mensajeSimple) {}
+    rpc desasignarProducto (asignarYDesasignarProductoRequest) returns (mensajeSimple) {}
 
     // Funciones complementarias
     rpc traerUsuarioPorId (buscarIdRequest) returns (usuario) {}
@@ -218,6 +220,10 @@ message modificarProductoRequest
     string color  = 5;
 }
 
+message asignarYDesasignarProductoRequest{
+    string codigoTienda = 1;
+    string codigoProducto =2;
+}
 
 // Funciones complementarias
 message buscarCodigoRequest 

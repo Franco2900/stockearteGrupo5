@@ -438,10 +438,68 @@ async function modificarProducto(call, callback)
 
 }
 
+async function asignarProducto(call, callback) 
+{
+    console.log('************************************************************');
+    console.log('Asignando el producto a una tienda');
+
+    // Acá van los datos que nos llegan del cliente desde gRPC
+    const { codigoTienda, codigoProducto} = call.request;
+
+    try
+    { 
+        await conexionDataBase.query(
+            'INSERT INTO tienda_x_producto (tienda_codigo, producto_codigo, stock) VALUES (?, ?, ?)',
+            [codigoTienda, codigoProducto, 0]
+        );
+
+        console.log('Se asigno el producto a la tienda');
+        console.log(call.request);
+        return callback(null, { mensaje: `Se asigno el producto con codigo ${codigoProducto} a la tienda con codigo ${codigoTienda} ` });
+    } 
+    catch (error) 
+    {
+        console.log(error);
+        return callback(error);
+    }
+    
+}
+
+
+
+async function desasignarProducto(call, callback) 
+{
+    console.log('************************************************************');
+    console.log('Desasignando el producto a una tienda');
+
+    // Acá van los datos que nos llegan del cliente desde gRPC
+    const { codigoTienda, codigoProducto} = call.request;
+
+    try
+    { 
+        await conexionDataBase.query(
+            'DELETE FROM tienda_x_producto WHERE tienda_codigo = ? AND producto_codigo = ?',
+            [codigoTienda, codigoProducto]
+        );
+
+        console.log('Se asigno el producto a la tienda');
+        console.log(call.request);
+        return callback(null, { mensaje: `Se desasigno el producto con codigo ${codigoProducto} a la tienda con codigo ${codigoTienda} ` });
+    } 
+    catch (error) 
+    {
+        console.log(error);
+        return callback(error);
+    }
+    
+}
+
 
 /*********************************** EXPORTACIÓN DE LA LÓGICA ***********************************/
 exports.altaProducto            = altaProducto
-exports.buscarProducto         = buscarProducto
+exports.buscarProducto          = buscarProducto
 exports.buscarTodosLosProductos = buscarTodosLosProductos
 exports.modificarStock          = modificarStock
 exports.modificarProducto       = modificarProducto
+exports.asignarProducto         = asignarProducto
+exports.desasignarProducto      = desasignarProducto

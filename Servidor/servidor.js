@@ -38,6 +38,8 @@ const buscarProducto          = productoService.buscarProducto.bind({});
 const buscarTodosLosProductos = productoService.buscarTodosLosProductos.bind({});
 const modificarStock          = productoService.modificarStock.bind({});
 const modificarProducto       = productoService.modificarProducto.bind({});
+const asignarProducto         = productoService.asignarProducto.bind({});
+const desasignarProducto      = productoService.desasignarProducto.bind({});
 
 
 //Funciones complementarias
@@ -71,6 +73,8 @@ servidor.addService(stockeartePackage.stockearteService.service, {
     buscarTodosLosProductos,
     modificarStock,
     modificarProducto,
+    asignarProducto,
+    desasignarProducto,
 
     //Funciones complementarias
     traerUsuarioPorId,
