@@ -91,7 +91,7 @@ async function buscarProducto(call, callback) {
 
         // Armado de la consulta
         let consultaSQL = `SELECT codigo, nombre, talle, foto, color, tienda_codigo 
-                           FROM producto 
+                           FROM producto
                            INNER JOIN tienda_x_producto
                            ON producto.codigo = tienda_x_producto.producto_codigo
                            WHERE 1=1 AND codigo = '${registro.codigoProductoABuscar}' `;
@@ -225,27 +225,23 @@ async function buscarTodosLosProductos(call, callback)
         if(existeUsuario && usuarioEsDeCasaCentral)
         {
             var resultados = await conexionDataBase.query(
-                `SELECT p.codigo, p.nombre, p.talle, p.color, subconsulta.tiendas 
-                FROM producto p
-                JOIN (
-                    SELECT tienda_x_producto.producto_codigo, GROUP_CONCAT(tienda_x_producto.tienda_codigo) AS tiendas
-                    FROM tienda_x_producto
-                    GROUP BY tienda_x_producto.producto_codigo
-                ) subconsulta
-                ON p.codigo = subconsulta.producto_codigo;`, {}
+                `SELECT p.codigo AS producto_codigo, p.nombre, p.talle, p.foto, p.color, txp.tienda_codigo, txp.stock
+                FROM  producto p
+                JOIN  tienda_x_producto txp ON p.codigo = txp.producto_codigo`, {}
             );
-        
+            console.log(typeof( parseInt(resultados[0].stock, 10) ) );
             var respuesta = [];
             for(var i = 0; i < resultados.length; i++)
             {
-                var auxArregloCodigosDeTienda = resultados[i].tiendas.split(",").map(codigo => ({ codigoTienda: codigo }));
-
+                //var auxArregloCodigosDeTienda = resultados[i].tiendas.split(",").map(codigo => ({ codigoTienda: codigo }));
                 respuesta.push({ 
-                    codigo:                 resultados[i].codigo, 
+                    codigo:                 resultados[i].producto_codigo, 
                     nombre:                 resultados[i].nombre, 
                     talle:                  resultados[i].talle, 
-                    color:                  resultados[i].color, 
-                    arregloCodigosDeTienda: auxArregloCodigosDeTienda  
+                    foto:                   resultados[i].foto,
+                    color:                  resultados[i].color,
+                    codigoTienda:           resultados[i].tienda_codigo,
+                    stock:                  parseInt(resultados[i].stock, 10)
                 });
             }
 
@@ -253,44 +249,32 @@ async function buscarTodosLosProductos(call, callback)
             console.log('Consulta solicitada: Listado de productos');
             console.log('Usuario que solicito los datos: ' + usuarioCentral);
             console.log('Datos devueltos al cliente:');
-            console.log(JSON.stringify(respuesta, null, 2));
-            return callback(null, {arregloProductos_2: respuesta} );
+            //console.log(JSON.stringify(respuesta, null, 2));
+            return callback(null, {arregloProductos_3: respuesta} );
         }
 
         if(existeUsuario && !usuarioEsDeCasaCentral)
         {
             var resultados = await conexionDataBase.query(
-                `SELECT p.codigo, p.nombre, p.talle, p.color, subconsulta.tiendas 
-                FROM producto p
-                JOIN (
-                    SELECT tienda_x_producto.producto_codigo, GROUP_CONCAT(tienda_x_producto.tienda_codigo) AS tiendas
-                    FROM tienda_x_producto
-                    GROUP BY tienda_x_producto.producto_codigo
-                ) subconsulta
-                ON p.codigo = subconsulta.producto_codigo
-                WHERE
-                    p.codigo IN (
-                        SELECT tienda_x_producto.producto_codigo
-                        FROM tienda_x_producto
-                        WHERE tienda_x_producto.tienda_codigo = (
-                            SELECT u.tienda_codigo
-                            FROM usuario u
-                            WHERE u.usuario = '${usuarioCentral}'
-                        )
-                    )`, {}
+                `SELECT p.codigo AS producto_codigo, p.nombre, p.talle, p.foto, p.color, txp.tienda_codigo, txp.stock
+                FROM  producto p
+                JOIN  tienda_x_producto txp ON p.codigo = txp.producto_codigo
+                WHERE txp.tienda_codigo = ( SELECT u.tienda_codigo FROM usuario u WHERE u.usuario = '${usuarioCentral}')`, {}
             );
-        
+            
+            console.log(typeof( parseInt(resultados[0].stock, 10) ) );
             var respuesta = [];
             for(var i = 0; i < resultados.length; i++)
             {
-                var auxArregloCodigosDeTienda = resultados[i].tiendas.split(",").map(codigo => ({ codigoTienda: codigo }));
-
-                respuesta.push({
-                    codigo:                 resultados[i].codigo, 
+                //var auxArregloCodigosDeTienda = resultados[i].tiendas.split(",").map(codigo => ({ codigoTienda: codigo }));
+                respuesta.push({ 
+                    codigo:                 resultados[i].producto_codigo, 
                     nombre:                 resultados[i].nombre, 
                     talle:                  resultados[i].talle, 
-                    color:                  resultados[i].color, 
-                    arregloCodigosDeTienda: auxArregloCodigosDeTienda  
+                    foto:                   resultados[i].foto,
+                    color:                  resultados[i].color,
+                    codigoTienda:           resultados[i].tienda_codigo,
+                    stock:                  parseInt(resultados[i].stock, 10)
                 });
             }
 
@@ -298,15 +282,14 @@ async function buscarTodosLosProductos(call, callback)
             console.log('Consulta solicitada: Listado de productos');
             console.log('Usuario que solicito los datos: ' + usuarioCentral);
             console.log('Datos devueltos al cliente:');
-            console.log(JSON.stringify(respuesta, null, 2));
-            return callback(null, {arregloProductos_2: respuesta} );
+            //console.log(JSON.stringify(respuesta, null, 2));
+            return callback(null, {arregloProductos_3: respuesta} );
         }
 
         if(!existeUsuario) return callback(null, {mensaje: `ERROR: El usuario ${usuarioCentral} no existe`} );
     }
     catch(error) {console.log(error);}
 }
-
 
 
 async function modificarStock(call, callback) {

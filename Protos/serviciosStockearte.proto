@@ -19,7 +19,8 @@ service stockearteService // Creo el servicio y los métodos que va a tener
     // productoService
     rpc altaProducto (altaProductoRequest) returns (mensajeSimple) {}
     rpc buscarProducto (buscarProductoRequest) returns (arregloProductos) {}
-    rpc buscarTodosLosProductos (buscarTodosLosProductosRequest) returns (arregloProductos_2) {} 
+    //rpc buscarTodosLosProductos (buscarTodosLosProductosRequest) returns (arregloProductos_2) {} 
+    rpc buscarTodosLosProductos (buscarTodosLosProductosRequest) returns (arregloProductos_3) {}
     rpc modificarStock (modificarStockRequest) returns (mensajeSimple) {}
     rpc modificarProducto (modificarProductoRequest) returns (mensajeSimple) {}
     rpc asignarProducto (asignarYDesasignarProductoRequest) returns (mensajeSimple) {}
@@ -198,6 +199,22 @@ message producto_2
     repeated arregloCodigosDeTienda arregloCodigosDeTienda = 5;
 }
 
+message arregloProductos_3
+{
+    repeated producto_3 arregloProductos_3 = 1;
+}
+
+message producto_3
+{
+    string codigo  = 1;
+    string nombre  = 2;
+    string talle   = 3;
+    bytes foto     = 4;
+    string color   = 5;
+    string codigoTienda = 6;
+    int32 stock = 7;
+}
+
 message arregloCodigosDeTienda
 {
     string codigoTienda = 1;
@@ -264,7 +281,7 @@ message productoDeLaTienda
     string nombre        = 2;
     string talle         = 3;
     string color         = 4;
-    bytes foto          = 5;
+    bytes foto           = 5;
     string tienda_codigo = 6;
     optional int32  stock         = 7;
 }
