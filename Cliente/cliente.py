@@ -106,21 +106,44 @@ def  modificarUsuario():
 # productoService 
 #####################################################################################################
 
+#@app.route('/altaProducto', methods=['POST'])
+#def altaProducto():
+#    # Convertir la imagen a base64
+#    foto = request.files['foto']
+#    foto_base64 = base64.b64encode(foto.read()).decode('utf-8')
+#
+#    # Convertir el string JSON a un diccionario de Python
+#    data = json.loads(request.form['data'])
+#    data['foto']=foto_base64
+#
+#    
+#    # Crear la solicitud gRPC con la imagen en bytes
+#    solicitud= serviciosStockearte_pb2.altaProductoRequest(**data)
+#
+#    response=stub.altaProducto(solicitud)
+#    return MessageToJson(response)
+
+#@app.route('/altaProducto', methods=['POST'])
+#def altaProducto():
+#    # Convertir el string JSON a un diccionario de Python
+#    data = request.json
+#
+#    # Crear la solicitud gRPC con la imagen en bytes
+#    solicitud = serviciosStockearte_pb2.altaProductoRequest(**data)
+#
+#    response = stub.altaProducto(solicitud)
+#    return MessageToJson(response)
 @app.route('/altaProducto', methods=['POST'])
 def altaProducto():
-    # Convertir la imagen a base64
-    foto = request.files["foto"]
-    foto_base64 = base64.b64encode(foto.read()).decode('utf-8')
-
-    # Convertir el string JSON a un diccionario de Python
-    data = json.loads(request.form['data'])
-    data['foto']=foto_base64
-
+    data = request.json
+    print(data)
+    # Convertir el campo "foto" a bytes
+    data['foto'] = base64.b64decode(data['foto'])
     
-    # Crear la solicitud gRPC con la imagen en bytes
-    solicitud= serviciosStockearte_pb2.altaProductoRequest(**data)
-
-    response=stub.altaProducto(solicitud)
+    # Crear la solicitud gRPC
+    solicitud = serviciosStockearte_pb2.altaProductoRequest(**data)
+    
+    response = stub.altaProducto(solicitud)
     return MessageToJson(response)
 
 
