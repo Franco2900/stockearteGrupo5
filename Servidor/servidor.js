@@ -52,6 +52,12 @@ const hacerLogin               = grpc_complementario.hacerLogin.bind({});
 const traerProductosDeLaTienda = grpc_complementario.traerProductosDeLaTienda.bind({});
 
 
+// Funciones proveedorService
+const proveedorService = require('./Logica/proveedorService.js');
+
+const traerNovedades = proveedorService.traerNovedades.bind({});
+proveedorService.consumirNovedades(); // Esto es una función automatica que va a estar todo el tiempo activa, no es para gRPC
+
 // Añado las funciones al servicio
 servidor.addService(stockeartePackage.stockearteService.service, { 
 
@@ -76,16 +82,20 @@ servidor.addService(stockeartePackage.stockearteService.service, {
     asignarProducto,
     desasignarProducto,
 
-    //Funciones complementarias
+    // Funciones complementarias
     traerUsuarioPorId,
     traerTiendaPorCodigo,
     traerProductoPorCodigo,
     hacerLogin,
-    traerProductosDeLaTienda
+    traerProductosDeLaTienda,
+
+    // proveedorService
+    traerNovedades
 });
+
 
 /**************************************** INICIO SERVIDOR GRPC ********************************************************/
 // Enlazo el servidor a una dirección IP y un puerto y lo arranco
 servidor.bindAsync("0.0.0.0:8000", gRPC.ServerCredentials.createInsecure(), () => {
-    console.log('Servidor BackEnd Node.js iniciado');
+    console.log('Servidor Tienda iniciado');
 });

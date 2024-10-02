@@ -32,6 +32,9 @@ service stockearteService // Creo el servicio y los métodos que va a tener
     rpc traerProductoPorCodigo (buscarCodigoRequest) returns (producto) {}
     rpc hacerLogin (hacerLoginRequest) returns (hacerLoginResponse) {}
     rpc traerProductosDeLaTienda (traerProductosDeLaTiendaRequest) returns (traerProductosDeLaTiendaResponse) {}
+
+    // proveedorService
+    rpc traerNovedades (traerNovedadesRequest) returns (arregloProductos) {}
 }
 
 /*********************************************************************************************/
@@ -289,4 +292,9 @@ message productoDeLaTienda
 message traerProductosDeLaTiendaResponse
 {
     repeated productoDeLaTienda arregloProductoDeLaTienda = 1;
+}
+
+message traerNovedadesRequest
+{
+    string tienda_codigo = 1;
 }
