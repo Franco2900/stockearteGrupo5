@@ -136,7 +136,7 @@ def  modificarUsuario():
 @app.route('/altaProducto', methods=['POST'])
 def altaProducto():
     data = request.json
-    print(data)
+    # print(data)
     # Convertir el campo "foto" a bytes
     data['foto'] = base64.b64decode(data['foto'])
     
@@ -176,8 +176,11 @@ def  modificarStock():
 
 @app.route('/modificarProducto', methods=['POST'])
 def  modificarProducto():
-
-    solicitud= serviciosStockearte_pb2.modificarProductoRequest(**request.json)
+    data = request.json
+    print(data)
+    # Convertir el campo "foto" a bytes
+    data['foto'] = base64.b64decode(data['foto'])
+    solicitud= serviciosStockearte_pb2.modificarProductoRequest(**data)
 
     response=stub.modificarProducto(solicitud)
     return MessageToJson(response)

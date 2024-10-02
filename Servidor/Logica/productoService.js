@@ -400,11 +400,17 @@ async function modificarProducto(call, callback)
         console.log(resultados);
 
 
-        await conexionDataBase.query( // Actualizo el producto
-            `UPDATE producto
-            SET nombre = '${registro.nombre}', talle = '${registro.talle}', foto = '${registro.foto}', color = '${registro.color}'
-            WHERE codigo = '${registro.codigo}' `, {}
-        )
+       // await conexionDataBase.query( // Actualizo el producto
+       //     `UPDATE producto
+       //     SET nombre = '${registro.nombre}', talle = '${registro.talle}', foto = '${registro.foto}', color = '${registro.color}'
+       //     WHERE codigo = '${registro.codigo}' `, {}
+       // )
+	   await conexionDataBase.query(
+				`UPDATE producto
+				SET nombre = '${registro.nombre}', talle = '${registro.talle}', foto = ?, color = '${registro.color}'
+				WHERE codigo = '${registro.codigo}' `,
+				[registro.foto] // Pasar el binario como parámetro
+				)
 
 
         console.log('Datos después de la modificación');
