@@ -173,8 +173,9 @@ message producto
     string nombre        = 2;
     string talle         = 3;
     string color         = 4;
-    bytes foto          = 5;
+    bytes foto           = 5;
     string tienda_codigo = 6;
+    optional int32 stock = 7;
 }
 
 message arregloProductos

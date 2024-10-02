@@ -180,20 +180,22 @@ class buscarProductoRequest(_message.Message):
     def __init__(self, usuarioCentral: _Optional[str] = ..., codigoProductoABuscar: _Optional[str] = ...) -> None: ...
 
 class producto(_message.Message):
-    __slots__ = ("codigo", "nombre", "talle", "color", "foto", "tienda_codigo")
+    __slots__ = ("codigo", "nombre", "talle", "color", "foto", "tienda_codigo", "stock")
     CODIGO_FIELD_NUMBER: _ClassVar[int]
     NOMBRE_FIELD_NUMBER: _ClassVar[int]
     TALLE_FIELD_NUMBER: _ClassVar[int]
     COLOR_FIELD_NUMBER: _ClassVar[int]
     FOTO_FIELD_NUMBER: _ClassVar[int]
     TIENDA_CODIGO_FIELD_NUMBER: _ClassVar[int]
+    STOCK_FIELD_NUMBER: _ClassVar[int]
     codigo: str
     nombre: str
     talle: str
     color: str
     foto: bytes
     tienda_codigo: str
-    def __init__(self, codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., color: _Optional[str] = ..., foto: _Optional[bytes] = ..., tienda_codigo: _Optional[str] = ...) -> None: ...
+    stock: int
+    def __init__(self, codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., color: _Optional[str] = ..., foto: _Optional[bytes] = ..., tienda_codigo: _Optional[str] = ..., stock: _Optional[int] = ...) -> None: ...
 
 class arregloProductos(_message.Message):
     __slots__ = ("arregloProductos",)

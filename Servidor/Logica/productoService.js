@@ -90,7 +90,7 @@ async function buscarProducto(call, callback) {
         if(usuarioCentralEsValido !== true) return callback(null, { mensaje: usuarioCentralEsValido });
 
         // Armado de la consulta
-        let consultaSQL = `SELECT codigo, nombre, talle, foto, color, tienda_codigo 
+        let consultaSQL = `SELECT codigo, nombre, talle, foto, color, tienda_codigo, stock 
                            FROM producto
                            INNER JOIN tienda_x_producto
                            ON producto.codigo = tienda_x_producto.producto_codigo
@@ -109,6 +109,7 @@ async function buscarProducto(call, callback) {
                 foto:          resultadosConsulta[i].foto, 
                 color:         resultadosConsulta[i].color,
                 tienda_codigo: resultadosConsulta[i].tienda_codigo,
+                stock:         parseInt(resultados[i].stock, 10)
             });
         }
 
@@ -131,85 +132,6 @@ async function buscarProducto(call, callback) {
 }
 
 
-
-/* ESTA DEVUELVE LOS DATO MAL
-async function buscarTodosLosProductos(call, callback) 
-{
-    var usuarioCentral = call.request.usuarioCentral;
-
-    try
-    {
-        // Compruebo si el usuario que solicita los datos es válido
-        var existeUsuario          = await conexionDataBase.chequearExistenciaUsuario(usuarioCentral);
-        var usuarioEsDeCasaCentral = await conexionDataBase.chequearCasaCentral(usuarioCentral);
-    
-        if(existeUsuario && usuarioEsDeCasaCentral)
-        {
-            var resultados = await conexionDataBase.query(
-                `SELECT codigo, nombre, talle, color, tienda_codigo 
-                FROM producto 
-                INNER JOIN tienda_x_producto
-                ON producto.codigo = tienda_x_producto.producto_codigo `, {}
-            );
-        
-            var respuesta = [];
-            for(var i = 0; i < resultados.length; i++)
-            {
-                respuesta.push({ 
-                    codigo:        resultados[i].codigo, 
-                    nombre:        resultados[i].nombre, 
-                    talle:         resultados[i].talle, 
-                    color:         resultados[i].color, 
-                    tienda_codigo: resultados[i].tienda_codigo 
-                });
-            }
-
-            console.log('************************************************************');
-            console.log('Consulta solicitada: Listado de productos');
-            console.log('Usuario que solicito los datos: ' + usuarioCentral);
-            console.log('Datos devueltos al cliente:');
-            console.log(respuesta);
-            return callback(null, {arregloProductos_2: respuesta} );
-        }
-
-        if(existeUsuario && !usuarioEsDeCasaCentral)
-        {
-            var resultados = await conexionDataBase.query(
-                `SELECT producto.codigo, producto.nombre, producto.talle, producto.color, tienda_x_producto.tienda_codigo 
-                FROM producto 
-                INNER JOIN tienda_x_producto
-                ON producto.codigo = tienda_x_producto.producto_codigo
-                WHERE tienda_x_producto.tienda_codigo = 
-                    (SELECT usuario.tienda_codigo 
-                    FROM usuario 
-                    WHERE usuario = '${usuarioCentral}' )`, {}
-            );
-        
-            var respuesta = [];
-            for(var i = 0; i < resultados.length; i++)
-            {
-                respuesta.push({
-                    codigo:        resultados[i].codigo, 
-                    nombre:        resultados[i].nombre, 
-                    talle:         resultados[i].talle, 
-                    color:         resultados[i].color, 
-                    tienda_codigo: resultados[i].tienda_codigo 
-                });
-            }
-
-            console.log('************************************************************');
-            console.log('Consulta solicitada: Listado de productos');
-            console.log('Usuario que solicito los datos: ' + usuarioCentral);
-            console.log('Datos devueltos al cliente:');
-            console.log(respuesta);
-            return callback(null, {arregloProductos_2: respuesta} );
-        }
-
-        if(!existeUsuario) return callback(null, {mensaje: `ERROR: El usuario ${usuarioCentral} no existe`} );
-    }
-    catch(error) {console.log(error);}
-}
-*/
 
 async function buscarTodosLosProductos(call, callback) 
 {
