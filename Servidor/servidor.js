@@ -53,10 +53,11 @@ const traerProductosDeLaTienda = grpc_complementario.traerProductosDeLaTienda.bi
 
 
 // Funciones proveedorService
-//const proveedorService = require('./Logica/proveedorService.js');
+const proveedorService = require('./Logica/proveedorService.js');
 
-//const traerNovedades = proveedorService.traerNovedades.bind({});
-//proveedorService.consumirNovedades(); // Esto es una función automatica que va a estar todo el tiempo activa, no es para gRPC
+const traerNovedades = proveedorService.traerNovedades.bind({});
+proveedorService.consumirNovedades();   // Esto es una función automatica que va a estar todo el tiempo activa, no es para gRPC
+proveedorService.consumirSolicitudes(); // Lo mismo
 
 // Añado las funciones al servicio
 servidor.addService(stockeartePackage.stockearteService.service, { 
