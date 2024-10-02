@@ -234,7 +234,16 @@ def  traerProductosDeLaTienda():
     response=stub.traerProductosDeLaTienda(solicitud)
     return MessageToJson(response)
 
+#####################################################################################################
+# proveedorService 
+#####################################################################################################
+@app.route('/traerNovedadesRequest', methods=['POST'])
+def  traerNovedadesRequest():
 
+    solicitud= serviciosStockearte_pb2.traerNovedadesRequest(**request.json)
+
+    response=stub.traerNovedades(solicitud)
+    return MessageToJson(response)
 
 # Ejecutar la aplicación
 if __name__ == '__main__':

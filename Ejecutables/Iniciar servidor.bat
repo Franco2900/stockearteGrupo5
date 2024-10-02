@@ -1,7 +1,7 @@
 @echo off
-title Servidor
+title Servidor Tienda
 
-echo Iniciando Servidor BackEnd Node.js
+echo Iniciando Servidor Tienda
 cd ../Servidor
 node servidor.js
 
