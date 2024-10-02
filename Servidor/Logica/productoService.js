@@ -109,7 +109,7 @@ async function buscarProducto(call, callback) {
                 foto:          resultadosConsulta[i].foto, 
                 color:         resultadosConsulta[i].color,
                 tienda_codigo: resultadosConsulta[i].tienda_codigo,
-                stock:         parseInt(resultados[i].stock, 10)
+                stock:         parseInt(resultadosConsulta[i].stock, 10)
             });
         }
 
