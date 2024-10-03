@@ -364,3 +364,13 @@ class traerNovedadesRequest(_message.Message):
     TIENDA_CODIGO_FIELD_NUMBER: _ClassVar[int]
     tienda_codigo: str
     def __init__(self, tienda_codigo: _Optional[str] = ...) -> None: ...
+
+class traerOrdenesDeCompraAceptadasYConDespachoRequest(_message.Message):
+    __slots__ = ("tienda_codigo",)
+    TIENDA_CODIGO_FIELD_NUMBER: _ClassVar[int]
+    tienda_codigo: str
+    def __init__(self, tienda_codigo: _Optional[str] = ...) -> None: ...
+
+class traerOrdenesDeCompraAceptadasYConDespachoResponse(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...

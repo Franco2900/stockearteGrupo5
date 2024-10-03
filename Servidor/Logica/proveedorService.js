@@ -15,8 +15,6 @@ const kafka = new Kafka({ // Conexión con kafka
 })
 
 
-
-
 const consumidorNovedades   = kafka.consumer({ groupId: 'consumidorNovedades' }); // Creo un consumidor. Le indico a que grupo de consumidores pertenece.
 /********************** DEFINICIÓN DE LA LÓGICA DE LOS MÉTODOS DECLARADOS EN EL ARCHIVO .PROTO ***********************/
 let hayUnConsumidorCorriendo = false;
@@ -71,11 +69,7 @@ async function traerNovedades(call, callback)
             tienda_codigo: call.request.tienda_codigo
         }
     
-        // Armado de la consulta
-        let consultaSQL = `SELECT * FROM novedades`;
-
-        // Se realiza la consulta
-        var resultadosConsulta = await conexionDataBase.query(consultaSQL, {});
+        var resultadosConsulta = await conexionDataBase.query(`SELECT * FROM novedades`, {});
 
         var respuesta = [];
         for(var i = 0; i < resultadosConsulta.length; i++)
@@ -202,7 +196,49 @@ async function consumirSolicitudes()
 }
 
 
+async function traerOrdenesDeCompraAceptadasYConDespacho() 
+{
+    try 
+    {
+        // Recibo los datos
+        const registro =
+        {
+            tienda_codigo: call.request.tienda_codigo
+        }
+
+        var resultadosConsulta = await conexionDataBase.query(`SELECT (orc.id) AS id_orden_de_compra, item.producto_codigo, item.color, item.talle, item.cantidad_solicitada
+            FROM orden_de_compra orc
+            INNER JOIN item ON orc.id = item.id_orden_de_compra
+            INNER JOIN despacho ON orc.id = despacho.id_orden_de_compra
+            WHERE orc.tienda_codigo = '${registro.tienda_codigo}' `, {});
+
+        var respuesta = [];
+        for(var i = 0; i < resultadosConsulta.length; i++)
+        {
+            respuesta.push({
+                codigo:        resultadosConsulta[i].codigo, 
+                nombre:        resultadosConsulta[i].nombre, 
+                talle:         resultadosConsulta[i].talle, 
+                foto:          resultadosConsulta[i].foto, 
+                color:         resultadosConsulta[i].color,
+            });
+        }
+
+
+        // Muestro los resultados y se los envio al cliente
+        console.log('************************************************************');
+        console.log('Trayendo ordenes de compra aceptadas por el proveedor y en camino hacia la tienda');
+        console.log('Datos devueltos al cliente:');
+        console.log(respuesta);
+        //return callback(null, {arregloProductos: respuesta});
+    }
+    catch (error) 
+    {
+        console.error('Error en consumirSolicitudes:', error);
+    }
+}
 /*********************************** EXPORTACIÓN DE LA LÓGICA ***********************************/
 exports.consumirNovedades   = consumirNovedades
 exports.traerNovedades      = traerNovedades
 exports.consumirSolicitudes = consumirSolicitudes
+exports.traerOrdenesDeCompraAceptadasYConDespacho = traerOrdenesDeCompraAceptadasYConDespacho

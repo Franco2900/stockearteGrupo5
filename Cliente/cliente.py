@@ -185,6 +185,23 @@ def  modificarProducto():
     response=stub.modificarProducto(solicitud)
     return MessageToJson(response)
 
+
+@app.route('/asignarProducto', methods=['POST'])
+def  asignarProducto():
+
+    solicitud= serviciosStockearte_pb2.asignarYDesasignarProductoRequest(**request.json)
+
+    response=stub.asignarProducto(solicitud)
+    return MessageToJson(response)
+
+@app.route('/desasignarProducto', methods=['POST'])
+def  desasignarProducto():
+
+    solicitud= serviciosStockearte_pb2.asignarYDesasignarProductoRequest(**request.json)
+
+    response=stub.desasignarProducto(solicitud)
+    return MessageToJson(response)
+
 #####################################################################################################
 #  FUNCIONES COMPLEMENTARIAS
 #####################################################################################################
