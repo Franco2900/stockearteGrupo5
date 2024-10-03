@@ -14,9 +14,8 @@ const kafka = new Kafka({ // Conexión con kafka
     logLevel: logLevel.ERROR // Para que kafka solo tire mensajes de tipo ERROR. Los otros tipos de mensajes como INFO no los muestra
 })
 
-
-const consumidorNovedades   = kafka.consumer({ groupId: 'consumidorNovedades' }); // Creo un consumidor. Le indico a que grupo de consumidores pertenece.
 /********************** DEFINICIÓN DE LA LÓGICA DE LOS MÉTODOS DECLARADOS EN EL ARCHIVO .PROTO ***********************/
+const consumidorNovedades   = kafka.consumer({ groupId: 'consumidorNovedades' }); // Creo un consumidor. Le indico a que grupo de consumidores pertenece.
 let hayUnConsumidorCorriendo = false;
 
 async function consumirNovedades() 
@@ -50,6 +49,7 @@ async function consumirNovedades()
                 [codigo, nombre, talle, foto, color]
             );
         
+            console.log('***********************************************************');
             console.log('Hay disponible un nuevo producto: ' + codigo);
         }
     })
@@ -162,13 +162,21 @@ async function consumirSolicitudes()
                                 cantidad_solicitada = ${item.cantidad_solicitada}, 
                                 id_orden_de_compra = ${idOrdenDeCompra} `, {});
                         }
+
+                        // En caso de que este todo bien con la orden de compra y haya stock suficiente
+                        if(idDespacho !== null)
+                        {
+                            await conexionDataBase.query(`INSERT INTO despacho
+                                SET id = ${idDespacho},
+                                id_orden_de_compra = ${idOrdenDeCompra},
+                                fecha_de_envio = '${fechaDeEnvio}'  `, {});
+                        }
                     }
                     else // Si ya existe (esto es para los casos en que la orden de compras quedo pausada por falta de stock)
                     {
                         await conexionDataBase.query(`UPDATE orden_de_compra
                             SET estado = '${estado}',
-                            observaciones = '${observaciones}', 
-                            fecha_de_recepcion = '${new Date().toISOString().split('T')[0]}' `, {}); // Fecha de hoy con formato YYYY-MM-DD
+                            observaciones = '${observaciones}' `, {}); 
 
                         
                         await conexionDataBase.query(`INSERT INTO despacho
@@ -196,7 +204,7 @@ async function consumirSolicitudes()
 }
 
 
-async function traerOrdenesDeCompraAceptadasYConDespacho() 
+async function traerOrdenesDeCompraAceptadasYConDespacho(call, callback) 
 {
     try 
     {
@@ -216,11 +224,11 @@ async function traerOrdenesDeCompraAceptadasYConDespacho()
         for(var i = 0; i < resultadosConsulta.length; i++)
         {
             respuesta.push({
-                codigo:        resultadosConsulta[i].codigo, 
-                nombre:        resultadosConsulta[i].nombre, 
-                talle:         resultadosConsulta[i].talle, 
-                foto:          resultadosConsulta[i].foto, 
-                color:         resultadosConsulta[i].color,
+                id_orden_de_compra:  resultadosConsulta[i].id_orden_de_compra,
+                producto_codigo:     resultadosConsulta[i].producto_codigo,
+                color:               resultadosConsulta[i].color,
+                talle:               resultadosConsulta[i].talle,
+                cantidad_solicitada: resultadosConsulta[i].cantidad_solicitada,
             });
         }
 
@@ -230,15 +238,73 @@ async function traerOrdenesDeCompraAceptadasYConDespacho()
         console.log('Trayendo ordenes de compra aceptadas por el proveedor y en camino hacia la tienda');
         console.log('Datos devueltos al cliente:');
         console.log(respuesta);
-        //return callback(null, {arregloProductos: respuesta});
+        return callback(null, {arregloItems: respuesta});
     }
     catch (error) 
     {
         console.error('Error en consumirSolicitudes:', error);
     }
 }
+
+
+const productorRecepcion = kafka.producer(); // Creo un productor
+
+async function aceptarDespacho(call, callback) 
+{
+    try 
+    {
+        // Recibo los datos
+        const registro =
+        {
+            id_orden_de_compra: call.request.id_orden_de_compra
+        }
+
+
+        // Obtener la fecha actual
+        var fechaActual = new Date();
+        
+        var anio = fechaActual.getFullYear();
+        var mes = String(fechaActual.getMonth() + 1).padStart(2, '0'); // Los meses empiezan en 0
+        var dia = String(fechaActual.getDate() ).padStart(2, '0');     // padStart() rellena un string con otro hasta que alcance cierta longitud (sirve para cuando el dia o el mes es de un solo digito)
+        
+        var fechaFormateada = `${anio}-${mes}-${dia}`;
+        
+        // Actualizo el estado de la orden de compra
+        await conexionDataBase.query(`UPDATE orden_de_compra
+            SET fecha_de_recepcion = '${fechaFormateada}',
+            estado = 'RECIBIDA'
+            WHERE id = '${registro.id_orden_de_compra}' `, {});
+
+        
+        // Envio el mensaje al topic recepcion
+        var resultadosConsulta = await conexionDataBase.query(`SELECT id FROM despacho WHERE id_orden_de_compra = ${registro.id_orden_de_compra} `, {});
+        var idDespacho = resultadosConsulta[0].id;
+
+        await productorRecepcion.connect();
+
+        await productorRecepcion.send({ 
+            topic: `recepcion`,
+            messages: [
+                { value: JSON.stringify({ idOrdenDeCompra: registro.id_orden_de_compra, idDespacho: idDespacho, fechaRecepcion: fechaFormateada, estado: 'RECIBIDA' }) }, 
+            ],
+        });
+
+        await productorRecepcion.disconnect();
+
+        // Muestro los resultados y se los envio al cliente
+        console.log('************************************************************');
+        console.log(`Orden de compra ${registro.id_orden_de_compra} recibida`);
+        return callback(null, { mensaje: `Orden de compra ${registro.id_orden_de_compra} recibida` });
+    }
+    catch (error) 
+    {
+        console.error('Error en consumirSolicitudes:', error);
+    }
+}
+
 /*********************************** EXPORTACIÓN DE LA LÓGICA ***********************************/
 exports.consumirNovedades   = consumirNovedades
 exports.traerNovedades      = traerNovedades
 exports.consumirSolicitudes = consumirSolicitudes
 exports.traerOrdenesDeCompraAceptadasYConDespacho = traerOrdenesDeCompraAceptadasYConDespacho
+exports.aceptarDespacho     = aceptarDespacho

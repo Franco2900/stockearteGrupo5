@@ -372,5 +372,27 @@ class traerOrdenesDeCompraAceptadasYConDespachoRequest(_message.Message):
     def __init__(self, tienda_codigo: _Optional[str] = ...) -> None: ...
 
 class traerOrdenesDeCompraAceptadasYConDespachoResponse(_message.Message):
-    __slots__ = ()
-    def __init__(self) -> None: ...
+    __slots__ = ("arregloItems",)
+    ARREGLOITEMS_FIELD_NUMBER: _ClassVar[int]
+    arregloItems: _containers.RepeatedCompositeFieldContainer[item]
+    def __init__(self, arregloItems: _Optional[_Iterable[_Union[item, _Mapping]]] = ...) -> None: ...
+
+class item(_message.Message):
+    __slots__ = ("id_orden_de_compra", "producto_codigo", "color", "talle", "cantidad_solicitada")
+    ID_ORDEN_DE_COMPRA_FIELD_NUMBER: _ClassVar[int]
+    PRODUCTO_CODIGO_FIELD_NUMBER: _ClassVar[int]
+    COLOR_FIELD_NUMBER: _ClassVar[int]
+    TALLE_FIELD_NUMBER: _ClassVar[int]
+    CANTIDAD_SOLICITADA_FIELD_NUMBER: _ClassVar[int]
+    id_orden_de_compra: int
+    producto_codigo: str
+    color: str
+    talle: str
+    cantidad_solicitada: int
+    def __init__(self, id_orden_de_compra: _Optional[int] = ..., producto_codigo: _Optional[str] = ..., color: _Optional[str] = ..., talle: _Optional[str] = ..., cantidad_solicitada: _Optional[int] = ...) -> None: ...
+
+class aceptarDespachoRequest(_message.Message):
+    __slots__ = ("id_orden_de_compra",)
+    ID_ORDEN_DE_COMPRA_FIELD_NUMBER: _ClassVar[int]
+    id_orden_de_compra: int
+    def __init__(self, id_orden_de_compra: _Optional[int] = ...) -> None: ...

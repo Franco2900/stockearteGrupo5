@@ -262,6 +262,25 @@ def  traerNovedadesRequest():
     response=stub.traerNovedades(solicitud)
     return MessageToJson(response)
 
+
+@app.route('/traerOrdenesDeCompraAceptadasYConDespacho', methods=['POST'])
+def  traerOrdenesDeCompraAceptadasYConDespacho():
+
+    solicitud= serviciosStockearte_pb2.traerOrdenesDeCompraAceptadasYConDespachoRequest(**request.json)
+
+    response=stub.traerOrdenesDeCompraAceptadasYConDespacho(solicitud)
+    return MessageToJson(response)
+
+
+@app.route('/aceptarDespacho', methods=['POST'])
+def  aceptarDespacho():
+
+    solicitud= serviciosStockearte_pb2.aceptarDespachoRequest(**request.json)
+
+    response=stub.aceptarDespacho(solicitud)
+    return MessageToJson(response)
+
+
 # Ejecutar la aplicación
 if __name__ == '__main__':
     #app.run(host='0.0.0.0', port=8080, debug=True)
