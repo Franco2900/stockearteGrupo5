@@ -1,0 +1,113 @@
+.App {
+  text-align: center;
+  background: rgb(179, 235, 246);
+  background: radial-gradient(
+    circle,
+    rgb(252, 252, 252) 0%,
+    rgb(240, 248, 7) 100%
+  );
+  flex-direction: column;
+  display: flex;
+  
+  min-height: 100vh;
+}
+.Footer{
+  background-color: rgb(0, 0, 0, 0.2);
+  position: relative;
+  bottom:  0;
+  width: 100%;   
+  margin-top: "auto";
+  padding: 10px
+}
+.vertical-line {
+  border-left: 1px solid #000; /* Línea vertical */
+  height: 100%; /* Altura completa de la columna */
+}
+.Pagination {
+
+  position:relative;  
+  bottom:  0;
+  left: 50%;
+  transform: translateX(-50%);
+  justify-content: center;
+  margin-top: 0.3cm;
+  margin-bottom: 0.3cm;
+
+}
+.Busqueda { 
+  overflow-y: scroll;
+  min-height: calc(100vh -  112px); /* Ajusta el espacio dejando lugar para el footer */
+}
+.tablaAsig{
+  margin-top: 1cm;
+}
+.FormABM{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh -  112px);
+}
+.FiltroSwitch{
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.Accordion{
+padding-top: .3cm;
+}
+.fotoStyle{
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+}
+.BotonABM{
+  margin-top: 0.3cm;
+  margin-left: 0.3cm;
+}
+#root {
+  max-width: 100%;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0rem;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
