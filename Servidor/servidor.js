@@ -43,13 +43,11 @@ const desasignarProducto      = productoService.desasignarProducto.bind({});
 
 
 //Funciones complementarias
-const grpc_complementario = require('./Logica/grpc_complementario.js');
-
-const traerUsuarioPorId        = grpc_complementario.traerUsuarioPorId.bind({});
-const traerTiendaPorCodigo     = grpc_complementario.traerTiendaPorCodigo.bind({});
-const traerProductoPorCodigo   = grpc_complementario.traerProductoPorCodigo.bind({});
-const hacerLogin               = grpc_complementario.hacerLogin.bind({});
-const traerProductosDeLaTienda = grpc_complementario.traerProductosDeLaTienda.bind({});
+const traerUsuarioPorId        = usuarioService.traerUsuarioPorId.bind({});
+const traerTiendaPorCodigo     = tiendaService.traerTiendaPorCodigo.bind({});
+const traerProductoPorCodigo   = productoService.traerProductoPorCodigo.bind({});
+const hacerLogin               = usuarioService.hacerLogin.bind({});
+const traerProductosDeLaTienda = productoService.traerProductosDeLaTienda.bind({});
 
 
 // Funciones proveedorService

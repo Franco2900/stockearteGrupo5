@@ -63,12 +63,6 @@ async function traerNovedades(call, callback)
 
     try
     {
-        // Recibo los datos
-        const registro =
-        {
-            tienda_codigo: call.request.tienda_codigo
-        }
-    
         var resultadosConsulta = await conexionDataBase.query(`SELECT * FROM novedades`, {});
 
         var respuesta = [];

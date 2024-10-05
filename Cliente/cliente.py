@@ -257,7 +257,7 @@ def  traerProductosDeLaTienda():
 @app.route('/traerNovedadesRequest', methods=['POST'])
 def  traerNovedadesRequest():
 
-    solicitud= serviciosStockearte_pb2.traerNovedadesRequest(**request.json)
+    solicitud= serviciosStockearte_pb2.mensajeVacio(**request.json)
 
     response=stub.traerNovedades(solicitud)
     return MessageToJson(response)
