@@ -199,8 +199,44 @@ async function modificarTienda(call, callback)
 
 }
 
+
+async function traerTiendaPorCodigo(call, callback)
+{
+    console.log('************************************************************');
+    console.log('Buscando tienda');
+
+    const cod = call.request.codigo;
+
+    try
+    {
+        var resultadosConsulta = await conexionDataBase.query(`SELECT codigo, direccion, ciudad, provincia, habilitado, central FROM tienda where codigo = '${cod}'`, {});
+
+        var respuesta = {
+            codigo:     resultadosConsulta[0].codigo, 
+            direccion:  resultadosConsulta[0].direccion, 
+            ciudad:     resultadosConsulta[0].ciudad, 
+            provincia:  resultadosConsulta[0].provincia, 
+            habilitado: Boolean(resultadosConsulta[0].habilitado), 
+            central:    resultadosConsulta[0].central
+        };
+    
+    
+        console.log('************************************************************');
+        console.log('Consulta solicitada: Busqueda de tienda por codigo');
+        console.log('Datos devueltos al cliente:');
+        console.log(respuesta);
+        return callback(null, respuesta );
+    }
+    catch(error) 
+    {
+        console.log(error);
+        return callback(error);
+    }
+}
+
 /*********************************** EXPORTACIÓN DE LA LÓGICA ***********************************/
 exports.altaTienda            = altaTienda
 exports.buscarTienda          = buscarTienda
 exports.buscarTodasLasTiendas = buscarTodasLasTiendas
 exports.modificarTienda       = modificarTienda
+exports.traerTiendaPorCodigo  = traerTiendaPorCodigo

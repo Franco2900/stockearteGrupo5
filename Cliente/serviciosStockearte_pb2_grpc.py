@@ -136,7 +136,7 @@ class stockearteServiceStub(object):
                 _registered_method=True)
         self.traerNovedades = channel.unary_unary(
                 '/stockeartePackage.stockearteService/traerNovedades',
-                request_serializer=serviciosStockearte__pb2.traerNovedadesRequest.SerializeToString,
+                request_serializer=serviciosStockearte__pb2.mensajeVacio.SerializeToString,
                 response_deserializer=serviciosStockearte__pb2.arregloProductos.FromString,
                 _registered_method=True)
         self.traerOrdenesDeCompraAceptadasYConDespacho = channel.unary_unary(
@@ -403,7 +403,7 @@ def add_stockearteServiceServicer_to_server(servicer, server):
             ),
             'traerNovedades': grpc.unary_unary_rpc_method_handler(
                     servicer.traerNovedades,
-                    request_deserializer=serviciosStockearte__pb2.traerNovedadesRequest.FromString,
+                    request_deserializer=serviciosStockearte__pb2.mensajeVacio.FromString,
                     response_serializer=serviciosStockearte__pb2.arregloProductos.SerializeToString,
             ),
             'traerOrdenesDeCompraAceptadasYConDespacho': grpc.unary_unary_rpc_method_handler(
@@ -982,7 +982,7 @@ class stockearteService(object):
             request,
             target,
             '/stockeartePackage.stockearteService/traerNovedades',
-            serviciosStockearte__pb2.traerNovedadesRequest.SerializeToString,
+            serviciosStockearte__pb2.mensajeVacio.SerializeToString,
             serviciosStockearte__pb2.arregloProductos.FromString,
             options,
             channel_credentials,

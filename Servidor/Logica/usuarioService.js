@@ -219,8 +219,87 @@ async function modificarUsuario(call, callback)
 
 } 
 
+
+async function traerUsuarioPorId(call, callback)
+{
+    console.log('************************************************************');
+    console.log('Buscando usuario');
+
+    const id = call.request.id;
+
+    try
+    {
+        var resultadosConsulta = await conexionDataBase.query(`SELECT id, usuario, password, nombre, apellido, habilitado, tienda_codigo FROM usuario where id = ${id}`, {});
+        
+        var respuesta = {
+            id:            resultadosConsulta[0].id,
+            usuario:       resultadosConsulta[0].usuario, 
+            password:      resultadosConsulta[0].password, 
+            nombre:        resultadosConsulta[0].nombre, 
+            apellido:      resultadosConsulta[0].apellido, 
+            habilitado:    Boolean(resultadosConsulta[0].habilitado), 
+            tienda_codigo: resultadosConsulta[0].tienda_codigo
+        };
+        
+        
+        console.log('************************************************************');
+        console.log('Consulta solicitada: Busqueda de usuario por ID');
+        console.log('Datos devueltos al cliente:');
+        console.log(respuesta);
+        return callback(null, respuesta );       
+    }
+    catch(error) 
+    {
+        console.log(error);
+        return callback(error);
+    }
+}
+
+
+async function hacerLogin(call, callback)
+{
+    console.log('************************************************************');
+    console.log('Haciendo Login');
+
+    var usuario  = call.request.usuario;
+    var password = call.request.password;
+
+    try
+    {
+        var resultadosConsulta = await conexionDataBase.query(`SELECT u.usuario, u.password, u.nombre, u.apellido, u.habilitado, u.tienda_codigo, t.central 
+                                                               FROM usuario u
+                                                               INNER JOIN tienda t
+                                                               ON u.tienda_codigo = t.codigo
+                                                               WHERE u.usuario = '${usuario}' AND u.password = '${password}' `, {});
+        
+        var respuesta = {
+            usuario:       resultadosConsulta[0].usuario, 
+            password:      resultadosConsulta[0].password, 
+            nombre:        resultadosConsulta[0].nombre, 
+            apellido:      resultadosConsulta[0].apellido, 
+            habilitado:    Boolean(resultadosConsulta[0].habilitado), 
+            tienda_codigo: resultadosConsulta[0].tienda_codigo,
+            central:       Boolean(resultadosConsulta[0].central)
+        };
+    
+    
+        console.log('************************************************************');
+        console.log('Consulta solicitada: Hacer Login');
+        console.log('Datos devueltos al cliente:');
+        console.log(respuesta);
+        return callback(null, respuesta );
+    }
+    catch(error) 
+    {
+        console.log(error);
+        return callback(error);
+    }
+}
+
 /*********************************** EXPORTACIÓN DE LA LÓGICA ***********************************/
 exports.altaUsuario            = altaUsuario
 exports.buscarUsuario          = buscarUsuario
 exports.buscarTodosLosUsuarios = buscarTodosLosUsuarios
 exports.modificarUsuario       = modificarUsuario
+exports.traerUsuarioPorId      = traerUsuarioPorId
+exports.hacerLogin             = hacerLogin
