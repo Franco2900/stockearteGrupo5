@@ -39,7 +39,7 @@ async function altaTienda(call, callback)
             await conexionDataBase.query(`INSERT INTO tienda 
                 SET codigo = '${registro.codigo}', direccion = '${registro.direccion}', 
                 ciudad = '${registro.ciudad}', provincia = '${registro.provincia}', 
-                habilitado = '${registro.habilitado}' `, {});
+                habilitado = ${registro.habilitado} `, {});
 
             console.log('Se hizo el alta de la tienda con los siguientes datos');
             console.log(registro);
