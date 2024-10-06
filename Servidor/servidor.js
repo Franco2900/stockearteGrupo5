@@ -21,6 +21,8 @@ const altaTienda            = tiendaService.altaTienda.bind({});   // bind() cre
 const buscarTienda          = tiendaService.buscarTienda.bind({}); // Como no se puede añadir el servicio directamente exportando desde el módulo, clono las funciones
 const buscarTodasLasTiendas = tiendaService.buscarTodasLasTiendas.bind({});
 const modificarTienda       = tiendaService.modificarTienda.bind({});
+const traerNovedades        = tiendaService.traerNovedades.bind({});
+const altaNovedades         = tiendaService.altaNovedades.bind({});
 
 // usuarioService
 const usuarioService = require('./Logica/usuarioService.js');
@@ -51,14 +53,14 @@ const traerProductosDeLaTienda = productoService.traerProductosDeLaTienda.bind({
 
 
 // Funciones proveedorService
-const proveedorService = require('./Logica/proveedorService.js');
+/*const proveedorService = require('./Logica/proveedorService.js');
 
 const traerNovedades  = proveedorService.traerNovedades.bind({});
 const traerOrdenesDeCompraAceptadasYConDespacho = proveedorService.traerOrdenesDeCompraAceptadasYConDespacho.bind({});
 const aceptarDespacho = proveedorService.aceptarDespacho.bind({});
 proveedorService.consumirNovedades();   // Esto es una función automatica que va a estar todo el tiempo activa, no es para gRPC
 proveedorService.consumirSolicitudes(); // Lo mismo
-
+*/
 // Añado las funciones al servicio
 servidor.addService(stockeartePackage.stockearteService.service, { 
 
@@ -67,6 +69,8 @@ servidor.addService(stockeartePackage.stockearteService.service, {
     buscarTienda,
     buscarTodasLasTiendas,
     modificarTienda,
+    traerNovedades,
+    altaNovedades,
 
     // usuarioService
     altaUsuario,
@@ -91,9 +95,9 @@ servidor.addService(stockeartePackage.stockearteService.service, {
     traerProductosDeLaTienda,
 
     // proveedorService
-    traerNovedades,
+    /*traerNovedades,
     traerOrdenesDeCompraAceptadasYConDespacho,
-    aceptarDespacho
+    aceptarDespacho*/
 });
 
 

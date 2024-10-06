@@ -86,8 +86,8 @@ async function buscarProducto(call, callback) {
             codigoProductoABuscar:  call.request.codigoProductoABuscar
         }
 
-        var usuarioCentralEsValido = await conexionDataBase.chequearEsUsuarioValido(registro.usuarioCentral);
-        if(usuarioCentralEsValido !== true) return callback(null, { mensaje: usuarioCentralEsValido });
+        /*var usuarioCentralEsValido = await conexionDataBase.chequearEsUsuarioValido(registro.usuarioCentral);
+        if(usuarioCentralEsValido !== true) return callback(null, { mensaje: usuarioCentralEsValido });*/
 
         // Armado de la consulta
         let consultaSQL = `SELECT codigo, nombre, talle, foto, color, tienda_codigo, stock 

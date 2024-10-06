@@ -9,6 +9,8 @@ service stockearteService // Creo el servicio y los métodos que va a tener
     rpc buscarTienda(buscarTiendaRequest) returns (tienda) {}
     rpc buscarTodasLasTiendas (mensajeVacio) returns (arregloTiendas) {}
     rpc modificarTienda (modificarTiendaRequest) returns (mensajeSimple) {}
+    rpc traerNovedades (mensajeVacio) returns (arregloNovedades) {}
+    rpc altaNovedades (novedad) returns (mensajeSimple) {}
 
     // usuarioService
     rpc altaUsuario (altaUsuarioRequest) returns (mensajeSimple) {}
@@ -34,7 +36,7 @@ service stockearteService // Creo el servicio y los métodos que va a tener
     rpc traerProductosDeLaTienda (traerProductosDeLaTiendaRequest) returns (traerProductosDeLaTiendaResponse) {}
 
     // proveedorService
-    rpc traerNovedades (mensajeVacio) returns (arregloProductos) {}
+   // rpc traerNovedades (mensajeVacio) returns (arregloProductos) {}
     rpc traerOrdenesDeCompraAceptadasYConDespacho (traerOrdenesDeCompraAceptadasYConDespachoRequest) returns (traerOrdenesDeCompraAceptadasYConDespachoResponse) {}
     rpc aceptarDespacho (aceptarDespachoRequest) returns (mensajeSimple) {}
 }
@@ -97,7 +99,19 @@ message modificarTiendaRequest
     optional bool central         = 7;
 }
 
+message arregloNovedades
+{
+    repeated novedad arregloNovedades = 1;
+}
 
+message novedad
+{
+    string codigo   = 1;
+    string nombre   = 2;
+    string talle    = 3;
+    string foto     = 4;
+    string color    = 5;
+}
 
 // usuarioService
 message altaUsuarioRequest

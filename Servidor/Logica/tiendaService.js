@@ -39,7 +39,7 @@ async function altaTienda(call, callback)
             await conexionDataBase.query(`INSERT INTO tienda 
                 SET codigo = '${registro.codigo}', direccion = '${registro.direccion}', 
                 ciudad = '${registro.ciudad}', provincia = '${registro.provincia}', 
-                habilitado = '${registro.habilitado}' `, {});
+                habilitado = ${registro.habilitado} `, {});
 
             console.log('Se hizo el alta de la tienda con los siguientes datos');
             console.log(registro);
@@ -234,9 +234,87 @@ async function traerTiendaPorCodigo(call, callback)
     }
 }
 
+async function traerNovedades(call, callback){
+    console.log('************************************************************');
+    console.log('Buscando novedades');
+
+    try
+    {
+        var resultados = await conexionDataBase.query(`SELECT codigo, nombre, talle, foto, color FROM novedades`, {});
+        var respuesta = [];
+
+        for(var i = 0; i < resultados.length; i++){
+            respuesta.push({
+                codigo:     resultados[i].codigo, 
+                nombre:     resultados[i].nombre, 
+                talle:      resultados[i].talle, 
+                foto:       resultados[i].foto, 
+                color:      resultados[i].color
+            });
+        }
+        
+    
+    
+        console.log('************************************************************');
+        console.log('Consulta solicitada: Traer las novedades');
+        console.log('Datos devueltos al cliente:');
+        console.log(respuesta);
+        return callback(null, {arregloNovedades: respuesta});
+    }
+    catch(error) 
+    {
+        console.log(error);
+        return callback(error);
+    }
+}
+
+async function altaNovedades(call, callback){
+    console.log('************************************************************');
+    console.log('Haciendo alta de las novedades');
+
+    // Acá van los datos que nos llegan del cliente desde gRPC
+    const { codigo, nombre, talle, foto, color } = call.request;
+
+    // Chequeo si ya existe el producto
+    var resultados = await conexionDataBase.query(
+        `SELECT EXISTS(SELECT codigo FROM producto WHERE nombre = ? and talle = ? and color = ?) AS existe`,
+        [nombre, talle, color]
+    );
+    var existeProducto = resultados[0].existe;
+
+    if (existeProducto) // SI EXISTE EL PRODUCTO CON MISMO NOMBRE, TALLE Y COLOR..ARROJA ERROR
+    { 
+        console.log('Ya existe el producto');
+        return callback(null, { mensaje: 'ERROR: Ya existe el producto' });
+    } else 
+    {
+        try // Si no existe el producto, lo creo..y como no esta creado, no va a estar en la tabla intermedia
+        { 
+            await conexionDataBase.query(
+                'INSERT INTO producto (codigo, nombre, talle, foto, color) VALUES (?, ?, ?, ?, ?)',
+                [codigo, nombre, talle, foto, color]
+            );
+
+            // Uso de Promise.all para asegurar que todas las inserciones se completen
+            await conexionDataBase.query(`DELETE FROM novedades where codigo = '${codigo}'`, {});
+
+            console.log('Se hizo el alta del producto novedad con los siguientes datos');
+            console.log(call.request);
+            return callback(null, { mensaje: `Se hizo el alta del producto: ${codigo}` });
+        } 
+        catch (error) 
+        {
+            console.log(error);
+            return callback(error);
+        }
+    }
+}
+
 /*********************************** EXPORTACIÓN DE LA LÓGICA ***********************************/
 exports.altaTienda            = altaTienda
 exports.buscarTienda          = buscarTienda
 exports.buscarTodasLasTiendas = buscarTodasLasTiendas
 exports.modificarTienda       = modificarTienda
 exports.traerTiendaPorCodigo  = traerTiendaPorCodigo
+exports.traerNovedades        = traerNovedades
+exports.altaNovedades         = altaNovedades
