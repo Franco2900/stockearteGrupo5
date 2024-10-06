@@ -25,9 +25,9 @@ const  altaUsuario = async(u) =>{
       nombre: u.nombre,
       apellido: u.apellido,
       habilitado: u.habilitado,
-      tienda_codigo : u.tienda_codigo,
+      tienda_codigo : u.tiendaCodigo,
     };
-    console.log("PARAMS ALTA USUARIO: "+params.toString());     
+    //console.log("PARAMS ALTA USUARIO: "+ JSON.stringify(params));  
     const response = await axios.post('/api/altaUsuario', JSON.stringify(params), {
       headers: {
         'Content-Type': 'application/json',
