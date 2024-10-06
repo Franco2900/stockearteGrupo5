@@ -254,8 +254,8 @@ def  traerProductosDeLaTienda():
 #####################################################################################################
 # proveedorService 
 #####################################################################################################
-@app.route('/traerNovedadesRequest', methods=['POST'])
-def  traerNovedadesRequest():
+@app.route('/traerNovedades', methods=['GET'])
+def  traerNovedades():
 
     solicitud= serviciosStockearte_pb2.mensajeVacio(**request.json)
 
@@ -278,6 +278,14 @@ def  aceptarDespacho():
     solicitud= serviciosStockearte_pb2.aceptarDespachoRequest(**request.json)
 
     response=stub.aceptarDespacho(solicitud)
+    return MessageToJson(response)
+
+@app.route('/altaNovedades', methods=['POST'])
+def  altaNovedades():
+
+    solicitud= serviciosStockearte_pb2.novedad(**request.json)
+
+    response=stub.altaNovedades(solicitud)
     return MessageToJson(response)
 
 
