@@ -268,6 +268,48 @@ async function traerNovedades(call, callback){
     }
 }
 
+async function altaNovedades(call, callback){
+    console.log('************************************************************');
+    console.log('Haciendo alta de las novedades');
+
+    // Acá van los datos que nos llegan del cliente desde gRPC
+    const { codigo, nombre, talle, foto, color } = call.request;
+
+    // Chequeo si ya existe el producto
+    var resultados = await conexionDataBase.query(
+        `SELECT EXISTS(SELECT codigo FROM producto WHERE nombre = ? and talle = ? and color = ?) AS existe`,
+        [nombre, talle, color]
+    );
+    var existeProducto = resultados[0].existe;
+
+    if (existeProducto) // SI EXISTE EL PRODUCTO CON MISMO NOMBRE, TALLE Y COLOR..ARROJA ERROR
+    { 
+        console.log('Ya existe el producto');
+        return callback(null, { mensaje: 'ERROR: Ya existe el producto' });
+    } else 
+    {
+        try // Si no existe el producto, lo creo..y como no esta creado, no va a estar en la tabla intermedia
+        { 
+            await conexionDataBase.query(
+                'INSERT INTO producto (codigo, nombre, talle, foto, color) VALUES (?, ?, ?, ?, ?)',
+                [codigo, nombre, talle, foto, color]
+            );
+
+            // Uso de Promise.all para asegurar que todas las inserciones se completen
+            await conexionDataBase.query(`DELETE FROM novedades where codigo = '${codigo}'`, {});
+
+            console.log('Se hizo el alta del producto novedad con los siguientes datos');
+            console.log(call.request);
+            return callback(null, { mensaje: `Se hizo el alta del producto: ${codigo}` });
+        } 
+        catch (error) 
+        {
+            console.log(error);
+            return callback(error);
+        }
+    }
+}
+
 /*********************************** EXPORTACIÓN DE LA LÓGICA ***********************************/
 exports.altaTienda            = altaTienda
 exports.buscarTienda          = buscarTienda
@@ -275,3 +317,4 @@ exports.buscarTodasLasTiendas = buscarTodasLasTiendas
 exports.modificarTienda       = modificarTienda
 exports.traerTiendaPorCodigo  = traerTiendaPorCodigo
 exports.traerNovedades        = traerNovedades
+exports.altaNovedades         = altaNovedades

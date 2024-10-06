@@ -22,6 +22,7 @@ const buscarTienda          = tiendaService.buscarTienda.bind({}); // Como no se
 const buscarTodasLasTiendas = tiendaService.buscarTodasLasTiendas.bind({});
 const modificarTienda       = tiendaService.modificarTienda.bind({});
 const traerNovedades        = tiendaService.traerNovedades.bind({});
+const altaNovedades         = tiendaService.altaNovedades.bind({});
 
 // usuarioService
 const usuarioService = require('./Logica/usuarioService.js');
@@ -69,6 +70,7 @@ servidor.addService(stockeartePackage.stockearteService.service, {
     buscarTodasLasTiendas,
     modificarTienda,
     traerNovedades,
+    altaNovedades,
 
     // usuarioService
     altaUsuario,

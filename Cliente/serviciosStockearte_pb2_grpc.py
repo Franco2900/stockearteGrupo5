@@ -59,6 +59,11 @@ class stockearteServiceStub(object):
                 request_serializer=serviciosStockearte__pb2.mensajeVacio.SerializeToString,
                 response_deserializer=serviciosStockearte__pb2.arregloNovedades.FromString,
                 _registered_method=True)
+        self.altaNovedades = channel.unary_unary(
+                '/stockeartePackage.stockearteService/altaNovedades',
+                request_serializer=serviciosStockearte__pb2.novedad.SerializeToString,
+                response_deserializer=serviciosStockearte__pb2.mensajeSimple.FromString,
+                _registered_method=True)
         self.altaUsuario = channel.unary_unary(
                 '/stockeartePackage.stockearteService/altaUsuario',
                 request_serializer=serviciosStockearte__pb2.altaUsuarioRequest.SerializeToString,
@@ -180,6 +185,12 @@ class stockearteServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def traerNovedades(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def altaNovedades(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -326,6 +337,11 @@ def add_stockearteServiceServicer_to_server(servicer, server):
                     servicer.traerNovedades,
                     request_deserializer=serviciosStockearte__pb2.mensajeVacio.FromString,
                     response_serializer=serviciosStockearte__pb2.arregloNovedades.SerializeToString,
+            ),
+            'altaNovedades': grpc.unary_unary_rpc_method_handler(
+                    servicer.altaNovedades,
+                    request_deserializer=serviciosStockearte__pb2.novedad.FromString,
+                    response_serializer=serviciosStockearte__pb2.mensajeSimple.SerializeToString,
             ),
             'altaUsuario': grpc.unary_unary_rpc_method_handler(
                     servicer.altaUsuario,
@@ -553,6 +569,33 @@ class stockearteService(object):
             '/stockeartePackage.stockearteService/traerNovedades',
             serviciosStockearte__pb2.mensajeVacio.SerializeToString,
             serviciosStockearte__pb2.arregloNovedades.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def altaNovedades(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/stockeartePackage.stockearteService/altaNovedades',
+            serviciosStockearte__pb2.novedad.SerializeToString,
+            serviciosStockearte__pb2.mensajeSimple.FromString,
             options,
             channel_credentials,
             insecure,
