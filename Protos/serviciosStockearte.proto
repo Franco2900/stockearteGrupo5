@@ -36,7 +36,7 @@ service stockearteService // Creo el servicio y los métodos que va a tener
     rpc traerProductosDeLaTienda (traerProductosDeLaTiendaRequest) returns (traerProductosDeLaTiendaResponse) {}
 
     // proveedorService
-   // rpc traerNovedades (mensajeVacio) returns (arregloProductos) {}
+    rpc altaOrdenDeCompra (altaOrdenDeCompraRequest) returns (mensajeSimple) {}
     rpc traerOrdenesDeCompraAceptadasYConDespacho (traerOrdenesDeCompraAceptadasYConDespachoRequest) returns (traerOrdenesDeCompraAceptadasYConDespachoResponse) {}
     rpc aceptarDespacho (aceptarDespachoRequest) returns (mensajeSimple) {}
 }
@@ -312,6 +312,12 @@ message traerProductosDeLaTiendaResponse
 }
 
 // proveedorService
+message altaOrdenDeCompraRequest
+{
+    string tienda_codigo = 1;
+    repeated item items  = 2;
+}
+
 message traerOrdenesDeCompraAceptadasYConDespachoRequest
 {
     string tienda_codigo = 1;

@@ -379,6 +379,14 @@ class traerProductosDeLaTiendaResponse(_message.Message):
     arregloProductoDeLaTienda: _containers.RepeatedCompositeFieldContainer[productoDeLaTienda]
     def __init__(self, arregloProductoDeLaTienda: _Optional[_Iterable[_Union[productoDeLaTienda, _Mapping]]] = ...) -> None: ...
 
+class altaOrdenDeCompraRequest(_message.Message):
+    __slots__ = ("tienda_codigo", "items")
+    TIENDA_CODIGO_FIELD_NUMBER: _ClassVar[int]
+    ITEMS_FIELD_NUMBER: _ClassVar[int]
+    tienda_codigo: str
+    items: _containers.RepeatedCompositeFieldContainer[item]
+    def __init__(self, tienda_codigo: _Optional[str] = ..., items: _Optional[_Iterable[_Union[item, _Mapping]]] = ...) -> None: ...
+
 class traerOrdenesDeCompraAceptadasYConDespachoRequest(_message.Message):
     __slots__ = ("tienda_codigo",)
     TIENDA_CODIGO_FIELD_NUMBER: _ClassVar[int]

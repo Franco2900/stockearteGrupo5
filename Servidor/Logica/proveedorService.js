@@ -15,6 +15,72 @@ const kafka = new Kafka({ // Conexión con kafka
 })
 
 /********************** DEFINICIÓN DE LA LÓGICA DE LOS MÉTODOS DECLARADOS EN EL ARCHIVO .PROTO ***********************/
+
+const productorOrdenesDeCompra = kafka.producer(); // Creo un productor
+
+async function altaOrdenDeCompra(call, callback)
+{
+    // Recibo los datos
+    const registro =
+    {
+        tienda_codigo: call.request.tienda_codigo,
+        items:         call.request.items.slice() // slice() copia un arreglo
+    }
+
+    console.log(registro.items);
+
+    // Obtener la fecha actual
+    var fechaActual = new Date();
+    
+    var anio = fechaActual.getFullYear();
+    var mes = String(fechaActual.getMonth() + 1).padStart(2, '0'); // Los meses empiezan en 0
+    var dia = String(fechaActual.getDate() ).padStart(2, '0');     // padStart() rellena un string con otro hasta que alcance cierta longitud (sirve para cuando el dia o el mes es de un solo digito)
+    
+    var fechaFormateada = `${anio}-${mes}-${dia}`;
+
+
+    // CARGA A LA BASE DE DATOS
+    await conexionDataBase.query(`INSERT INTO orden_de_compra 
+        SET estado = 'SOLICITADA', 
+        observaciones = 'Sin observaciones', 
+        fecha_de_solicitud = '${fechaFormateada}',
+        tienda_codigo = '${registro.tienda_codigo}' `, {});
+
+    
+    var resultadosConsulta = await conexionDataBase.query(`SELECT MAX(id) AS id FROM orden_de_compra `, {}); 
+    // Otra forma de obtener el último id: SELECT LAST_INSERT_ID()
+    var IdUltimaOrdenDeCompra = resultadosConsulta[0].id;
+
+    for (let item of registro.items) 
+    {
+        await conexionDataBase.query(`INSERT INTO item 
+            SET producto_codigo = '${item.producto_codigo}', 
+            color = '${item.color}', 
+            talle = '${item.talle}', 
+            cantidad_solicitada = ${item.cantidad_solicitada}, 
+            id_orden_de_compra = ${IdUltimaOrdenDeCompra} `, {});
+    }
+
+ 
+    // CARGA AL TOPIC
+    await productorOrdenesDeCompra.connect(); // El productor se conecta
+
+    await productorOrdenesDeCompra.send({  // El productor envia uno o varios mensajes al topic indicado. Si no existe el topic, lo crea.
+        topic: 'orden-de-compra',
+        messages: [
+          { value: JSON.stringify({ tienda_codigo: `${registro.tienda_codigo}`, idOrdenDeCompra: IdUltimaOrdenDeCompra, itemsSolicitados: registro.items, fechaSolicitud: fechaFormateada, estado: 'SOLICITADA'}) }, // Envio el mensaje en json
+        ],
+    });
+
+    await productorOrdenesDeCompra.disconnect();  // El productor se desconecta
+    
+    console.log('***********************************************************');
+    console.log(`Se hizo el alta de la orden de compra ${IdUltimaOrdenDeCompra}`);
+    return callback(null, { mensaje: `Se hizo el alta de la orden de compra ${IdUltimaOrdenDeCompra}` });
+}
+
+
+
 const consumidorNovedades   = kafka.consumer({ groupId: 'consumidorNovedades' }); // Creo un consumidor. Le indico a que grupo de consumidores pertenece.
 let hayUnConsumidorCorriendo = false;
 
@@ -56,43 +122,6 @@ async function consumirNovedades()
 
 }
 
-
-
-async function traerNovedades(call, callback)
-{
-
-    try
-    {
-        var resultadosConsulta = await conexionDataBase.query(`SELECT * FROM novedades`, {});
-
-        var respuesta = [];
-        for(var i = 0; i < resultadosConsulta.length; i++)
-        {
-            respuesta.push({
-                codigo:        resultadosConsulta[i].codigo, 
-                nombre:        resultadosConsulta[i].nombre, 
-                talle:         resultadosConsulta[i].talle, 
-                foto:          resultadosConsulta[i].foto, 
-                color:         resultadosConsulta[i].color,
-            });
-        }
-
-
-        // Muestro los resultados y se los envio al cliente
-        console.log('************************************************************');
-        console.log('Trayendo novedades');
-        console.log('Datos devueltos al cliente:');
-        console.log(respuesta);
-        return callback(null, {arregloProductos: respuesta});
-
-    } 
-    catch(error) 
-    {
-        console.log(error);
-        return callback(error);
-    }
-
-}
 
 
 async function consumirSolicitudes() 
@@ -297,8 +326,8 @@ async function aceptarDespacho(call, callback)
 }
 
 /*********************************** EXPORTACIÓN DE LA LÓGICA ***********************************/
+exports.altaOrdenDeCompra   = altaOrdenDeCompra
 exports.consumirNovedades   = consumirNovedades
-exports.traerNovedades      = traerNovedades
 exports.consumirSolicitudes = consumirSolicitudes
 exports.traerOrdenesDeCompraAceptadasYConDespacho = traerOrdenesDeCompraAceptadasYConDespacho
 exports.aceptarDespacho     = aceptarDespacho

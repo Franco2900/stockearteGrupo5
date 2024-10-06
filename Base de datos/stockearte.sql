@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-10-2024 a las 21:27:00
+-- Tiempo de generación: 06-10-2024 a las 23:58:26
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -62,15 +62,6 @@ CREATE TABLE `novedades` (
   `color` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `novedades`
---
-
-INSERT INTO `novedades` (`codigo`, `nombre`, `talle`, `foto`, `color`) VALUES
-('BBBB', 'Gorra', 'L', 'urlFoto1', 'Gris'),
-('CCCCC', 'SAFJ', 'QQ', 'ASFD', 'BGER'),
-('fasf', 'ewfwe', 'fwe', 'asdf', 'das');
-
 -- --------------------------------------------------------
 
 --
@@ -100,14 +91,6 @@ CREATE TABLE `producto` (
   `color` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `producto`
---
-
-INSERT INTO `producto` (`codigo`, `nombre`, `talle`, `foto`, `color`) VALUES
-('CB123', 'Camisa Básica', 'M', 0x626173653634737472696e6731, 'Rojo'),
-('PJ456', 'Pantalones Jeans', 'L', 0x626173653634737472696e6732, 'Azul');
-
 -- --------------------------------------------------------
 
 --
@@ -123,18 +106,6 @@ CREATE TABLE `tienda` (
   `central` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `tienda`
---
-
-INSERT INTO `tienda` (`codigo`, `direccion`, `ciudad`, `provincia`, `habilitado`, `central`) VALUES
-('asdfgh987', 'Juan Justo 200', 'Monte Chingolo', 'Buenos Aires', 1, 0),
-('lmno456stu', 'Calle Falsa 123', 'La Plata', 'Buenos Aires', 0, 0),
-('pqr789xyz', 'Av. Libertador 3000', 'Buenos Aires', 'Buenos Aires', 1, 0),
-('sanji32542', 'Lacoste 1920', 'Las Toninas', 'Buenos Aires', 0, 1),
-('wxyz123abc', 'Avenida San Martín 456', 'Rosario', 'Santa Fe', 1, 0),
-('xcbewu13', 'Canarias 1850', 'Ciudad de Cordoba', 'Cordoba', 1, 0);
-
 -- --------------------------------------------------------
 
 --
@@ -146,15 +117,6 @@ CREATE TABLE `tienda_x_producto` (
   `producto_codigo` varchar(50) NOT NULL,
   `stock` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `tienda_x_producto`
---
-
-INSERT INTO `tienda_x_producto` (`tienda_codigo`, `producto_codigo`, `stock`) VALUES
-('asdfgh987', 'CB123', 0),
-('sanji32542', 'CB123', 0),
-('wxyz123abc', 'PJ456', 0);
 
 -- --------------------------------------------------------
 
@@ -173,19 +135,6 @@ CREATE TABLE `usuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `usuario`
---
-
-INSERT INTO `usuario` (`id`, `usuario`, `password`, `nombre`, `apellido`, `habilitado`, `tienda_codigo`) VALUES
-(165, 'Racing Campeon', '1967', 'Pepe', 'Argento', 1, 'sanji32542'),
-(166, 'La Peluca', 'qwerty', 'Moni', 'Argento', 1, 'asdfgh987'),
-(167, 'The One', 'fñnbqio_@748e5a', 'Unlero', 'Sistemas', 0, 'asdfgh987'),
-(168, 'H-H', '564sdgf', 'Horacio', 'Hernandez', 1, 'sanji32542'),
-(169, 'LG', 'dstew23', 'Luis', 'Gonzalez', 0, 'pqr789xyz'),
-(170, 'El curioso', 'xznwqw@', 'Jorge', 'Perez', 1, 'lmno456stu'),
-(171, 'Manu', 'liecw', 'Manuel', 'Avilar', 1, 'wxyz123abc');
-
---
 -- Índices para tablas volcadas
 --
 
@@ -202,6 +151,12 @@ ALTER TABLE `despacho`
 ALTER TABLE `item`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_orden_de_compra` (`id_orden_de_compra`);
+
+--
+-- Indices de la tabla `novedades`
+--
+ALTER TABLE `novedades`
+  ADD PRIMARY KEY (`codigo`);
 
 --
 -- Indices de la tabla `orden_de_compra`
@@ -225,6 +180,7 @@ ALTER TABLE `tienda`
 -- Indices de la tabla `tienda_x_producto`
 --
 ALTER TABLE `tienda_x_producto`
+  ADD PRIMARY KEY (`tienda_codigo`,`producto_codigo`),
   ADD KEY `tienda_id` (`tienda_codigo`,`producto_codigo`),
   ADD KEY `tienda_id_2` (`tienda_codigo`,`producto_codigo`),
   ADD KEY `producto_codigo` (`producto_codigo`);
@@ -253,10 +209,16 @@ ALTER TABLE `item`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `orden_de_compra`
+--
+ALTER TABLE `orden_de_compra`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=172;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Restricciones para tablas volcadas

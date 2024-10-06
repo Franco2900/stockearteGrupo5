@@ -254,6 +254,15 @@ def  traerProductosDeLaTienda():
 #####################################################################################################
 # proveedorService 
 #####################################################################################################
+@app.route('/altaOrdenDeCompra', methods=['POST'])
+def  altaOrdenDeCompra():
+    print(request)
+    solicitud= serviciosStockearte_pb2.altaOrdenDeCompraRequest(**request.json)
+
+    response=stub.altaOrdenDeCompra(solicitud)
+    return MessageToJson(response)
+
+
 @app.route('/traerNovedades', methods=['GET'])
 def  traerNovedades():
 

@@ -76,8 +76,10 @@ async function cargarProducto(registro)
                         
                 } catch(error) {console.log(error);}
             }
-        console.log(`Código de tienda: ${tienda.codigo}`);
+            
         });
+
+        console.log('Se hizo el alta del producto: ' + registro.codigoProducto);
     }
 }
 
@@ -108,6 +110,7 @@ async function cargaDatosDePrueba()
         { nombre: 'Luis',    apellido: 'Gonzalez',  usuario: 'LG',             password: 'dstew23',         habilitado: false, tienda_codigo: 'pqr789xyz' },
         { nombre: 'Jorge',   apellido: 'Perez',     usuario: 'El curioso',     password: 'xznwqw@',         habilitado: true,  tienda_codigo: 'lmno456stu' },
         { nombre: 'Manuel',  apellido: 'Avilar',    usuario: 'Manu',           password: 'liecw',           habilitado: true,  tienda_codigo: 'wxyz123abc' },
+        { nombre: 'Lucio',   apellido: 'Lopez',     usuario: 'Cuervo',         password: 'qxurnoñl',        habilitado: true,  tienda_codigo: 'xcbewu13' }
     ];
     
     for (const usuario of usuarios) {
@@ -115,12 +118,9 @@ async function cargaDatosDePrueba()
     }
  
     const productos = [
-        {nombre: 'Camisa Básica', codigoProducto: 'CB123', talle: 'M', foto: 'base64string1', color: 'Rojo',
-            tiendaObject: [ {codigo: 'asdfgh987'},{codigo: 'sanji32542'} ]
-        },
-        {nombre: 'Pantalones Jeans', codigoProducto: 'PJ456', talle: 'L', foto: 'base64string2', color: 'Azul',
-            "tiendaObject": [ {codigo: 'wxyz123abc'} ] 
-        }  
+        { nombre: 'Camisa Básica',    codigoProducto: 'CB123', talle: 'M', color: 'Rojo',  tiendaObject: [ {codigo: 'asdfgh987'}, {codigo: 'sanji32542'} ], foto: 'urlFoto1' },
+        { nombre: 'Pantalones Jeans', codigoProducto: 'PJ456', talle: 'L', color: 'Azul',  tiendaObject: [ {codigo: 'wxyz123abc'} ],                        foto: 'urlFoto2' },
+        { nombre: 'Remera',           codigoProducto: 'RLOW2', talle: 'S', color: 'Verde', tiendaObject: [ {codigo: 'xcbewu13'}, {codigo: 'pqr789xyz'} ],   foto: 'urlFoto3' },
     ]
 
     for (const producto of productos) {
