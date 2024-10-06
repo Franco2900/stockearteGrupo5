@@ -234,9 +234,44 @@ async function traerTiendaPorCodigo(call, callback)
     }
 }
 
+async function traerNovedades(call, callback){
+    console.log('************************************************************');
+    console.log('Buscando novedades');
+
+    try
+    {
+        var resultados = await conexionDataBase.query(`SELECT codigo, nombre, talle, foto, color FROM novedades`, {});
+        var respuesta = [];
+
+        for(var i = 0; i < resultados.length; i++){
+            respuesta.push({
+                codigo:     resultados[i].codigo, 
+                nombre:     resultados[i].nombre, 
+                talle:      resultados[i].talle, 
+                foto:       resultados[i].foto, 
+                color:      resultados[i].color
+            });
+        }
+        
+    
+    
+        console.log('************************************************************');
+        console.log('Consulta solicitada: Traer las novedades');
+        console.log('Datos devueltos al cliente:');
+        console.log(respuesta);
+        return callback(null, {arregloNovedades: respuesta});
+    }
+    catch(error) 
+    {
+        console.log(error);
+        return callback(error);
+    }
+}
+
 /*********************************** EXPORTACIÓN DE LA LÓGICA ***********************************/
 exports.altaTienda            = altaTienda
 exports.buscarTienda          = buscarTienda
 exports.buscarTodasLasTiendas = buscarTodasLasTiendas
 exports.modificarTienda       = modificarTienda
 exports.traerTiendaPorCodigo  = traerTiendaPorCodigo
+exports.traerNovedades        = traerNovedades

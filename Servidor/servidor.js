@@ -21,6 +21,7 @@ const altaTienda            = tiendaService.altaTienda.bind({});   // bind() cre
 const buscarTienda          = tiendaService.buscarTienda.bind({}); // Como no se puede añadir el servicio directamente exportando desde el módulo, clono las funciones
 const buscarTodasLasTiendas = tiendaService.buscarTodasLasTiendas.bind({});
 const modificarTienda       = tiendaService.modificarTienda.bind({});
+const traerNovedades        = tiendaService.traerNovedades.bind({});
 
 // usuarioService
 const usuarioService = require('./Logica/usuarioService.js');
@@ -67,6 +68,7 @@ servidor.addService(stockeartePackage.stockearteService.service, {
     buscarTienda,
     buscarTodasLasTiendas,
     modificarTienda,
+    traerNovedades,
 
     // usuarioService
     altaUsuario,

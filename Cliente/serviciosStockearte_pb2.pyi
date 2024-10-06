@@ -79,6 +79,26 @@ class modificarTiendaRequest(_message.Message):
     central: bool
     def __init__(self, codigoTiendaAModificar: _Optional[str] = ..., codigo: _Optional[str] = ..., direccion: _Optional[str] = ..., ciudad: _Optional[str] = ..., provincia: _Optional[str] = ..., habilitado: bool = ..., central: bool = ...) -> None: ...
 
+class arregloNovedades(_message.Message):
+    __slots__ = ("arregloNovedades",)
+    ARREGLONOVEDADES_FIELD_NUMBER: _ClassVar[int]
+    arregloNovedades: _containers.RepeatedCompositeFieldContainer[novedad]
+    def __init__(self, arregloNovedades: _Optional[_Iterable[_Union[novedad, _Mapping]]] = ...) -> None: ...
+
+class novedad(_message.Message):
+    __slots__ = ("codigo", "nombre", "talle", "foto", "color")
+    CODIGO_FIELD_NUMBER: _ClassVar[int]
+    NOMBRE_FIELD_NUMBER: _ClassVar[int]
+    TALLE_FIELD_NUMBER: _ClassVar[int]
+    FOTO_FIELD_NUMBER: _ClassVar[int]
+    COLOR_FIELD_NUMBER: _ClassVar[int]
+    codigo: str
+    nombre: str
+    talle: str
+    foto: str
+    color: str
+    def __init__(self, codigo: _Optional[str] = ..., nombre: _Optional[str] = ..., talle: _Optional[str] = ..., foto: _Optional[str] = ..., color: _Optional[str] = ...) -> None: ...
+
 class altaUsuarioRequest(_message.Message):
     __slots__ = ("usuarioCentral", "usuario", "password", "nombre", "apellido", "habilitado", "tienda_codigo")
     USUARIOCENTRAL_FIELD_NUMBER: _ClassVar[int]
