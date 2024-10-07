@@ -486,7 +486,7 @@ const  modificarUsuario = async(u) =>{
             nombre: p.nombre,
             talle: p.talle,
             foto: p.foto,
-            color: <p className="color"></p>
+            color: p.color
           };          
           //console.log("PARAMS MODIFICAR Stock: " + JSON.stringify(params));     
           

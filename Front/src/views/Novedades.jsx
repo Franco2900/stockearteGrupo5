@@ -5,6 +5,8 @@ import UserContext from "../context/Context.jsx";
 import Paginacion from '../components/Paginacion.jsx';
 import FiltroProd from '../components/FiltroProd.jsx';
 import TablaProductos from "../components/TablaNovedades.jsx";
+import { useNavigate } from 'react-router-dom';
+
 //import { traerNovedades, altaNovedades } from "../../../Servidor/Logica/tiendaService.js";
 
 export default function CrearUpdOrden(){
@@ -14,7 +16,7 @@ export default function CrearUpdOrden(){
   const { traerNovedades, altaNovedades} = useContext(UserContext)
   const [activePage, setActivePage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(15);
-  const[productoList, setProductoList] = useState([])
+  const[novedadesList, setNovedadList] = useState([])
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState({
     nombre : "",
@@ -63,6 +65,8 @@ export default function CrearUpdOrden(){
       }
     };
     */
+    const navigate = useNavigate();
+
     const handleFilterChange = (event) => {
       const { name, value } = event.target;
       setFilter((prevFilter) => ({ ...prevFilter, [name]: value }));
@@ -87,12 +91,12 @@ export default function CrearUpdOrden(){
 
     const handleAsignar = (item) => {
       if (!novedadesList.some((novedad) => novedad.codigo === item.codigo)) {
-        setProductoList((prevList) => [...prevList, item]);
+        setNovedadList((prevList) => [...prevList, item]);
       }
     };
   
     const handleDesasignar = (item) => {
-      setProductoList((prevList) =>
+        setNovedadList((prevList) =>
         prevList.filter((novedad) => novedad.codigo !== item.codigo)
       );
     };
@@ -129,10 +133,10 @@ export default function CrearUpdOrden(){
       </Col>
       <Col md={{ span: 1 }} />
       <Col md={{ span: 5 }} style={{marginTop: '.3cm'}}>
-      <Button onClick={()=>asignar(productoList)}><h3>ASIGNAR</h3></Button>
-      <Button variant="outline-danger"style={{marginLeft: '.5cm'}}><h3>DESASIGNAR</h3></Button>
+      <Button onClick={()=>asignar(novedadesList)}><h3>SOLICITAR</h3></Button>
+      <Button variant="outline-danger"style={{marginLeft: '.5cm'}}  onClick={()=> navigate("/")}><h3>VOLVER</h3></Button>
       {/* TABLA PARA ASIGNAR O DESASIGNAR*/}
-          <TablaProductos list={productoList} handleDesasignar={handleDesasignar}/>
+          <TablaProductos list={novedadesList} handleDesasignar={handleDesasignar}/>
       </Col>
 
       </Row>
