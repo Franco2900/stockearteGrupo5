@@ -18,6 +18,7 @@ import AsigUser from './views/AsigUser.jsx';
 import ModStock from './views/ModStock.jsx';
 import BuscarOrdenes from './views/BuscarOrdenes.jsx';
 import CrearUpdOrden from './views/CrearUpdOrden.jsx';
+import Novedades from './views/Novedades.jsx';
 
 
 
@@ -54,6 +55,7 @@ function App() {
                       <Route path="/crearproducto" element={<CrearUpdProd/>}/>
                       <Route path="/asigprod" element={<AsigProd/>}/>
                       <Route path="/asiguser" element={<AsigUser/>}/>
+                      <Route path="/novedades" element={<Novedades/>}/>
                   </Route>
                   
                 </Routes>

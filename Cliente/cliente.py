@@ -263,7 +263,7 @@ def  altaOrdenDeCompra():
     return MessageToJson(response)
 
 
-@app.route('/traerNovedades', methods=['GET'])
+@app.route('/traerNovedades', methods=['POST'])
 def  traerNovedades():
 
     solicitud= serviciosStockearte_pb2.mensajeVacio(**request.json)

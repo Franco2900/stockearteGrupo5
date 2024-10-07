@@ -429,6 +429,84 @@ const  modificarUsuario = async(u) =>{
       throw error;
     }
   };
+/*
+  async function traerNovedades  () {
+    try {           
+     
+    const response = await axios.get(`/api/traerNovedades`,JSON.stringify(), {
+       headers: {
+         'Content-Type': 'application/json',
+       },
+     });
+     //console.log("PRODUCTOS: " +JSON.stringify(response.data.arregloProductos3))
+     const novedadesList = response.data.arregloNovedades.map((novedad) => ({
+      codigo: novedad.codigo,
+      nombre: novedad.nombre,
+      talle: novedad.talle,
+      foto: novedad.foto,
+      color: novedad.color
+    }));
+     return novedadesList;       
+    } catch (error) {
+      console.error('Error al obtener las novedades:', error);
+      throw error;
+    }
+  };*/
+
+  async function traerNovedades() {
+    try {
+      const response = await axios.post(`/api/traerNovedades`, {}, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      const novedadesList = response.data.arregloNovedades.map((novedad) => ({
+        codigo: novedad.codigo,
+        nombre: novedad.nombre,
+        talle: novedad.talle,
+        foto: novedad.foto,
+        color: novedad.color,
+      }));
+      
+      return novedadesList;
+    } catch (error) {
+      console.error('Error al obtener las novedades:', error);
+      throw error;
+    }
+  }
+  
+
+  const altaNovedades = async (list) => {
+    try {
+      const respuestas = await Promise.all(
+        list.map(async (p) => {
+          const params = {
+            codigo: p.codigo,
+            nombre: p.nombre,
+            talle: p.talle,
+            foto: p.foto,
+            color: <p className="color"></p>
+          };          
+          //console.log("PARAMS MODIFICAR Stock: " + JSON.stringify(params));     
+          
+          const response = await axios.post('/api/altaNovedades', JSON.stringify(params), {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          
+          return response.data.mensaje; 
+        })
+      );
+      console.log("Mensajes", respuestas)
+      return respuestas;   
+    } catch (error) {
+      console.error('Error al asignar novedades:', error);
+      throw error;
+    }
+  };
+
   //function bufferToImagenSrc(buffer) {
   //  const base64String = Buffer.from(buffer).toString('base64');
   //  return `data:image/jpeg;base64,${base64String}`;
@@ -441,7 +519,7 @@ const  modificarUsuario = async(u) =>{
      altaProducto,modificarProducto, modificarStock,
      asignarProducto,desasignarProducto, buscarProducto,
      buscarTodasLasTiendas, buscarTienda,
-     altaTienda,modificarTienda,
+     altaTienda,modificarTienda, traerNovedades, altaNovedades,
      }}>
       {children}
     </UserContext.Provider>
