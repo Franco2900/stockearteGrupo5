@@ -27,8 +27,6 @@ async function altaOrdenDeCompra(call, callback)
         items:         call.request.items.slice() // slice() copia un arreglo
     }
 
-    console.log(registro.items);
-
     // Obtener la fecha actual
     var fechaActual = new Date();
     
@@ -195,18 +193,27 @@ async function consumirSolicitudes()
                                 fecha_de_envio = '${fechaDeEnvio}'  `, {});
                         }
                     }
-                    else // Si ya existe (esto es para los casos en que la orden de compras quedo pausada por falta de stock)
+
+                    if(estado == 'ACEPTADA' && observaciones != 'Sin observaciones') // Si ya existe (esto es para los casos en que la orden de compras quedo pausada por falta de stock)
                     {
                         await conexionDataBase.query(`UPDATE orden_de_compra
                             SET estado = '${estado}',
-                            observaciones = '${observaciones}' `, {}); 
-
+                            observaciones = '${observaciones}'
+                            WHERE  id = ${idOrdenDeCompra} `, {}); 
                         
+                    }
+
+                    if(estado == 'ACEPTADA' && observaciones == 'Sin observaciones')
+                    {
+                        await conexionDataBase.query(`UPDATE orden_de_compra
+                            SET estado = '${estado}',
+                            observaciones = '${observaciones}'
+                            WHERE  id = ${idOrdenDeCompra} `, {}); 
+
                         await conexionDataBase.query(`INSERT INTO despacho
                             SET id = ${idDespacho},
                             id_orden_de_compra = ${idOrdenDeCompra},
                             fecha_de_envio = '${fechaDeEnvio}'  `, {});
-                        
                     }
                     
                     console.log('***********************************************************');
@@ -296,7 +303,7 @@ async function aceptarDespacho(call, callback)
         await conexionDataBase.query(`UPDATE orden_de_compra
             SET fecha_de_recepcion = '${fechaFormateada}',
             estado = 'RECIBIDA'
-            WHERE id = '${registro.id_orden_de_compra}' `, {});
+            WHERE id = ${registro.id_orden_de_compra} `, {});
 
         
         // Envio el mensaje al topic recepcion
