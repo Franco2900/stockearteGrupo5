@@ -1,5 +1,9 @@
 import {Row ,Table, Button} from 'react-bootstrap';
-export default function TablaOrdenCompra({list, handleAsignar, handleDesasignar}){
+
+export default function TablaOrdenCompra({list, handleAsignar, handleDesasignar, handleStockChange, stock}){
+
+  
+
     return (<>
     <Row style={{marginTop: '1cm'}}>
             <Table striped bordered hover size="sm">
@@ -19,7 +23,20 @@ export default function TablaOrdenCompra({list, handleAsignar, handleDesasignar}
                     <td >{item.codigo}</td>
                     <td >{item.talle}</td>
                     <td >{item.color}</td>
-                    <td >{item.stock}</td>
+                    {!!stock ?
+                      <><td>
+                      <input
+                          type="number"
+                          name="stock"
+                          value={item.stock}
+                          onChange={(e) => handleStockChange(e)}
+                          style={{ width: '60px' }}
+                      />
+                    </td></>
+                    :<><td>{item.stock}</td></>
+                    }
+                    
+                    
                     {!!handleAsignar ? 
                     <><td><Button onClick={()=>handleAsignar(item)}>+</Button></td> </>
                     :<><td><Button variant="outline-danger" onClick={()=>handleDesasignar(item)}>-</Button></td></>}

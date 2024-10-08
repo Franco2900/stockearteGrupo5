@@ -5,7 +5,9 @@ import UserContext from "../context/Context.jsx";
 import Paginacion from '../components/Paginacion.jsx';
 import FiltroProd from '../components/FiltroProd.jsx';
 import TablaOrdenCompra from "../components/TablaOrdenCompra.jsx";
+import TablaProductos from "../components/TablaProductos.jsx";
 import { useNavigate } from 'react-router-dom';
+
 
 export default function CrearUpdOrden(){
   const location = useLocation();
@@ -121,7 +123,12 @@ export default function CrearUpdOrden(){
       (activePage - 1) * itemsPerPage,
       activePage * itemsPerPage
     );
-  
+    
+    const handleStockChange = (event) => {
+      const { name, value } = event.target;
+      setProductoList((prevFilter) => ({ ...prevFilter, [name]: value }));
+    };
+
     return (<>
     <Row className='justify-content-center'>
     <Col md={{ span: 5 }}>
@@ -131,7 +138,7 @@ export default function CrearUpdOrden(){
         <FiltroProd filter={filter} handleFilterChange={handleFilterChange}/>
 
         {/*CONTENIDO */}
-          <TablaOrdenCompra list={paginatedData} handleAsignar={handleAsignar}/>
+          <TablaOrdenCompra list={paginatedData} handleAsignar={handleAsignar} />
 
         {/*PAGINACION*/}
         <Paginacion handlePageChange={handlePageChange} handlePreviousPage={handlePreviousPage} handleNextPage={handleNextPage} data={data} activePage={activePage} itemsPerPage={itemsPerPage}/>
@@ -144,7 +151,7 @@ export default function CrearUpdOrden(){
       <Button onClick={()=>asignar(productoList)}><h3>SOLICITAR</h3></Button>
       <Button variant="outline-danger"style={{marginLeft: '.5cm'}} onClick={()=> navigate("/")}><h3>VOLVER</h3></Button>
       {/* TABLA PARA ASIGNAR O DESASIGNAR*/}
-          <TablaOrdenCompra list={productoList} handleDesasignar={handleDesasignar}/>
+          <TablaOrdenCompra list={productoList} handleDesasignar={handleDesasignar} handleStockChange={handleStockChange} stock={1}/>
       </Col>
 
       </Row>
