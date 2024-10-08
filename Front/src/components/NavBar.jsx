@@ -55,7 +55,7 @@ function NavBar() {
                 </NavDropdown>
 
                 {/*{!isCentralUser && ( */}
-                {isCentralUser && ( 
+                {!isCentralUser && ( 
                   <>
                     <NavDropdown title="Ordenes" id="basic-nav-dropdown">
                       <NavDropdown.Item href="/buscarordenes">Buscar</NavDropdown.Item>

@@ -507,6 +507,32 @@ const  modificarUsuario = async(u) =>{
     }
   };
 
+  const altaOrdenDeCompraRequest = async (list) => {
+    try {
+      const respuestas = await Promise.all(
+        list.map(async (p) => {
+          const params = {
+            
+          };          
+          //console.log("PARAMS MODIFICAR Stock: " + JSON.stringify(params));     
+          
+          const response = await axios.post('/api/altaOrdenDeCompraRequest', JSON.stringify(params), {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          
+          return response.data.mensaje; 
+        })
+      );
+      console.log("Mensajes", respuestas)
+      return respuestas;   
+    } catch (error) {
+      console.error('Error al realizar la orden de compra:', error);
+      throw error;
+    }
+  };
+
   //function bufferToImagenSrc(buffer) {
   //  const base64String = Buffer.from(buffer).toString('base64');
   //  return `data:image/jpeg;base64,${base64String}`;
@@ -519,7 +545,7 @@ const  modificarUsuario = async(u) =>{
      altaProducto,modificarProducto, modificarStock,
      asignarProducto,desasignarProducto, buscarProducto,
      buscarTodasLasTiendas, buscarTienda,
-     altaTienda,modificarTienda, traerNovedades, altaNovedades,
+     altaTienda,modificarTienda, traerNovedades, altaNovedades, altaOrdenDeCompraRequest,
      }}>
       {children}
     </UserContext.Provider>

@@ -4,7 +4,7 @@ import { Container, Row ,Col, Button} from 'react-bootstrap';
 import UserContext from "../context/Context.jsx";
 import Paginacion from '../components/Paginacion.jsx';
 import FiltroProd from '../components/FiltroProd.jsx';
-import TablaProductos from "../components/TablaNovedades.jsx";
+import TablaNovedades from "../components/TablaNovedades.jsx";
 import { useNavigate } from 'react-router-dom';
 
 //import { traerNovedades, altaNovedades } from "../../../Servidor/Logica/tiendaService.js";
@@ -124,7 +124,7 @@ export default function CrearUpdOrden(){
         <FiltroProd filter={filter} handleFilterChange={handleFilterChange}/>
 
         {/*CONTENIDO */}
-          <TablaProductos list={paginatedData} handleAsignar={handleAsignar}/>
+          <TablaNovedades list={paginatedData} handleAsignar={handleAsignar}/>
 
         {/*PAGINACION*/}
         <Paginacion handlePageChange={handlePageChange} handlePreviousPage={handlePreviousPage} handleNextPage={handleNextPage} data={data} activePage={activePage} itemsPerPage={itemsPerPage}/>
@@ -136,7 +136,7 @@ export default function CrearUpdOrden(){
       <Button onClick={()=>asignar(novedadesList)}><h3>SOLICITAR</h3></Button>
       <Button variant="outline-danger"style={{marginLeft: '.5cm'}}  onClick={()=> navigate("/")}><h3>VOLVER</h3></Button>
       {/* TABLA PARA ASIGNAR O DESASIGNAR*/}
-          <TablaProductos list={novedadesList} handleDesasignar={handleDesasignar}/>
+          <TablaNovedades list={novedadesList} handleDesasignar={handleDesasignar}/>
       </Col>
 
       </Row>

@@ -4,7 +4,8 @@ import { Container, Row ,Col, Button} from 'react-bootstrap';
 import UserContext from "../context/Context.jsx";
 import Paginacion from '../components/Paginacion.jsx';
 import FiltroProd from '../components/FiltroProd.jsx';
-import TablaProductos from "../components/TablaProductos.jsx";
+import TablaOrdenCompra from "../components/TablaOrdenCompra.jsx";
+import { useNavigate } from 'react-router-dom';
 
 export default function CrearUpdOrden(){
   const location = useLocation();
@@ -38,6 +39,8 @@ export default function CrearUpdOrden(){
       };
       fetchData();
     }, [buscarTodosLosProductos, codigoTienda]);
+
+    const navigate = useNavigate();
 
     const asignar = (list) => {
       console.log("Cod tienda: ",codigoTienda)
@@ -128,7 +131,7 @@ export default function CrearUpdOrden(){
         <FiltroProd filter={filter} handleFilterChange={handleFilterChange}/>
 
         {/*CONTENIDO */}
-          <TablaProductos list={paginatedData} handleAsignar={handleAsignar}/>
+          <TablaOrdenCompra list={paginatedData} handleAsignar={handleAsignar}/>
 
         {/*PAGINACION*/}
         <Paginacion handlePageChange={handlePageChange} handlePreviousPage={handlePreviousPage} handleNextPage={handleNextPage} data={data} activePage={activePage} itemsPerPage={itemsPerPage}/>
@@ -138,10 +141,10 @@ export default function CrearUpdOrden(){
       <Col md={{ span: 1 }} />
       <Col md={{ span: 5 }} style={{marginTop: '.3cm'}}>
       <h3>Tienda: {codigoTienda}</h3>
-      <Button onClick={()=>asignar(productoList)}><h3>ASIGNAR</h3></Button>
-      <Button variant="outline-danger"style={{marginLeft: '.5cm'}} onClick={()=>desasignar(productoList)}><h3>DESASIGNAR</h3></Button>
+      <Button onClick={()=>asignar(productoList)}><h3>SOLICITAR</h3></Button>
+      <Button variant="outline-danger"style={{marginLeft: '.5cm'}} onClick={()=> navigate("/")}><h3>VOLVER</h3></Button>
       {/* TABLA PARA ASIGNAR O DESASIGNAR*/}
-          <TablaProductos list={productoList} handleDesasignar={handleDesasignar}/>
+          <TablaOrdenCompra list={productoList} handleDesasignar={handleDesasignar}/>
       </Col>
 
       </Row>
