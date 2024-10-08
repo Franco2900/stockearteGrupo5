@@ -28,15 +28,13 @@ export default function TablaOrdenCompra({list, handleAsignar, handleDesasignar,
                       <input
                           type="number"
                           name="stock"
-                          value={item.stock}
-                          onChange={(e) => handleStockChange(e)}
+                          value={item.stock || 0}
+                          onChange={(e) => handleStockChange(item.codigo, parseInt(e.target.value) || 0)}
                           style={{ width: '60px' }}
                       />
                     </td></>
                     :<><td>{item.stock}</td></>
                     }
-                    
-                    
                     {!!handleAsignar ? 
                     <><td><Button onClick={()=>handleAsignar(item)}>+</Button></td> </>
                     :<><td><Button variant="outline-danger" onClick={()=>handleDesasignar(item)}>-</Button></td></>}

@@ -507,31 +507,32 @@ const  modificarUsuario = async(u) =>{
     }
   };
 
-  const altaOrdenDeCompraRequest = async (list) => {
+  const altaOrdenDeCompraRequest = async (codigoTienda, listaProductos) => {
     try {
-      const respuestas = await Promise.all(
-        list.map(async (p) => {
-          const params = {
-            
-          };          
-          //console.log("PARAMS MODIFICAR Stock: " + JSON.stringify(params));     
-          
-          const response = await axios.post('/api/altaOrdenDeCompraRequest', JSON.stringify(params), {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-          
-          return response.data.mensaje; 
-        })
-      );
-      console.log("Mensajes", respuestas)
-      return respuestas;   
+      const params = {
+        tienda_codigo: codigoTienda,
+        items: listaProductos.map((producto) => ({
+          id_orden_de_compra: producto.id_orden_de_compra || null, // Si existe, si no se puede omitir
+          producto_codigo: producto.codigo,
+          color: producto.color,
+          talle: producto.talle,
+          cantidad_solicitada: producto.stock // O cualquier propiedad que represente la cantidad
+        })),
+      };
+  
+      const response = await axios.post('/api/altaOrdenDeCompraRequest', params, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      return response.data.mensaje;
     } catch (error) {
-      console.error('Error al realizar la orden de compra:', error);
+      console.error('Error al realizar la orden de compra asd:', error);
       throw error;
     }
   };
+  
 
   //function bufferToImagenSrc(buffer) {
   //  const base64String = Buffer.from(buffer).toString('base64');

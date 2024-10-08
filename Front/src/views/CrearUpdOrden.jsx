@@ -5,7 +5,6 @@ import UserContext from "../context/Context.jsx";
 import Paginacion from '../components/Paginacion.jsx';
 import FiltroProd from '../components/FiltroProd.jsx';
 import TablaOrdenCompra from "../components/TablaOrdenCompra.jsx";
-import TablaProductos from "../components/TablaProductos.jsx";
 import { useNavigate } from 'react-router-dom';
 
 
@@ -13,7 +12,7 @@ export default function CrearUpdOrden(){
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const codigoTienda = searchParams.get("codigo");
-  const { buscarTodosLosProductos, asignarProducto, desasignarProducto} = useContext(UserContext)
+  const { buscarTodosLosProductos, asignarProducto, desasignarProducto, altaOrdenDeCompraRequest} = useContext(UserContext)
   const [activePage, setActivePage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(15);
   const[productoList, setProductoList] = useState([])
@@ -44,21 +43,20 @@ export default function CrearUpdOrden(){
 
     const navigate = useNavigate();
 
-    const asignar = (list) => {
-      console.log("Cod tienda: ",codigoTienda)
-     if(list && list.length > 0){ 
-      asignarProducto(list, codigoTienda)
-      .then((mensajes) => {
-        alert(mensajes.join('\n').toString());
-        window.location.reload();
-      })
-      .catch((error) => {
-        console.error("Error asignando productos:", error);
-      });
-      }else{
-        alert("La lista está vacía.");
+    const { user } = useContext(UserContext);
+
+    const asignar = async () => {
+      try {
+        
+        const mensajes = await altaOrdenDeCompraRequest(user?.tiendaCodigo, productoList);
+        alert(mensajes.join('\n')); // Muestra los mensajes recibidos del servidor
+        window.location.reload(); // Opcional: recargar la página si es necesario
+      } catch (error) {
+        console.error("Error al solicitar la orden de compra:", error);
+        alert("Ocurrió un error al solicitar la orden de compra.");
       }
     };
+    
 
     const desasignar = (list) => {
       console.log("Cod tienda: ",codigoTienda)
@@ -124,11 +122,18 @@ export default function CrearUpdOrden(){
       activePage * itemsPerPage
     );
     
-    const handleStockChange = (event) => {
-      const { name, value } = event.target;
-      setProductoList((prevFilter) => ({ ...prevFilter, [name]: value }));
+    const handleStockChange = (codigo, nuevoStock) => {
+      try {
+        setProductoList((prevList) =>
+          prevList.map((producto) =>
+            producto.codigo === codigo ? { ...producto, stock: nuevoStock } : producto
+          )
+        );
+      } catch (error) {
+        console.error("Error al actualizar el stock:", error);
+      }
     };
-
+    
     return (<>
     <Row className='justify-content-center'>
     <Col md={{ span: 5 }}>
