@@ -49,7 +49,7 @@ export default function CrearUpdOrden(){
       try {
         
         const mensajes = await altaOrdenDeCompraRequest(user?.tiendaCodigo, productoList);
-        alert(mensajes.join('\n')); // Muestra los mensajes recibidos del servidor
+        //alert(mensajes.join('\n')); // Muestra los mensajes recibidos del servidor
         window.location.reload(); // Opcional: recargar la página si es necesario
       } catch (error) {
         console.error("Error al solicitar la orden de compra:", error);

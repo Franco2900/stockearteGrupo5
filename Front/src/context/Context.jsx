@@ -512,7 +512,8 @@ const  modificarUsuario = async(u) =>{
       const params = {
         tienda_codigo: codigoTienda,
         items: listaProductos.map((producto) => ({
-          id_orden_de_compra: producto.id_orden_de_compra || null, // Si existe, si no se puede omitir
+          //id_orden_de_compra: producto.id_orden_de_compra || null, // Si existe, si no se puede omitir
+          id_orden_de_compra: 999,
           producto_codigo: producto.codigo,
           color: producto.color,
           talle: producto.talle,
@@ -520,7 +521,7 @@ const  modificarUsuario = async(u) =>{
         })),
       };
   
-      const response = await axios.post('/api/altaOrdenDeCompraRequest', params, {
+      const response = await axios.post('/api/altaOrdenDeCompra', params, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -528,7 +529,7 @@ const  modificarUsuario = async(u) =>{
   
       return response.data.mensaje;
     } catch (error) {
-      console.error('Error al realizar la orden de compra asd:', error);
+      console.error('Error al realizar la orden de compra:', error);
       throw error;
     }
   };
