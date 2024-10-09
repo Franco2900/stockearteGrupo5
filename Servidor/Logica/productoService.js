@@ -356,7 +356,8 @@ async function asignarProducto(call, callback)
 
     // Acá van los datos que nos llegan del cliente desde gRPC
     const { codigoTienda, codigoProducto} = call.request;
-
+    var tiendaBloqueada                   = await conexionDataBase.chequearTiendaBloqueada(codigoTienda);
+    if (tiendaBloqueada)    return callback(null, {mensaje: `ERROR: No es posible asignar productos a una tienda bloqueada `});
     try
     { 
         await conexionDataBase.query(

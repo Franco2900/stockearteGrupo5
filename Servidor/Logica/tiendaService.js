@@ -170,8 +170,9 @@ async function modificarTienda(call, callback)
     }
 
     var existeTiendaAModificar  = await conexionDataBase.chequearExistenciaTienda(registro.codigoTiendaAModificar);
+    var existe                  = await conexionDataBase.chequearExistenciaTienda(registro.codigo);
     if(!existeTiendaAModificar) return callback(null, { mensaje: `ERROR: No existe la tienda ${registro.codigoTiendaAModificar}` });
-
+    if (existe)                 return callback(null, {mensaje: `ERROR: El codigo ${registro.codigo} ya existe `});
     if(existeTiendaAModificar)
     {
         console.log('Modificación solicitada: Modificar tienda');
