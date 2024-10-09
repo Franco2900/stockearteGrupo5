@@ -188,11 +188,11 @@ async function modificarUsuario(call, callback)
 
     var existeUsuarioAModificar = await conexionDataBase.chequearExistenciaUsuario(registro.usuarioAModificar);
     var existeTienda            = await conexionDataBase.chequearExistenciaTienda(registro.tienda_codigo);
-    var existeUsuario           = await conexionDataBase.chequearExistenciaUsuario(registro.usuario);
+    //var existeUsuario           = await conexionDataBase.chequearExistenciaUsuario(registro.usuario);
     
     if(!existeUsuarioAModificar) return callback(null, { mensaje: `ERROR: No existe el usuario ${registro.usuarioAModificar} ` });
     if(!existeTienda)            return callback(null, { mensaje: `ERROR: No existe la tienda ${registro.tienda_codigo} ` });
-    if (existeUsuario)           return callback(null, {mensaje: `ERROR: El usuario ${registro.usuario} ya existe `});
+    //if (existeUsuario)           return callback(null, {mensaje: `ERROR: El usuario ${registro.usuario} ya existe `});
     if(existeUsuarioAModificar && existeTienda)
     {
         console.log('Modificación solicitada: Modificar usuario');
@@ -264,8 +264,8 @@ async function hacerLogin(call, callback)
     var usuario  = call.request.usuario;
     var password = call.request.password;
 
-    var usuarioBloqueado                   = await conexionDataBase.chequearUsuarioBloqueado(usuario);
-    if (usuarioBloqueado)    return callback(null, {mensaje: `ERROR: El usuario '${usuario}' está bloqueado `});
+    //var usuarioBloqueado                   = await conexionDataBase.chequearUsuarioBloqueado(usuario);
+    //if (usuarioBloqueado)    return callback(null, {mensaje: `ERROR: El usuario '${usuario}' está bloqueado `});
 
     try
     {
