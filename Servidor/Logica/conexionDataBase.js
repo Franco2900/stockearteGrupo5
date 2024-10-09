@@ -142,6 +142,19 @@ async function chequearTiendaBloqueada(codigo)
     return Boolean(resultados[0].tiendaBloqueada);
 }
 
+async function chequearUsuarioBloqueado(usuario)
+{
+    var resultados = await query(
+        `SELECT EXISTS (
+            SELECT usuario 
+            FROM usuario
+            WHERE usuario = '${usuario}' AND habilitado=0
+        ) AS tiendaBloqueada`, {}
+    );
+
+    return Boolean(resultados[0].tiendaBloqueada);
+}
+
 /*********************************** EXPORTACIÓN DE LA LÓGICA ***********************************/
 //exports.conectarseALaBaseDeDatos = conectarseALaBaseDeDatos
 exports.query = query
@@ -151,3 +164,4 @@ exports.chequearExistenciaProducto = chequearExistenciaProducto
 exports.chequearCasaCentral = chequearCasaCentral
 exports.chequearEsUsuarioValido = chequearEsUsuarioValido
 exports.chequearTiendaBloqueada = chequearTiendaBloqueada
+exports.chequearUsuarioBloqueado = chequearUsuarioBloqueado

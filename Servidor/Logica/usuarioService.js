@@ -263,6 +263,10 @@ async function hacerLogin(call, callback)
     console.log('Haciendo Login');
     var usuario  = call.request.usuario;
     var password = call.request.password;
+
+    var usuarioBloqueado                   = await conexionDataBase.chequearUsuarioBloqueado(usuario);
+    if (usuarioBloqueado)    return callback(null, {mensaje: `ERROR: El usuario '${usuario}' está bloqueado `});
+
     try
     {
         var resultadosConsulta = await conexionDataBase.query(`SELECT u.usuario, u.password, u.nombre, u.apellido, u.habilitado, u.tienda_codigo, t.central 
@@ -281,7 +285,7 @@ async function hacerLogin(call, callback)
             central:       Boolean(resultadosConsulta[0].central)
         };
     
-    
+        
         console.log('************************************************************');
         console.log('Consulta solicitada: Hacer Login');
         console.log('Datos devueltos al cliente:');
