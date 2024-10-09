@@ -261,10 +261,8 @@ async function hacerLogin(call, callback)
 {
     console.log('************************************************************');
     console.log('Haciendo Login');
-
     var usuario  = call.request.usuario;
     var password = call.request.password;
-
     try
     {
         var resultadosConsulta = await conexionDataBase.query(`SELECT u.usuario, u.password, u.nombre, u.apellido, u.habilitado, u.tienda_codigo, t.central 
