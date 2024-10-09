@@ -1,10 +1,11 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { Form, Button, Container, Col, Row} from 'react-bootstrap';
 import UserContext from "../context/Context.jsx";
 
 export function CrearUpdTienda() {
   const location = useLocation();
+  const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
   const codigo = searchParams.get("codigo");
   const { buscarTienda, altaTienda, modificarTienda } = useContext(UserContext);
@@ -43,10 +44,12 @@ export function CrearUpdTienda() {
     if (formData.codigoTiendaAModificar) {
       modificarTienda(formData).then((msj) => {
       alert(msj);
+      navigate('/buscartiendas');
     });
     } else {
       altaTienda(formData).then((msj) => {
         alert(msj);
+        navigate('/buscartiendas');
       });
     }
   };
