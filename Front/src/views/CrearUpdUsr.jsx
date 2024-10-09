@@ -22,7 +22,10 @@ export function CrearUpdUsr(){
     console.log("usrName: " + JSON.stringify(usrName));
   
     useEffect(() => {
-      buscarTodasLasTiendas().then((msg)=> setTiendas(msg));
+      buscarTodasLasTiendas().then((msg) => {
+        const tiendasHabilitadas = msg.filter((tienda) => tienda.habilitado);
+        setTiendas(tiendasHabilitadas);
+      });
       if (usrName) {
         buscarUsuario(usrName)
           .then((msg) => {

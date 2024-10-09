@@ -20,7 +20,10 @@ export function CrearUpdProd() {
   
   useEffect(() => {
     
-    buscarTodasLasTiendas().then((msg) => setTiendas(msg));
+    buscarTodasLasTiendas().then((msg) => {
+      const tiendasHabilitadas = msg.filter((tienda) => tienda.habilitado);
+      setTiendas(tiendasHabilitadas);
+    });
     
     if (codigo) {
       buscarProducto(codigo)

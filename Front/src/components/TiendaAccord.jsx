@@ -31,12 +31,13 @@ export default function TiendaAccord ({ tienda }) {
           <Link to={`/creartienda?codigo=${tienda.codigo}`} >
                 <Button className='BotonABM' variant="primary">Editar</Button>
           </Link>
-          <Link to={`/asigprod?codigo=${tienda.codigo}`} >
+          {(tienda.habilitado) && (<><Link to={`/asigprod?codigo=${tienda.codigo}`} >
                 <Button className='BotonABM' variant="primary">Asignar Productos</Button>
           </Link>
           <Link to={`/asiguser?codigo=${tienda.codigo}`} >
                 <Button className='BotonABM' variant="primary">Asignar Usuarios</Button>
-          </Link>
+          </Link></>)}
+          
         </Accordion.Body>
       </Accordion.Item>
     </Accordion>
