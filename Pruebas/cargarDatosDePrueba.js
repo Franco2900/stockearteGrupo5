@@ -84,6 +84,7 @@ async function cargarProducto(registro)
 }
 
 /************************** DATOS HARDCODEADOS PARA REALIZAR PRUEBAS ****************************/ 
+const fs = require('fs');  // Módulo para trabajar con archivos
 
 async function cargaDatosDePrueba()
 {
@@ -117,10 +118,15 @@ async function cargaDatosDePrueba()
         await cargarUsuario(usuario);
     }
  
+
+    var camisaFoto = fs.readFileSync('camisa.jpg');
+    var jeansFoto  = fs.readFileSync('jeans.jpg');
+    var remeraFoto = fs.readFileSync('remera.jpg');
+
     const productos = [
-        { nombre: 'Camisa Básica',    codigoProducto: 'CB123', talle: 'M', color: 'Rojo',  tiendaObject: [ {codigo: 'asdfgh987'}, {codigo: 'sanji32542'} ], foto: 'urlFoto1' },
-        { nombre: 'Pantalones Jeans', codigoProducto: 'PJ456', talle: 'L', color: 'Azul',  tiendaObject: [ {codigo: 'wxyz123abc'} ],                        foto: 'urlFoto2' },
-        { nombre: 'Remera',           codigoProducto: 'RLOW2', talle: 'S', color: 'Verde', tiendaObject: [ {codigo: 'xcbewu13'}, {codigo: 'pqr789xyz'} ],   foto: 'urlFoto3' },
+        { nombre: 'Camisa Básica',    codigoProducto: 'CB123', talle: 'M', color: 'Rojo',  tiendaObject: [ {codigo: 'asdfgh987'}, {codigo: 'sanji32542'} ], foto: camisaFoto.toString('base64') },
+        { nombre: 'Pantalones Jeans', codigoProducto: 'PJ456', talle: 'L', color: 'Azul',  tiendaObject: [ {codigo: 'wxyz123abc'} ],                        foto: jeansFoto.toString('base64') },
+        { nombre: 'Remera',           codigoProducto: 'RLOW2', talle: 'S', color: 'Verde', tiendaObject: [ {codigo: 'xcbewu13'}, {codigo: 'pqr789xyz'} ],   foto: remeraFoto.toString('base64') },
     ]
 
     for (const producto of productos) {
