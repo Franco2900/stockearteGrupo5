@@ -42,7 +42,8 @@ const modificarStock          = productoService.modificarStock.bind({});
 const modificarProducto       = productoService.modificarProducto.bind({});
 const asignarProducto         = productoService.asignarProducto.bind({});
 const desasignarProducto      = productoService.desasignarProducto.bind({});
-
+const traerProductos          = productoService.traerProductos.bind({});
+const traerProductosNoTienda  = productoService.traerProductosNoTienda.bind({});
 
 //Funciones complementarias
 const traerUsuarioPorId        = usuarioService.traerUsuarioPorId.bind({});
@@ -86,6 +87,8 @@ servidor.addService(stockeartePackage.stockearteService.service, {
     modificarProducto,
     asignarProducto,
     desasignarProducto,
+    traerProductos,
+    traerProductosNoTienda,
 
     // Funciones complementarias
     traerUsuarioPorId,

@@ -299,6 +299,74 @@ async function hacerLogin(call, callback)
     }
 }
 
+async function traerUsuariosTienda(call, callback) {
+    var codigo   = call.request.codigo;
+    console.log('************************************************************');
+    console.log('Buscando usuarios de la tienda ' + codigo);
+    try
+    {
+        var resultadosConsulta = await conexionDataBase.query(
+            `SELECT id, usuario, password, nombre, apellido, habilitado, tienda_codigo
+            FROM usuario where tienda_codigo = '${codigo}'`, {}
+        );
+        
+        var respuesta = [];
+        for(var i = 0; i < resultadosConsulta.length; i++)
+        {
+            respuesta.push({
+                id:            resultadosConsulta[i].id, 
+                usuario:       resultadosConsulta[i].usuario, 
+                password:      resultadosConsulta[i].password, 
+                nombre:        resultadosConsulta[i].nombre, 
+                apellido:      resultadosConsulta[i].apellido, 
+                habilitado:    resultadosConsulta[i].habilitado, 
+                tienda_codigo: resultadosConsulta[i].tienda_codigo
+            });
+        }
+            
+        console.log('************************************************************');
+        console.log('Consulta solicitada: Listado de usuarios de la tienda ' + codigo);
+        console.log('Datos devueltos al cliente:');
+        console.log(respuesta);
+        return callback(null, {arregloUsuarios: respuesta} );
+    }
+    catch(error) {console.log(error);}
+}
+
+async function traerUsuariosNoTienda(call, callback) {
+    var codigo   = call.request.codigo;
+    console.log('************************************************************');
+    console.log('Buscando usuarios de la tienda ' + codigo);
+    try
+    {
+        var resultadosConsulta = await conexionDataBase.query(
+            `SELECT id, usuario, password, nombre, apellido, habilitado, tienda_codigo
+            FROM usuario where tienda_codigo != '${codigo}'`, {}
+        );
+        
+        var respuesta = [];
+        for(var i = 0; i < resultadosConsulta.length; i++)
+        {
+            respuesta.push({
+                id:            resultadosConsulta[i].id, 
+                usuario:       resultadosConsulta[i].usuario, 
+                password:      resultadosConsulta[i].password, 
+                nombre:        resultadosConsulta[i].nombre, 
+                apellido:      resultadosConsulta[i].apellido, 
+                habilitado:    resultadosConsulta[i].habilitado, 
+                tienda_codigo: resultadosConsulta[i].tienda_codigo
+            });
+        }
+            
+        console.log('************************************************************');
+        console.log('Consulta solicitada: Listado de usuarios de la tienda ' + codigo);
+        console.log('Datos devueltos al cliente:');
+        console.log(respuesta);
+        return callback(null, {arregloUsuarios: respuesta} );
+    }
+    catch(error) {console.log(error);}
+}
+
 /*********************************** EXPORTACIÓN DE LA LÓGICA ***********************************/
 exports.altaUsuario            = altaUsuario
 exports.buscarUsuario          = buscarUsuario
@@ -306,3 +374,5 @@ exports.buscarTodosLosUsuarios = buscarTodosLosUsuarios
 exports.modificarUsuario       = modificarUsuario
 exports.traerUsuarioPorId      = traerUsuarioPorId
 exports.hacerLogin             = hacerLogin
+exports.traerUsuariosTienda    = traerUsuariosTienda
+exports.traerUsuariosNoTienda  = traerUsuariosNoTienda

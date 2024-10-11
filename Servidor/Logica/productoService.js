@@ -297,6 +297,7 @@ async function modificarStock(call, callback) {
 
 async function modificarProducto(call, callback)
 {
+
     console.log('************************************************************');
     console.log('Modificando datos');
 
@@ -312,7 +313,6 @@ async function modificarProducto(call, callback)
             color:              call.request.color
         }
         
-
         console.log('Datos antes de la modificación');
         resultados = await conexionDataBase.query(
             `SELECT *
@@ -484,6 +484,77 @@ async function traerProductosDeLaTienda(call, callback)
     }
 }
 
+async function traerProductosNoTienda(call, callback) {
+    var tienda_codigo  = call.request.tienda_codigo;
+
+    console.log('************************************************************');
+    console.log('Buscando productos de la tienda ' + tienda_codigo);
+
+    try
+    {
+        var resultadosConsulta = await conexionDataBase.query(`
+                                                            SELECT p.codigo, p.nombre, p.talle, p.foto, p.color
+                                                            FROM producto p
+                                                            LEFT JOIN tienda_x_producto tp ON p.codigo = tp.producto_codigo
+                                                            AND tp.tienda_codigo = '${tienda_codigo}'
+                                                            WHERE tp.producto_codigo IS NULL`, {});
+        
+        var respuesta = [];
+        for(var i = 0; i < resultadosConsulta.length; i++)
+        {
+            respuesta.push({ 
+                codigo:        resultadosConsulta[i].codigo, 
+                nombre:        resultadosConsulta[i].nombre, 
+                talle:         resultadosConsulta[i].talle ,
+                color:         resultadosConsulta[i].color,
+            });
+        }
+    
+        console.log('************************************************************');
+        console.log('Consulta solicitada: Buscar productos que no tiene la tienda ' + tienda_codigo);
+        console.log('Datos devueltos al cliente:');
+        console.log(respuesta);
+        return callback(null, {arregloProductos_4: respuesta} );
+    }
+    catch(error) 
+    {
+        console.log(error);
+        return callback(error);
+    }
+}
+
+async function traerProductos(call, callback) {
+    console.log('************************************************************');
+    console.log('Buscando productos');
+
+    try
+    {
+        var resultadosConsulta = await conexionDataBase.query(`SELECT codigo, nombre,  talle, color from producto `, {});
+        
+        var respuesta = [];
+        for(var i = 0; i < resultadosConsulta.length; i++)
+        {
+            respuesta.push({ 
+                codigo:        resultadosConsulta[i].codigo, 
+                nombre:        resultadosConsulta[i].nombre, 
+                talle:         resultadosConsulta[i].talle,
+                color:         resultadosConsulta[i].color
+            });
+        }
+    
+        console.log('************************************************************');
+        console.log('Consulta solicitada: Buscar productos');
+        console.log('Datos devueltos al cliente:');
+        console.log(respuesta);
+        return callback(null, {arregloProductos_4: respuesta} );
+    }
+    catch(error) 
+    {
+        console.log(error);
+        return callback(error);
+    }
+}
+
 /*********************************** EXPORTACIÓN DE LA LÓGICA ***********************************/
 exports.altaProducto             = altaProducto
 exports.buscarProducto           = buscarProducto
@@ -494,3 +565,5 @@ exports.asignarProducto          = asignarProducto
 exports.desasignarProducto       = desasignarProducto
 exports.traerProductoPorCodigo   = traerProductoPorCodigo
 exports.traerProductosDeLaTienda = traerProductosDeLaTienda
+exports.traerProductos           = traerProductos
+exports.traerProductosNoTienda = traerProductosNoTienda

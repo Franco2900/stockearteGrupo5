@@ -102,6 +102,7 @@ def  modificarUsuario():
     response=stub.modificarUsuario(solicitud)
     return MessageToJson(response)
 
+
 #####################################################################################################
 # productoService 
 #####################################################################################################
@@ -155,6 +156,22 @@ def  buscarProductos():
     response=stub.buscarProducto(solicitud)
     return MessageToJson(response)
 
+
+@app.route('/traerProductos', methods=['POST'])
+def  traerProductos():    
+
+    solicitud= serviciosStockearte_pb2.mensajeVacio()
+
+    response=stub.traerProductos(solicitud)
+    return MessageToJson(response)
+
+@app.route('/traerProductosNoTienda', methods=['POST'])
+def  traerProductosNoTienda():    
+
+    solicitud= serviciosStockearte_pb2.traerProductosDeLaTiendaRequest(**request.json)
+
+    response=stub.traerProductosNoTienda(solicitud)
+    return MessageToJson(response)
 
 @app.route('/buscarTodosLosProductos', methods=['POST'])
 def  buscarTodosLosProductos():    

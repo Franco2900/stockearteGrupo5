@@ -94,6 +94,7 @@ const  modificarUsuario = async(u) =>{
       throw error;
     }
   };
+
   const traerUsuariosTienda = async (tiendaId) => {
     try {
       //const response = await axios.get(`http://127.0.0.1:5000/traerUsuariosTienda/${tiendaId}`);
@@ -255,6 +256,59 @@ const  modificarUsuario = async(u) =>{
       throw error;
     }
   };
+
+  async function traerProductosDeLaTienda2 (tienda_codigo) {
+    try {    
+          const params =  {
+           tienda_codigo: tienda_codigo,
+         };
+         const response = await axios.post(`/api/traerProductosDeLaTienda`,JSON.stringify(params), {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          //console.log("PRODUCTOS: " +JSON.stringify(response.data.arregloProductoDeLaTienda))
+          const productosList = response.data.arregloProductoDeLaTienda.map((producto) => ({
+            codigo: producto.codigo,
+            nombre: producto.nombre,
+            talle: producto.talle,
+            foto: producto.foto,
+            color: producto.color,
+            tiendaCodigo: producto.codigoTienda,
+            stock : producto.stock || 0
+          }));
+           return productosList;
+     
+    } catch (error) {
+      console.error('Error al obtener los productos:', error);
+      throw error;
+    }
+  };
+  async function traerProductosNoTienda (tienda_codigo) {
+    try {    
+          const params =  {
+           tienda_codigo: tienda_codigo,
+         };
+         const response = await axios.post(`/api/traerProductosNoTienda`,JSON.stringify(params), {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          //console.log("PRODUCTOS: " +JSON.stringify(response.data.arregloProductoDeLaTienda))
+          const productosList = response.data.arregloProductos4.map((producto) => ({
+            codigo: producto.codigo,
+            nombre: producto.nombre,
+            talle: producto.talle,
+            color: producto.color
+          }));
+           return productosList;
+     
+    } catch (error) {
+      console.error('Error al obtener los productos:', error);
+      throw error;
+    }
+  };
+
   const buscarProducto = async (codigo) => {
     try {
       const params =  {
@@ -330,6 +384,28 @@ const  modificarUsuario = async(u) =>{
         stock : producto.stock || 0
       }));
        return productosList;       
+      } catch (error) {
+        console.error('Error al obtener los productos:', error);
+        throw error;
+      }
+    };
+
+    async function traerProductos() {
+      try {
+           const response = await axios.post(`/api/traerProductos`,{
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            //console.log("PRODUCTOS: " +JSON.stringify(response.data.arregloProductoDeLaTienda))
+            const productosList = response.data.arregloProductos4.map((producto) => ({
+              codigo: producto.codigo,
+              nombre: producto.nombre,
+              talle: producto.talle,
+              color: producto.color
+            }));
+             return productosList;
+       
       } catch (error) {
         console.error('Error al obtener los productos:', error);
         throw error;
@@ -543,7 +619,7 @@ const  modificarUsuario = async(u) =>{
     <UserContext.Provider value={{ user, setUser,hacerLogin,
      altaUsuario, modificarUsuario,
      buscarUsuario ,buscarTodosLosUsuarios,traerUsuariosTienda,
-     traerProductosDeLaTienda,buscarProductoTienda, buscarTodosLosProductos,
+     traerProductosDeLaTienda,buscarProductoTienda, buscarTodosLosProductos, traerProductos, traerProductosDeLaTienda2, traerProductosNoTienda,
      altaProducto,modificarProducto, modificarStock,
      asignarProducto,desasignarProducto, buscarProducto,
      buscarTodasLasTiendas, buscarTienda,

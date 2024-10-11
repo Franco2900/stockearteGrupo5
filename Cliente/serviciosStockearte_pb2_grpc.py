@@ -84,6 +84,16 @@ class stockearteServiceStub(object):
                 request_serializer=serviciosStockearte__pb2.modificarUsuarioRequest.SerializeToString,
                 response_deserializer=serviciosStockearte__pb2.mensajeSimple.FromString,
                 _registered_method=True)
+        self.traerUsuariosTienda = channel.unary_unary(
+                '/stockeartePackage.stockearteService/traerUsuariosTienda',
+                request_serializer=serviciosStockearte__pb2.TiendaObject.SerializeToString,
+                response_deserializer=serviciosStockearte__pb2.arregloUsuarios.FromString,
+                _registered_method=True)
+        self.traerUsuariosNoTienda = channel.unary_unary(
+                '/stockeartePackage.stockearteService/traerUsuariosNoTienda',
+                request_serializer=serviciosStockearte__pb2.TiendaObject.SerializeToString,
+                response_deserializer=serviciosStockearte__pb2.arregloUsuarios.FromString,
+                _registered_method=True)
         self.altaProducto = channel.unary_unary(
                 '/stockeartePackage.stockearteService/altaProducto',
                 request_serializer=serviciosStockearte__pb2.altaProductoRequest.SerializeToString,
@@ -119,6 +129,11 @@ class stockearteServiceStub(object):
                 request_serializer=serviciosStockearte__pb2.asignarYDesasignarProductoRequest.SerializeToString,
                 response_deserializer=serviciosStockearte__pb2.mensajeSimple.FromString,
                 _registered_method=True)
+        self.traerProductos = channel.unary_unary(
+                '/stockeartePackage.stockearteService/traerProductos',
+                request_serializer=serviciosStockearte__pb2.mensajeVacio.SerializeToString,
+                response_deserializer=serviciosStockearte__pb2.arregloProductos_4.FromString,
+                _registered_method=True)
         self.traerUsuarioPorId = channel.unary_unary(
                 '/stockeartePackage.stockearteService/traerUsuarioPorId',
                 request_serializer=serviciosStockearte__pb2.buscarIdRequest.SerializeToString,
@@ -143,6 +158,11 @@ class stockearteServiceStub(object):
                 '/stockeartePackage.stockearteService/traerProductosDeLaTienda',
                 request_serializer=serviciosStockearte__pb2.traerProductosDeLaTiendaRequest.SerializeToString,
                 response_deserializer=serviciosStockearte__pb2.traerProductosDeLaTiendaResponse.FromString,
+                _registered_method=True)
+        self.traerProductosNoTienda = channel.unary_unary(
+                '/stockeartePackage.stockearteService/traerProductosNoTienda',
+                request_serializer=serviciosStockearte__pb2.traerProductosDeLaTiendaRequest.SerializeToString,
+                response_deserializer=serviciosStockearte__pb2.arregloProductos_4.FromString,
                 _registered_method=True)
         self.altaOrdenDeCompra = channel.unary_unary(
                 '/stockeartePackage.stockearteService/altaOrdenDeCompra',
@@ -226,6 +246,18 @@ class stockearteServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def traerUsuariosTienda(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def traerUsuariosNoTienda(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def altaProducto(self, request, context):
         """productoService
         """
@@ -270,6 +302,12 @@ class stockearteServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def traerProductos(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def traerUsuarioPorId(self, request, context):
         """Funciones complementarias
         """
@@ -296,6 +334,12 @@ class stockearteServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def traerProductosDeLaTienda(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def traerProductosNoTienda(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -373,6 +417,16 @@ def add_stockearteServiceServicer_to_server(servicer, server):
                     request_deserializer=serviciosStockearte__pb2.modificarUsuarioRequest.FromString,
                     response_serializer=serviciosStockearte__pb2.mensajeSimple.SerializeToString,
             ),
+            'traerUsuariosTienda': grpc.unary_unary_rpc_method_handler(
+                    servicer.traerUsuariosTienda,
+                    request_deserializer=serviciosStockearte__pb2.TiendaObject.FromString,
+                    response_serializer=serviciosStockearte__pb2.arregloUsuarios.SerializeToString,
+            ),
+            'traerUsuariosNoTienda': grpc.unary_unary_rpc_method_handler(
+                    servicer.traerUsuariosNoTienda,
+                    request_deserializer=serviciosStockearte__pb2.TiendaObject.FromString,
+                    response_serializer=serviciosStockearte__pb2.arregloUsuarios.SerializeToString,
+            ),
             'altaProducto': grpc.unary_unary_rpc_method_handler(
                     servicer.altaProducto,
                     request_deserializer=serviciosStockearte__pb2.altaProductoRequest.FromString,
@@ -408,6 +462,11 @@ def add_stockearteServiceServicer_to_server(servicer, server):
                     request_deserializer=serviciosStockearte__pb2.asignarYDesasignarProductoRequest.FromString,
                     response_serializer=serviciosStockearte__pb2.mensajeSimple.SerializeToString,
             ),
+            'traerProductos': grpc.unary_unary_rpc_method_handler(
+                    servicer.traerProductos,
+                    request_deserializer=serviciosStockearte__pb2.mensajeVacio.FromString,
+                    response_serializer=serviciosStockearte__pb2.arregloProductos_4.SerializeToString,
+            ),
             'traerUsuarioPorId': grpc.unary_unary_rpc_method_handler(
                     servicer.traerUsuarioPorId,
                     request_deserializer=serviciosStockearte__pb2.buscarIdRequest.FromString,
@@ -432,6 +491,11 @@ def add_stockearteServiceServicer_to_server(servicer, server):
                     servicer.traerProductosDeLaTienda,
                     request_deserializer=serviciosStockearte__pb2.traerProductosDeLaTiendaRequest.FromString,
                     response_serializer=serviciosStockearte__pb2.traerProductosDeLaTiendaResponse.SerializeToString,
+            ),
+            'traerProductosNoTienda': grpc.unary_unary_rpc_method_handler(
+                    servicer.traerProductosNoTienda,
+                    request_deserializer=serviciosStockearte__pb2.traerProductosDeLaTiendaRequest.FromString,
+                    response_serializer=serviciosStockearte__pb2.arregloProductos_4.SerializeToString,
             ),
             'altaOrdenDeCompra': grpc.unary_unary_rpc_method_handler(
                     servicer.altaOrdenDeCompra,
@@ -730,6 +794,60 @@ class stockearteService(object):
             _registered_method=True)
 
     @staticmethod
+    def traerUsuariosTienda(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/stockeartePackage.stockearteService/traerUsuariosTienda',
+            serviciosStockearte__pb2.TiendaObject.SerializeToString,
+            serviciosStockearte__pb2.arregloUsuarios.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def traerUsuariosNoTienda(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/stockeartePackage.stockearteService/traerUsuariosNoTienda',
+            serviciosStockearte__pb2.TiendaObject.SerializeToString,
+            serviciosStockearte__pb2.arregloUsuarios.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
     def altaProducto(request,
             target,
             options=(),
@@ -919,6 +1037,33 @@ class stockearteService(object):
             _registered_method=True)
 
     @staticmethod
+    def traerProductos(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/stockeartePackage.stockearteService/traerProductos',
+            serviciosStockearte__pb2.mensajeVacio.SerializeToString,
+            serviciosStockearte__pb2.arregloProductos_4.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
     def traerUsuarioPorId(request,
             target,
             options=(),
@@ -1043,6 +1188,33 @@ class stockearteService(object):
             '/stockeartePackage.stockearteService/traerProductosDeLaTienda',
             serviciosStockearte__pb2.traerProductosDeLaTiendaRequest.SerializeToString,
             serviciosStockearte__pb2.traerProductosDeLaTiendaResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def traerProductosNoTienda(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/stockeartePackage.stockearteService/traerProductosNoTienda',
+            serviciosStockearte__pb2.traerProductosDeLaTiendaRequest.SerializeToString,
+            serviciosStockearte__pb2.arregloProductos_4.FromString,
             options,
             channel_credentials,
             insecure,

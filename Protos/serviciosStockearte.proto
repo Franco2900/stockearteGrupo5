@@ -16,7 +16,7 @@ service stockearteService // Creo el servicio y los métodos que va a tener
     rpc altaUsuario (altaUsuarioRequest) returns (mensajeSimple) {}
     rpc buscarUsuario (buscarUsuarioRequest) returns (usuario) {}
     rpc buscarTodosLosUsuarios (mensajeVacio) returns (arregloUsuarios) {}
-    rpc modificarUsuario (modificarUsuarioRequest) returns (mensajeSimple) {} 
+    rpc modificarUsuario (modificarUsuarioRequest) returns (mensajeSimple) {}
 
     // productoService
     rpc altaProducto (altaProductoRequest) returns (mensajeSimple) {}
@@ -27,6 +27,7 @@ service stockearteService // Creo el servicio y los métodos que va a tener
     rpc modificarProducto (modificarProductoRequest) returns (mensajeSimple) {}
     rpc asignarProducto (asignarYDesasignarProductoRequest) returns (mensajeSimple) {}
     rpc desasignarProducto (asignarYDesasignarProductoRequest) returns (mensajeSimple) {}
+    rpc traerProductos (mensajeVacio) returns (arregloProductos_4) {}
 
     // Funciones complementarias
     rpc traerUsuarioPorId (buscarIdRequest) returns (usuario) {}
@@ -34,6 +35,7 @@ service stockearteService // Creo el servicio y los métodos que va a tener
     rpc traerProductoPorCodigo (buscarCodigoRequest) returns (producto) {}
     rpc hacerLogin (hacerLoginRequest) returns (hacerLoginResponse) {}
     rpc traerProductosDeLaTienda (traerProductosDeLaTiendaRequest) returns (traerProductosDeLaTiendaResponse) {}
+    rpc traerProductosNoTienda (traerProductosDeLaTiendaRequest) returns (arregloProductos_4) {}
 
     // proveedorService
     rpc altaOrdenDeCompra (altaOrdenDeCompraRequest) returns (mensajeSimple) {}
@@ -233,6 +235,19 @@ message producto_3
     string color   = 5;
     string codigoTienda = 6;
     optional int32 stock = 7;
+}
+
+message arregloProductos_4
+{
+    repeated producto_4 arregloProductos_4 = 1;
+}
+
+message producto_4
+{
+    string codigo  = 1;
+    string nombre  = 2;
+    string talle   = 3;
+    string color   = 4;
 }
 
 message arregloCodigosDeTienda
