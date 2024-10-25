@@ -215,6 +215,14 @@ async function consumirSolicitudes()
                             id_orden_de_compra = ${idOrdenDeCompra},
                             fecha_de_envio = '${fechaDeEnvio}'  `, {});
                     }
+
+                    if(estado == 'RECHAZADA')
+                        {
+                            await conexionDataBase.query(`UPDATE orden_de_compra
+                                SET estado = '${estado}',
+                                observaciones = '${observaciones}'
+                                WHERE  id = ${idOrdenDeCompra} `, {});
+                        }
                     
                     console.log('***********************************************************');
                     console.log(`La orden de compra ${idOrdenDeCompra} fue ${estado}`);

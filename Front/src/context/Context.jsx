@@ -588,8 +588,8 @@ const  modificarUsuario = async(u) =>{
       const params = {
         tienda_codigo: codigoTienda,
         items: listaProductos.map((producto) => ({
-          //id_orden_de_compra: producto.id_orden_de_compra || null, // Si existe, si no se puede omitir
-          id_orden_de_compra: 999,
+          id_orden_de_compra: producto.id_orden_de_compra || null, // Si existe, si no se puede omitir
+          //id_orden_de_compra: 999,
           producto_codigo: producto.codigo,
           color: producto.color,
           talle: producto.talle,
