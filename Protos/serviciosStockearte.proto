@@ -41,6 +41,8 @@ service stockearteService // Creo el servicio y los métodos que va a tener
     rpc altaOrdenDeCompra (altaOrdenDeCompraRequest) returns (mensajeSimple) {}
     rpc traerOrdenesDeCompraAceptadasYConDespacho (traerOrdenesDeCompraAceptadasYConDespachoRequest) returns (traerOrdenesDeCompraAceptadasYConDespachoResponse) {}
     rpc aceptarDespacho (aceptarDespachoRequest) returns (mensajeSimple) {}
+    rpc traerOrdenesDeCompraTienda(TiendaObject) returns (ordenCompraResponse) {}
+    rpc traerItems(traerItemsRequest) returns (traerItemsResponse) {}
 }
 
 /*********************************************************************************************/
@@ -355,4 +357,29 @@ message item
 message aceptarDespachoRequest
 {
     optional int32 id_orden_de_compra  = 1;
+}
+
+message ordenCompra
+{
+    string tienda_codigo = 1;
+    int32 id_orden_de_compra = 2;
+    string estado = 3;
+    string observaciones = 4;
+    string fecha_de_solicitud = 5;
+    string fecha_de_recepcion = 6;
+}
+
+message ordenCompraResponse
+{
+    repeated ordenCompra arregloOrdenCompra = 1;
+}
+
+message traerItemsRequest
+{
+    int32 id_orden_de_compra = 1;
+}
+
+message traerItemsResponse
+{
+    repeated item arregloItems = 7;
 }

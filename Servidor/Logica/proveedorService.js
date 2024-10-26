@@ -340,9 +340,86 @@ async function aceptarDespacho(call, callback)
     }
 }
 
+async function traerOrdenesDeCompraTienda(call, callback) { 
+    try {
+        const registro = {
+            tienda_codigo: call.request.codigo
+        };
+        
+        const resultadosConsulta = await conexionDataBase.query(
+            `SELECT OC.*, D.fecha_de_envio
+            FROM ORDEN_DE_COMPRA OC
+            LEFT JOIN DESPACHO D ON OC.id = D.id_orden_de_compra
+            WHERE tienda_codigo = '${registro.tienda_codigo}'`, {}
+        );
+
+        const formatDate = (date) => date ? new Date(date).toLocaleString() : 'No disponible';
+
+        var respuesta = [];
+        for (var i = 0; i < resultadosConsulta.length; i++) {
+            respuesta.push({
+                tienda_codigo: registro.tienda_codigo,
+                id_orden_de_compra: resultadosConsulta[i].id,
+                estado: resultadosConsulta[i].estado,
+                observaciones: resultadosConsulta[i].observaciones,
+                fecha_de_solicitud: formatDate(resultadosConsulta[i].fecha_de_solicitud),
+                fecha_de_recepcion: formatDate(resultadosConsulta[i].fecha_de_recepcion),
+                //fecha_de_envio: formatDate(resultadosConsulta[i].fecha_de_envio) // Asegúrate de incluir esto
+            });
+        }
+
+        console.log('************************************************************');
+        console.log('Trayendo ordenes de compra de la tienda');
+        console.log('Datos devueltos al cliente:');
+        console.log(respuesta);
+        return callback(null, { arregloOrdenCompra: respuesta });
+        
+    } catch (error) {
+        console.error('Error en traerOrdenesDeCompra:', error);
+        callback(error); // Maneja el error
+    }
+}
+
+async function traerItems(call, callback) { 
+    try {
+        const registro = {
+            id_orden_de_compra: call.request.id_orden_de_compra 
+        };
+        
+        const resultadosConsulta = await conexionDataBase.query(
+            `SELECT producto_codigo, color, talle, cantidad_solicitada
+            FROM item
+            WHERE id_orden_de_compra = '${registro.id_orden_de_compra}'`, {}
+        );
+
+        var respuesta = [];
+        for (var i = 0; i < resultadosConsulta.length; i++) {
+            respuesta.push({
+                id_orden_de_compra: registro.id_orden_de_compra,
+                producto_codigo: resultadosConsulta[i].producto_codigo,
+                color: resultadosConsulta[i].color,
+                talle: resultadosConsulta[i].talle,
+                cantidad_solicitada: resultadosConsulta[i].cantidad_solicitada
+            });
+        }
+
+        console.log('************************************************************');
+        console.log('Trayendo ordenes de compra de la tienda');
+        console.log('Datos devueltos al cliente:');
+        console.log(respuesta);
+        return callback(null, { arregloItems: respuesta });
+        
+    } catch (error) {
+        console.error('Error en traerOrdenesDeCompra:', error);
+        callback(error); // Maneja el error
+    }
+}
+
 /*********************************** EXPORTACIÓN DE LA LÓGICA ***********************************/
 exports.altaOrdenDeCompra   = altaOrdenDeCompra
 exports.consumirNovedades   = consumirNovedades
 exports.consumirSolicitudes = consumirSolicitudes
 exports.traerOrdenesDeCompraAceptadasYConDespacho = traerOrdenesDeCompraAceptadasYConDespacho
 exports.aceptarDespacho     = aceptarDespacho
+exports.traerOrdenesDeCompraTienda = traerOrdenesDeCompraTienda
+exports.traerItems = traerItems

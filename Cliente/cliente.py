@@ -314,6 +314,19 @@ def  altaNovedades():
     response=stub.altaNovedades(solicitud)
     return MessageToJson(response)
 
+@app.route('/traerOrdenesDeCompraTienda', methods=['POST'])
+def  traerOrdenesDeCompraTienda():
+    solicitud= serviciosStockearte_pb2.TiendaObject(**request.json)
+
+    response=stub.traerOrdenesDeCompraTienda(solicitud)
+    return MessageToJson(response)
+
+@app.route('/traerItems', methods=['POST'])
+def  traerItems():
+    solicitud= serviciosStockearte_pb2.traerItemsRequest(**request.json)
+
+    response=stub.traerItems(solicitud)
+    return MessageToJson(response)
 
 # Ejecutar la aplicación
 if __name__ == '__main__':

@@ -59,6 +59,9 @@ const proveedorService = require('./Logica/proveedorService.js');
 const altaOrdenDeCompra = proveedorService.altaOrdenDeCompra.bind({});
 const traerOrdenesDeCompraAceptadasYConDespacho = proveedorService.traerOrdenesDeCompraAceptadasYConDespacho.bind({});
 const aceptarDespacho = proveedorService.aceptarDespacho.bind({});
+const traerOrdenesDeCompraTienda = proveedorService.traerOrdenesDeCompraTienda.bind({});
+const traerItems = proveedorService.traerItems.bind({})
+
 proveedorService.consumirNovedades();   // Esto es una función automatica que va a estar todo el tiempo activa, no es para gRPC
 proveedorService.consumirSolicitudes(); // Lo mismo
 
@@ -100,7 +103,9 @@ servidor.addService(stockeartePackage.stockearteService.service, {
     // proveedorService
     altaOrdenDeCompra,
     traerOrdenesDeCompraAceptadasYConDespacho,
-    aceptarDespacho
+    aceptarDespacho,
+    traerOrdenesDeCompraTienda,
+    traerItems
 });
 
 
