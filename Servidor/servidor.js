@@ -63,8 +63,8 @@ const traerOrdenesDeCompraTienda = proveedorService.traerOrdenesDeCompraTienda.b
 const traerItems = proveedorService.traerItems.bind({})
 const traerOrdenesDeCompraTienda2 = proveedorService.traerOrdenesDeCompraTienda2.bind({});
 
-proveedorService.consumirNovedades();   // Esto es una función automatica que va a estar todo el tiempo activa, no es para gRPC
-proveedorService.consumirSolicitudes(); // Lo mismo
+//proveedorService.consumirNovedades();   // Esto es una función automatica que va a estar todo el tiempo activa, no es para gRPC
+//proveedorService.consumirSolicitudes(); // Lo mismo
 
 // Añado las funciones al servicio
 servidor.addService(stockeartePackage.stockearteService.service, { 
