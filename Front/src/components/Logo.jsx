@@ -17,7 +17,7 @@ const LogoContainer = styled.div`
   }
      h1 {
     color: #333; /* Color de texto */
-    font-size: 30vh; /* Tamaño de fuente */
+    font-size: 20vh; /* Tamaño de fuente */
     font-weight: bold; /* Negrita */
     text-align: center; /* Centrado */
   }
