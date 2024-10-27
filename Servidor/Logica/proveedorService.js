@@ -315,15 +315,11 @@ async function aceptarDespacho(call, callback)
 
         var resultadoCondigoTienda = await conexionDataBase.query(`SELECT tienda_codigo FROM orden_de_compra WHERE id =  ${registro.id_orden_de_compra}`, {});
         var resultadosItems = await conexionDataBase.query(`SELECT producto_codigo, cantidad_solicitada from item where id_orden_de_compra =  ${registro.id_orden_de_compra}`, {});
-        console.log(resultadoCondigoTienda);
-        console.log(resultadosItems); //hasta aca va perfecto
+
         for (var i = 0; i < resultadosItems.length; i++) {
-            
             var stockActual = await conexionDataBase.query(`SELECT stock FROM tienda_x_producto WHERE tienda_codigo = '${resultadoCondigoTienda[0].tienda_codigo}' and producto_codigo = '${resultadosItems[i].producto_codigo}'`, {});
             var nuevoStock = stockActual[0].stock + resultadosItems[i].cantidad_solicitada;
-            console.log("Stock actual: " + stockActual);
-            console.log("Stock a agregar: " + resultadosItems[i].cantidad_solicitada);
-            console.log("Nuevo stock: " + nuevoStock);
+            
             await conexionDataBase.query(`
                 UPDATE tienda_x_producto
                 SET stock = ${nuevoStock}
@@ -431,6 +427,47 @@ async function traerItems(call, callback) {
     }
 }
 
+async function traerOrdenesDeCompraTienda2(call, callback) { 
+    try {
+        const registro = {
+            tienda_codigo: call.request.codigo
+        };
+        
+        const resultadosConsulta = await conexionDataBase.query(
+            `SELECT OC.*, D.fecha_de_envio
+            FROM ORDEN_DE_COMPRA OC
+            LEFT JOIN DESPACHO D ON OC.id = D.id_orden_de_compra
+            WHERE tienda_codigo = '${registro.tienda_codigo}'`, {}
+        );
+
+        const formatDate = (date) => date ? new Date(date).toLocaleString() : 'No disponible';
+
+        var respuesta = [];
+        for (var i = 0; i < resultadosConsulta.length; i++) {
+            respuesta.push({
+                tienda_codigo: registro.tienda_codigo,
+                id_orden_de_compra: resultadosConsulta[i].id,
+                estado: resultadosConsulta[i].estado,
+                observaciones: resultadosConsulta[i].observaciones,
+                fecha_de_solicitud: formatDate(resultadosConsulta[i].fecha_de_solicitud),
+                fecha_de_recepcion: formatDate(resultadosConsulta[i].fecha_de_recepcion),
+                fecha_de_envio: formatDate(resultadosConsulta[i].fecha_de_envio)
+            });
+        }
+
+        console.log('************************************************************');
+        console.log('Trayendo ordenes de compra de la tienda');
+        console.log('Datos devueltos al cliente:');
+        console.log(respuesta);
+        return callback(null, { arregloOrdenCompra: respuesta });
+        
+    } catch (error) {
+        console.error('Error en traerOrdenesDeCompra:', error);
+        callback(error); // Maneja el error
+    }
+}
+
+
 /*********************************** EXPORTACIÓN DE LA LÓGICA ***********************************/
 exports.altaOrdenDeCompra   = altaOrdenDeCompra
 exports.consumirNovedades   = consumirNovedades
@@ -439,3 +476,4 @@ exports.traerOrdenesDeCompraAceptadasYConDespacho = traerOrdenesDeCompraAceptada
 exports.aceptarDespacho     = aceptarDespacho
 exports.traerOrdenesDeCompraTienda = traerOrdenesDeCompraTienda
 exports.traerItems = traerItems
+exports.traerOrdenesDeCompraTienda2 = traerOrdenesDeCompraTienda2

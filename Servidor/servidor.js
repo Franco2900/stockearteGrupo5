@@ -61,6 +61,7 @@ const traerOrdenesDeCompraAceptadasYConDespacho = proveedorService.traerOrdenesD
 const aceptarDespacho = proveedorService.aceptarDespacho.bind({});
 const traerOrdenesDeCompraTienda = proveedorService.traerOrdenesDeCompraTienda.bind({});
 const traerItems = proveedorService.traerItems.bind({})
+const traerOrdenesDeCompraTienda2 = proveedorService.traerOrdenesDeCompraTienda2.bind({});
 
 proveedorService.consumirNovedades();   // Esto es una función automatica que va a estar todo el tiempo activa, no es para gRPC
 proveedorService.consumirSolicitudes(); // Lo mismo
@@ -105,7 +106,8 @@ servidor.addService(stockeartePackage.stockearteService.service, {
     traerOrdenesDeCompraAceptadasYConDespacho,
     aceptarDespacho,
     traerOrdenesDeCompraTienda,
-    traerItems
+    traerItems,
+    traerOrdenesDeCompraTienda2
 });
 
 

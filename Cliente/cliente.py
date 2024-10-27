@@ -328,6 +328,13 @@ def  traerItems():
     response=stub.traerItems(solicitud)
     return MessageToJson(response)
 
+@app.route('/traerOrdenesDeCompraTienda2', methods=['POST'])
+def  traerOrdenesDeCompraTienda2():
+    solicitud= serviciosStockearte_pb2.TiendaObject(**request.json)
+
+    response=stub.traerOrdenesDeCompraTienda2(solicitud)
+    return MessageToJson(response)
+
 # Ejecutar la aplicación
 if __name__ == '__main__':
     #app.run(host='0.0.0.0', port=8080, debug=True)

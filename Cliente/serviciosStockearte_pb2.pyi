@@ -470,3 +470,27 @@ class traerItemsResponse(_message.Message):
     ARREGLOITEMS_FIELD_NUMBER: _ClassVar[int]
     arregloItems: _containers.RepeatedCompositeFieldContainer[item]
     def __init__(self, arregloItems: _Optional[_Iterable[_Union[item, _Mapping]]] = ...) -> None: ...
+
+class ordenCompra2(_message.Message):
+    __slots__ = ("tienda_codigo", "id_orden_de_compra", "estado", "observaciones", "fecha_de_solicitud", "fecha_de_recepcion", "fecha_de_envio")
+    TIENDA_CODIGO_FIELD_NUMBER: _ClassVar[int]
+    ID_ORDEN_DE_COMPRA_FIELD_NUMBER: _ClassVar[int]
+    ESTADO_FIELD_NUMBER: _ClassVar[int]
+    OBSERVACIONES_FIELD_NUMBER: _ClassVar[int]
+    FECHA_DE_SOLICITUD_FIELD_NUMBER: _ClassVar[int]
+    FECHA_DE_RECEPCION_FIELD_NUMBER: _ClassVar[int]
+    FECHA_DE_ENVIO_FIELD_NUMBER: _ClassVar[int]
+    tienda_codigo: str
+    id_orden_de_compra: int
+    estado: str
+    observaciones: str
+    fecha_de_solicitud: str
+    fecha_de_recepcion: str
+    fecha_de_envio: str
+    def __init__(self, tienda_codigo: _Optional[str] = ..., id_orden_de_compra: _Optional[int] = ..., estado: _Optional[str] = ..., observaciones: _Optional[str] = ..., fecha_de_solicitud: _Optional[str] = ..., fecha_de_recepcion: _Optional[str] = ..., fecha_de_envio: _Optional[str] = ...) -> None: ...
+
+class ordenCompraResponse2(_message.Message):
+    __slots__ = ("arregloOrdenCompra",)
+    ARREGLOORDENCOMPRA_FIELD_NUMBER: _ClassVar[int]
+    arregloOrdenCompra: _containers.RepeatedCompositeFieldContainer[ordenCompra2]
+    def __init__(self, arregloOrdenCompra: _Optional[_Iterable[_Union[ordenCompra2, _Mapping]]] = ...) -> None: ...
