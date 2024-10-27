@@ -615,7 +615,7 @@ const  modificarUsuario = async(u) =>{
          const params =  {
           codigo: user.tiendaCodigo ,
          };
-         const response = await axios.post(`/api/traerOrdenesDeCompraTienda`,JSON.stringify(params), {
+         const response = await axios.post(`/api/traerOrdenesDeCompraTienda2`,JSON.stringify(params), {
             headers: {
               'Content-Type': 'application/json',
             },
