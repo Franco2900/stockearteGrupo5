@@ -1,12 +1,6 @@
 import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import axios from "axios";
-import React, { useContext , useState, useEffect} from "react";
-import UserContext from "../context/Context";
-import ListCardProductos from "../components/ListCardProductos";
+import React from "react";
 import Logo from "../components/Logo.jsx";
-
 
 function Home() {
   return (
