@@ -75,7 +75,27 @@ padding-top: .3cm;
   text-align: center;
   flex-grow: 1;
 }
+.logo-container {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Sombra blanca */
+  transition: transform 0.3s ease-in-out;
+  cursor: pointer;
+}
 
+.logo-container:hover {
+  transform: scale(0.95);
+  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3); /* Sombra más oscura en hover */
+}
+
+.logo-container h1 {
+  color: #333; /* Color de texto */
+  font-size: 20vh; /* Tamaño de fuente */
+  font-weight: bold; /* Negrita */
+  text-align: center; /* Centrado */
+}
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -88,6 +108,8 @@ padding-top: .3cm;
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
+
+
 
 @keyframes logo-spin {
   from {
