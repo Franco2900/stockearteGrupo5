@@ -67,5 +67,13 @@ const productos = [{"tienda_codigo":"wxyz123abc","codigo":"1","nombre":"Short","
   {"tienda_codigo":"asdfgh987","codigo":"3","nombre":"Remera","talle":"2XL","color":"Turquoise","stock":27,"foto":"guardian.co.uk"},
   {"tienda_codigo":"asdfgh987","codigo":"3","nombre":"Remera","talle":"XL","color":"Yellow","stock":30,"foto":"stanford.edu"},
   {"tienda_codigo":"pqr789xyz","codigo":"3","nombre":"Remera","talle":"L","color":"Mauv","stock":4,"foto":"usatoday.com"}];
+
+  const ordenes=[
+    {"tienda_codigo": "ASDF", "id": "1", "estado": "SOLICITADA", "observaciones": "Esperando confirmación", "orden_de_despacho": "OD-001", "fecha_de_solicitud": "2024-10-20", "fecha_de_recepcion": ""},
+    {"tienda_codigo": "ASDF", "id": "2", "estado": "RECHAZADA", "observaciones": "No se cumplen requisitos", "orden_de_despacho": "OD-002", "fecha_de_solicitud": "2024-10-22", "fecha_de_recepcion": ""},
+    {"tienda_codigo": "ASDF", "id": "3", "estado": "ACEPTADA", "observaciones": "Todo correcto", "orden_de_despacho": "OD-003", "fecha_de_solicitud": "2024-10-24", "fecha_de_recepcion": "2024-10-25"},
+    {"tienda_codigo": "ASDF", "id": "4", "estado": "RECIBIDA", "observaciones": "Mercadería recibida con éxito", "orden_de_despacho": "OD-004", "fecha_de_solicitud": "2024-10-26", "fecha_de_recepcion": "2024-10-27"},
+    {"tienda_codigo": "ASDF", "id": "5", "estado": "SOLICITADA", "observaciones": "Esperando respuesta", "orden_de_despacho": "OD-005", "fecha_de_solicitud": "2024-10-28", "fecha_de_recepcion": ""}
+    ];
   
-  export { usuarios, tiendas, productos };
+  export { usuarios, tiendas, productos, ordenes };

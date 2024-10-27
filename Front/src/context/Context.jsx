@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect} from 'react';
 import axios from 'axios';
 import { Buffer } from 'buffer';
-import {productos, tiendas, usuarios} from '../context/Datos'
+import {productos, tiendas, usuarios, ordenes} from '../context/Datos'
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
@@ -609,8 +609,70 @@ const  modificarUsuario = async(u) =>{
       throw error;
     }
   };
+  ////////  ORDENES   //////////////////////////////////////////////////////
+  async function traerOrdenesDeCompraTienda() {
+    try {    
+         const params =  {
+          codigo: user.tiendaCodigo ,
+         };
+         const response = await axios.post(`/api/traerOrdenesDeCompraTienda`,JSON.stringify(params), {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          const ordenes = response.data.arregloOrdenCompra.map((o) => ({
+            tiendaCodigo: o.tiendaCodigo,
+            idOrdenDeCompra: o.idOrdenDeCompra,
+            estado: o.estado,
+            observaciones: o.observaciones,
+            fechaDeSolicitud: o.fechaDeSolicitud,
+            fechaDeRecepcion: o.fechaDeRecepcion,
+            fechaDeEnvio: o.fechaDeEnvio,
+          }));
+          //console.log(JSON.stringify(response.data.arregloOrdenCompra))
+    return ordenes;
+     
+    } catch (error) {
+      console.error('Error al obtener los productos:', error);
+      throw error;
+    }
+  };
+  async function traerItems(idOrden){
+    try {    
+       const params =  {
+        id_orden_de_compra: idOrden ,
+      };
+      const response = await axios.post(`/api/traerItems`,JSON.stringify(params), {
+         headers: {
+           'Content-Type': 'application/json',
+         },
+       });
+       console.log('ITEMS: '+JSON.stringify(response))
+      return response.data.arregloItems;
   
+ } catch (error) {
+   console.error('Error al obtener los items:', error);
+   throw error;
+ }; }
+ async function aceptarDespacho(idOrden){
+  try {    
+     const params =  {
+      id_orden_de_compra: idOrden ,
+    };
+    const response = await axios.post(`/api/aceptarDespacho`,JSON.stringify(params), {
+       headers: {
+         'Content-Type': 'application/json',
+       },
+     });
+     console.log('ITEMS: '+JSON.stringify(response))
+    return response.data.arregloItems;
 
+} catch (error) {
+ console.error('Error al aceptar Despacho:', error);
+ throw error;
+};
+ }
+ 
   //function bufferToImagenSrc(buffer) {
   //  const base64String = Buffer.from(buffer).toString('base64');
   //  return `data:image/jpeg;base64,${base64String}`;
@@ -624,6 +686,7 @@ const  modificarUsuario = async(u) =>{
      asignarProducto,desasignarProducto, buscarProducto,
      buscarTodasLasTiendas, buscarTienda,
      altaTienda,modificarTienda, traerNovedades, altaNovedades, altaOrdenDeCompraRequest,
+     traerOrdenesDeCompraTienda,traerItems,aceptarDespacho,
      }}>
       {children}
     </UserContext.Provider>

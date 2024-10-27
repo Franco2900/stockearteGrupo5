@@ -18,6 +18,7 @@ import AsigUser from './views/AsigUser.jsx';
 import ModStock from './views/ModStock.jsx';
 import BuscarOrdenes from './views/BuscarOrdenes.jsx';
 import CrearUpdOrden from './views/CrearUpdOrden.jsx';
+import Orden from './views/Orden.jsx'
 import Novedades from './views/Novedades.jsx';
 
 
@@ -44,6 +45,7 @@ function App() {
                       <Route path='/modstock' element={<ModStock/>} />
                       <Route path='/buscarordenes' element={<BuscarOrdenes/>} />
                       <Route path='/crearupdorden' element={<CrearUpdOrden/>} />
+                      <Route path='/orden' element={<Orden/>} />
                   </Route>
 
                   {/*Rutas protegidas solo para usuarios Casa Central*/}
