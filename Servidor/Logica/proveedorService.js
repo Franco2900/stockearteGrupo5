@@ -313,7 +313,23 @@ async function aceptarDespacho(call, callback)
             estado = 'RECIBIDA'
             WHERE id = ${registro.id_orden_de_compra} `, {});
 
-        
+        var resultadoCondigoTienda = await conexionDataBase.query(`SELECT tienda_codigo FROM orden_de_compra WHERE id =  ${registro.id_orden_de_compra}`, {});
+        var resultadosItems = await conexionDataBase.query(`SELECT producto_codigo, cantidad_solicitada from item where id_orden_de_compra =  ${registro.id_orden_de_compra}`, {});
+        console.log(resultadoCondigoTienda);
+        console.log(resultadosItems); //hasta aca va perfecto
+        for (var i = 0; i < resultadosItems.length; i++) {
+            
+            var stockActual = await conexionDataBase.query(`SELECT stock FROM tienda_x_producto WHERE tienda_codigo = '${resultadoCondigoTienda[0].tienda_codigo}' and producto_codigo = '${resultadosItems[i].producto_codigo}'`, {});
+            var nuevoStock = stockActual[0].stock + resultadosItems[i].cantidad_solicitada;
+            console.log("Stock actual: " + stockActual);
+            console.log("Stock a agregar: " + resultadosItems[i].cantidad_solicitada);
+            console.log("Nuevo stock: " + nuevoStock);
+            await conexionDataBase.query(`
+                UPDATE tienda_x_producto
+                SET stock = ${nuevoStock}
+                WHERE tienda_codigo = '${resultadoCondigoTienda[0].tienda_codigo}' AND producto_codigo = '${resultadosItems[i].producto_codigo}'`, {});
+        }
+
         // Envio el mensaje al topic recepcion
         var resultadosConsulta = await conexionDataBase.query(`SELECT id FROM despacho WHERE id_orden_de_compra = ${registro.id_orden_de_compra} `, {});
         var idDespacho = resultadosConsulta[0].id;
