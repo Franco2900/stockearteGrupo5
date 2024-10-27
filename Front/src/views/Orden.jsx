@@ -55,7 +55,7 @@ export default function Orden() {
       <Row className="d-flex justify-content-center  "style={{overflowY: 'scroll', minHeight: 'calc(100vh -  233px)'}}>            
         <Col md={{ span: 4 }} >
          <TablaOrdenItems list={items}/>
-         {(orden.estado==="ACEPTADA" && orden.fechaDeEnvio !=="No disponible") && (<><Button className='BotonABM' variant="primary" >Recibir</Button> </>)}
+         {(orden.estado==="ACEPTADA" && orden.fechaDeEnvio !=="No disponible") && (<><Button className='BotonABM' variant="primary" onClick={HandleClick}>Recibir</Button> </>)}
         </Col>
       </Row>
     </Container>
