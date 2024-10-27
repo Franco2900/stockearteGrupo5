@@ -15,7 +15,7 @@ const CargaMasiva = () => {
             console.log("Archivo cargado:", file.name);
             try {
                 const mensaje = await cargaMasiva(file);
-                console.log("Respuesta del servidor:", mensaje);
+                alert(mensaje);
             } catch (error) {
                 console.error("Error al cargar el archivo:", error);
             }

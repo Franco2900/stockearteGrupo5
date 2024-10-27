@@ -61,9 +61,7 @@ function NavBar() {
                       <NavDropdown.Item href="/buscarordenes">Buscar</NavDropdown.Item>
                       <NavDropdown.Item href="/crearupdorden">Crear</NavDropdown.Item>
                     </NavDropdown>
-                    <NavDropdown title="CargaMasiva" id="basic-nav-dropdown">
-                      <NavDropdown.Item href="/cargaMasiva">Cargar</NavDropdown.Item>
-                      </NavDropdown>
+                    <NavDropdown.Item className="nav-link" href="/cargaMasiva">Carga Masiva </NavDropdown.Item>
                   </>
                 )}
                 
