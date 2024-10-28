@@ -673,25 +673,6 @@ const  modificarUsuario = async(u) =>{
 };
  }
 
- /*
-
- const cargaMasiva= async (archivoCSV) => {
-  try {
-    const params = {archivoCSV:archivoCSV};
-
-    const response = await axios.post('/apiSoap/usuario', params, {
-      headers: {
-        'Content-Type': 'text/csv',
-      },
-    });
-
-    return response.data.mensaje;
-  } catch (error) {
-    console.error('Error al realizar carga:', error);
-    throw error;
-  }
-};
-*/
 const cargaMasiva = async (archivo) => {
   try {
     const formData = new FormData();
@@ -710,6 +691,26 @@ const cargaMasiva = async (archivo) => {
   };
 };
 
+const crearCatalogo = async (arregloCodigos, tit) => {
+  try {
+
+    const params =  {
+      codigos: arregloCodigos,
+      titulo: tit
+    };
+
+    const response = await axios.post('http://localhost:7000/catalogo', JSON.stringify(params), {
+       headers: {
+         'Content-Type': 'application/json',
+       },
+     });
+
+    return response.data.mensaje;
+  } catch (error) {
+    console.error('Error al exportar:', error);
+    throw error;
+  };
+};
 
 
   //function bufferToImagenSrc(buffer) {
@@ -725,7 +726,7 @@ const cargaMasiva = async (archivo) => {
      asignarProducto,desasignarProducto, buscarProducto,
      buscarTodasLasTiendas, buscarTienda,
      altaTienda,modificarTienda, traerNovedades, altaNovedades, altaOrdenDeCompraRequest,
-     traerOrdenesDeCompraTienda,traerItems,aceptarDespacho,cargaMasiva
+     traerOrdenesDeCompraTienda,traerItems,aceptarDespacho,cargaMasiva, crearCatalogo
      }}>
       {children}
     </UserContext.Provider>

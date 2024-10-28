@@ -33,18 +33,23 @@ export default function CrearUpdOrden() {
   }, [buscarTodosLosProductos, codigoTienda]);
 
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
+  const { user, crearCatalogo } = useContext(UserContext);
+
+  const getProductCodes = () => {
+    return productoList.map(producto => producto.codigo);
+  };
 
   const asignar = async () => {
     try {
-      const mensajes = await altaOrdenDeCompraRequest(user?.tiendaCodigo, productoList);
+      //const mensajes = await altaOrdenDeCompraRequest(user?.tiendaCodigo, productoList);
+      const mensaje = await crearCatalogo(getProductCodes(), pdfName);
       // Aquí puedes implementar la función para exportar el PDF usando pdfName
       // Por ejemplo, exportarPdf(pdfName, productoList);
       // alert(mensajes.join('\n'));
       window.location.reload(); // Opcional: recargar la página si es necesario
     } catch (error) {
-      console.error("Error al solicitar la orden de compra:", error);
-      alert("Ocurrió un error al solicitar la orden de compra.");
+      console.error("Error al crear el catalogo:", error);
+      alert("Ocurrió un error al crear el catalogo.");
     }
   };
 
