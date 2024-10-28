@@ -61,15 +61,11 @@ function NavBar() {
                       <NavDropdown.Item href="/buscarordenes">Buscar</NavDropdown.Item>
                       <NavDropdown.Item href="/crearupdorden">Crear</NavDropdown.Item>
                     </NavDropdown>
-                    <NavDropdown title="CargaMasiva" id="basic-nav-dropdown">
-                      <NavDropdown.Item href="/cargaMasiva">Cargar</NavDropdown.Item>
-                      </NavDropdown>
-                      <NavDropdown title="Catalogo" id="basic-nav-dropdown">
-                      <NavDropdown.Item href="/CrearCatalogo">Crear</NavDropdown.Item>
-                      </NavDropdown>
+                    <Nav.Link href="/cargaMasiva">Carga Masiva</Nav.Link>
+                    <Nav.Link href="/CrearCatalogo">Crear Catalogo</Nav.Link>
                   </>
                 )}
-                
+                <Nav.Link href="/informes">Informes</Nav.Link>
                 {isCentralUser && ( <> <Nav.Link href="/novedades">Novedades</Nav.Link> </> )}
               </Nav>
             </>
