@@ -64,6 +64,9 @@ function NavBar() {
                     <NavDropdown title="CargaMasiva" id="basic-nav-dropdown">
                       <NavDropdown.Item href="/cargaMasiva">Cargar</NavDropdown.Item>
                       </NavDropdown>
+                      <NavDropdown title="Catalogo" id="basic-nav-dropdown">
+                      <NavDropdown.Item href="/CrearCatalogo">Crear</NavDropdown.Item>
+                      </NavDropdown>
                   </>
                 )}
                 

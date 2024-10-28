@@ -21,7 +21,7 @@ import CrearUpdOrden from './views/CrearUpdOrden.jsx';
 import Orden from './views/Orden.jsx'
 import Novedades from './views/Novedades.jsx';
 import CargaMasiva from './views/CargaMasiva.jsx'; 
-
+import CrearCatalogo from './views/CrearCatalogo.jsx';
 
 function App() {
   const {user} = useContext(UserContext)
@@ -47,6 +47,8 @@ function App() {
                       <Route path='/crearupdorden' element={<CrearUpdOrden/>} />
                       <Route path='/orden' element={<Orden/>} />
                       <Route path='/cargaMasiva'  element={<CargaMasiva/>} />
+                      <Route path='//CrearCatalogo'  element={<CrearCatalogo/>} />
+                      
                   </Route>
 
                   {/*Rutas protegidas solo para usuarios Casa Central*/}
