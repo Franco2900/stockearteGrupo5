@@ -710,16 +710,7 @@ const  modificarUsuario = async(u) =>{
     throw error;
   }
 };
-const orden = async (archivo) => {
-  try {
-    const formData = new FormData();
-    formData.append('archivoCSV', archivo);
 
-    const response = await axios.post('http://localhost:7000/orden', formData, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
 
 const cargaMasiva = async (archivo) => {
   try {
