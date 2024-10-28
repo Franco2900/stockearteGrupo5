@@ -11,11 +11,6 @@ export default defineConfig({
         target: 'http://127.0.0.1:5000',  // URL del servidor que devuelve los datos
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
-      },
-      '/apiSoap': {
-        target: 'http://127.0.0.1:7000',  // URL del servidor que devuelve los datos
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/apiSoap/, '')
       }
     }
   }

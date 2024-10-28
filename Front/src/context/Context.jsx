@@ -685,7 +685,7 @@ const  modificarUsuario = async(u) =>{
       fecha_final: f.fecha_final,
       estado: f.estado,
      };
-     const response = await axios.post(`/apiSoap/filtro`,JSON.stringify(params),
+     const response = await axios.post('http://localhost:7000/filtro',JSON.stringify(params),
        {
          headers: {
            "Content-Type": "application/json",
@@ -710,6 +710,16 @@ const  modificarUsuario = async(u) =>{
     throw error;
   }
 };
+const orden = async (archivo) => {
+  try {
+    const formData = new FormData();
+    formData.append('archivoCSV', archivo);
+
+    const response = await axios.post('http://localhost:7000/orden', formData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
 const cargaMasiva = async (archivo) => {
   try {

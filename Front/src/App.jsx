@@ -1,4 +1,5 @@
-import './App.css'
+import './App.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import { BrowserRouter, Routes, Route} from "react-router-dom";
 import {useContext} from "react"
 import { ProtectedRoute } from './context/ProtectedRoute.jsx';
