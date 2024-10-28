@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect} from 'react';
 import axios from 'axios';
 import { Buffer } from 'buffer';
-import {productos, tiendas, usuarios, ordenes} from '../context/Datos'
+import {productos, tiendas, usuarios, ordenes, filtros} from '../context/Datos'
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
@@ -654,6 +654,7 @@ const  modificarUsuario = async(u) =>{
    console.error('Error al obtener los items:', error);
    throw error;
  }; }
+
  async function aceptarDespacho(idOrden){
   try {    
      const params =  {
@@ -672,6 +673,43 @@ const  modificarUsuario = async(u) =>{
  throw error;
 };
  }
+ ////////  FILTROS   //////////////////////////////////////////////////////
+ async function crearFiltro(f) {
+   try {
+     const params = {
+      usuario: user.usuario,
+      nombre: f.nombre,
+      producto_codigo: f.producto_codigo,
+      tienda_codigo: user.central ? f.tienda_codigo : user.tiendaCodigo,
+      fecha_inicio: f.fecha_inicio,
+      fecha_final: f.fecha_final,
+      estado: f.estado,
+     };
+     const response = await axios.post(`/apiSoap/filtro`,JSON.stringify(params),
+       {
+         headers: {
+           "Content-Type": "application/json",
+         },
+       }
+     );
+     console.log("Filtro MSG: " + JSON.stringify(response));
+     return response.data.mensaje;
+   } catch (error) {
+     console.error("Error al crear el filtro:", error);
+     throw error;
+   }
+ };
+ const traerFiltros = async () => {
+  try {
+    //const response = await axios.get(`http://apìSoap/traerFiltros/`);
+    //return response.data;
+    
+    return filtros;
+  } catch (error) {
+    console.error('Error al obtener loa filtros:', error);
+    throw error;
+  }
+};
 
 const cargaMasiva = async (archivo) => {
   try {
@@ -713,10 +751,7 @@ const crearCatalogo = async (arregloCodigos, tit) => {
 };
 
 
-  //function bufferToImagenSrc(buffer) {
-  //  const base64String = Buffer.from(buffer).toString('base64');
-  //  return `data:image/jpeg;base64,${base64String}`;
-  //}
+
   return (
     <UserContext.Provider value={{ user, setUser,hacerLogin,
      altaUsuario, modificarUsuario,
@@ -726,7 +761,8 @@ const crearCatalogo = async (arregloCodigos, tit) => {
      asignarProducto,desasignarProducto, buscarProducto,
      buscarTodasLasTiendas, buscarTienda,
      altaTienda,modificarTienda, traerNovedades, altaNovedades, altaOrdenDeCompraRequest,
-     traerOrdenesDeCompraTienda,traerItems,aceptarDespacho,cargaMasiva, crearCatalogo
+     traerOrdenesDeCompraTienda,traerItems,aceptarDespacho,cargaMasiva, crearCatalogo,
+     crearFiltro,traerFiltros,
      }}>
       {children}
     </UserContext.Provider>

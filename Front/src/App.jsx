@@ -22,6 +22,7 @@ import Orden from './views/Orden.jsx'
 import Novedades from './views/Novedades.jsx';
 import CargaMasiva from './views/CargaMasiva.jsx'; 
 import CrearCatalogo from './views/CrearCatalogo.jsx';
+import Informes from './views/Informes.jsx';
 
 function App() {
   const {user} = useContext(UserContext)
@@ -36,7 +37,8 @@ function App() {
 
                   {/*Rutas protegidas solo para usuarios logueados*/}
                   <Route element={<ProtectedRoute isAllowed={!!user}/>} >
-                      <Route path='/buscarproductos' element={<BuscarProductos />} /> 
+                      <Route path='/buscarproductos' element={<BuscarProductos />} />
+                      <Route path='/informes' element={<Informes/>} />
                   </Route>
 
                   {/*Rutas para usuarios de tienda*/}

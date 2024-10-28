@@ -75,5 +75,14 @@ const productos = [{"tienda_codigo":"wxyz123abc","codigo":"1","nombre":"Short","
     {"tienda_codigo": "ASDF", "id": "4", "estado": "RECIBIDA", "observaciones": "Mercadería recibida con éxito", "orden_de_despacho": "OD-004", "fecha_de_solicitud": "2024-10-26", "fecha_de_recepcion": "2024-10-27"},
     {"tienda_codigo": "ASDF", "id": "5", "estado": "SOLICITADA", "observaciones": "Esperando respuesta", "orden_de_despacho": "OD-005", "fecha_de_solicitud": "2024-10-28", "fecha_de_recepcion": ""}
     ];
-  
-  export { usuarios, tiendas, productos, ordenes };
+  const filtros=[
+    { "usuario": "Manu", "nombre": "EjemploRecibida1", "producto_codigo": "PJ456", "tienda_codigo": "wxyz123abc", "fecha_inicio": "2024-11-03", "fecha_final": "", "estado": "RECIBIDA" },
+{ "usuario": "Manu", "nombre": "EjemploRecibida2", "producto_codigo": "PJ456", "tienda_codigo": "wxyz123abc", "fecha_inicio": "2024-11-03", "fecha_final": "2024-11-04", "estado": "RECIBIDA" },
+{ "usuario": "Manu", "nombre": "EjemploRechazada1", "producto_codigo": "PJ456", "tienda_codigo": "wxyz123abc", "fecha_inicio": "2024-11-03", "fecha_final": "", "estado": "RECHAZADA" },
+{ "usuario": "Manu", "nombre": "EjemploRechazada2", "producto_codigo": "PJ456", "tienda_codigo": "wxyz123abc", "fecha_inicio": "2024-11-03", "fecha_final": "2024-11-04", "estado": "RECHAZADA" },
+{ "usuario": "Manu", "nombre": "EjemploAceptada1", "producto_codigo": "PJ456", "tienda_codigo": "wxyz123abc", "fecha_inicio": "2024-11-03", "fecha_final": "", "estado": "ACEPTADA" },
+{ "usuario": "Manu", "nombre": "EjemploAceptada2", "producto_codigo": "PJ456", "tienda_codigo": "wxyz123abc", "fecha_inicio": "2024-11-03", "fecha_final": "2024-11-04", "estado": "ACEPTADA" },
+{ "usuario": "Manu", "nombre": "EjemploSolicitada1", "producto_codigo": "PJ456", "tienda_codigo": "wxyz123abc", "fecha_inicio": "2024-11-03", "fecha_final": "", "estado": "SOLICITADA" },
+{ "usuario": "Manu", "nombre": "EjemploSolicitada2", "producto_codigo": "PJ456", "tienda_codigo": "wxyz123abc", "fecha_inicio": "2024-11-03", "fecha_final": "2024-11-04", "estado": "SOLICITADA" }
+  ];
+  export { usuarios, tiendas, productos, ordenes, filtros};

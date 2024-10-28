@@ -1,11 +1,8 @@
 
-import React, { useContext , useEffect, useState} from 'react';
-import UserContext from '../context/Context';
+import React from 'react';
 import { Accordion, ListGroup, Button, Col} from 'react-bootstrap';
-import { Link } from "react-router-dom";
 
 export default function OrdenAccord({orden}){
-    const { user } = useContext(UserContext)
     const HandleClick = async (e) => {
       e.preventDefault();    
       try {        

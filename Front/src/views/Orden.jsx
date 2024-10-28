@@ -7,6 +7,7 @@ export default function Orden() {
     const { traerItems , aceptarDespacho} = useContext(UserContext);
     const [orden, setOrden] = useState(() => {
       const savedOrden = localStorage.getItem('orden');
+      //localStorage.setItem("orden", null)  //se debería eliminar la orden del localStorage para que no acceder con una orden cargada
       return savedOrden !== null ? JSON.parse(savedOrden) : null;
     });
   

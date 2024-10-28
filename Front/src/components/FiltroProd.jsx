@@ -51,4 +51,4 @@ export default function FiltroProd({filter, handleFilterChange}) {
       </Row>
     </>
   );
-}
+};
