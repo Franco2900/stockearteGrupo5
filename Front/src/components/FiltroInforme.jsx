@@ -4,7 +4,7 @@ export default function FiltroProd({filter, handleFilterChange}) {
     <>
       {/*FILTRO DE BUSQUEDA */}
       <Row>
-        <Col md={{ span: 3 }}>
+        <Col >
           <Form.Group controlId="nombre">
             <Form.Label>Nombre</Form.Label>
             <Form.Control
@@ -15,9 +15,9 @@ export default function FiltroProd({filter, handleFilterChange}) {
             />
           </Form.Group>
         </Col>
-        <Col md={{ span: 3 }}>
+        <Col >
           <Form.Group controlId="producto_codigo">
-            <Form.Label>Codigo Producto</Form.Label>
+            <Form.Label>Código</Form.Label>
             <Form.Control
               type="text"
               name="producto_codigo"
@@ -27,7 +27,7 @@ export default function FiltroProd({filter, handleFilterChange}) {
           </Form.Group>
         </Col>
         {true && <>
-        <Col md={{ span: 3 }}>
+        <Col >
           <Form.Group controlId="tienda_codigo">
             <Form.Label>Tienda</Form.Label>
             <Form.Control
@@ -39,29 +39,7 @@ export default function FiltroProd({filter, handleFilterChange}) {
           </Form.Group>
         </Col>
         </>}
-        <Col md={{ span: 3 }}>
-          <Form.Group controlId="fecha_inicio">
-            <Form.Label>Desde</Form.Label>
-            <Form.Control
-              type="date"
-              name="fecha_inicio"
-              value={filter.fecha_inicio}
-              onChange={handleFilterChange}
-            />
-          </Form.Group>
-        </Col>
-        <Col md={{ span: 3 }}>
-          <Form.Group controlId="fecha_final">
-            <Form.Label>Hasta</Form.Label>
-            <Form.Control
-              type="date"
-              name="fecha_final"
-              value={filter.fecha_final}
-              onChange={handleFilterChange}
-            />
-          </Form.Group>
-        </Col>
-        <Col md={{ span: 3 }}>
+        <Col>
           <Form.Group controlId="estado">
             <Form.Label>Estado</Form.Label>
             <Form.Control
@@ -72,6 +50,29 @@ export default function FiltroProd({filter, handleFilterChange}) {
             />
           </Form.Group>
         </Col>
+        <Col >
+          <Form.Group controlId="fecha_inicio">
+            <Form.Label>Desde</Form.Label>
+            <Form.Control
+              type="date"
+              name="fecha_inicio"
+              value={filter.fecha_inicio}
+              onChange={handleFilterChange}
+            />
+          </Form.Group>
+        </Col>
+        <Col >
+          <Form.Group controlId="fecha_final">
+            <Form.Label>Hasta</Form.Label>
+            <Form.Control
+              type="date"
+              name="fecha_final"
+              value={filter.fecha_final}
+              onChange={handleFilterChange}
+            />
+          </Form.Group>
+        </Col>
+
       </Row>
     </>
   );

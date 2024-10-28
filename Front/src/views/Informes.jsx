@@ -35,7 +35,7 @@ export default function Informes(){
       return (
         <>
           <Row className="justify-content-center">
-            <Col md={{ span: 5 }}>
+            <Col md={{ span: 7 }}>
               <Container className="Busqueda">
                 {/*FILTRO DE BUSQUEDA*/}
                 <FiltroInforme filter={filter} handleFilterChange={handleFilterChange}/>
@@ -44,8 +44,8 @@ export default function Informes(){
                 
               </Container>
             </Col>
-            <Col md={{ span: 1 }} />
-            <Col md={{ span: 5 }} style={{ marginTop: ".3cm" }}>
+            
+            <Col md={{ span: 4 }} style={{ marginTop: ".3cm" }}>
                {/* VER INFORME*/}
                <h3>INFORME: </h3>
               <Informe item={filter}/>
