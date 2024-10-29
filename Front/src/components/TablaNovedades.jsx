@@ -28,4 +28,4 @@ export default function TablaNovedades({list, handleAsignar, handleDesasignar}){
             </Table>
           </Row>
         </>);
-}
+};

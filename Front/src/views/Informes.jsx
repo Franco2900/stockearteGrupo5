@@ -5,9 +5,8 @@ import Informe from "../components/Informe";
 import FiltroInforme from "../components/FiltroInforme.jsx" 
 
 export default function Informes(){
-    const { crearFiltro, traerFiltros,traerInforme, user} = useContext(UserContext)
-    const[filtroList, setFiltroList] = useState([])
-    const [data, setData] = useState([]);
+    const { crearFiltro, traerFiltros,ordenes, eliminarFiltro, modificarFiltro,user} = useContext(UserContext)
+    const[filtroList, setFiltroList] = useState([]);
     const [informe, setInforme] = useState()
   const [filter, setFilter] = useState({
       nombre : "",
@@ -22,13 +21,13 @@ export default function Informes(){
         const fetchData = async () => {
           const list = await traerFiltros()
           setFiltroList(list);
-          //console.log('FILTROS OBTENIDOS: ' + JSON.stringify(list))
+          console.log('FILTROS OBTENIDOS: ' + JSON.stringify(list))
         };
         fetchData();
-      }, [filtroList, traerFiltros]);
+      }, [informe, traerFiltros]);
   const verInforme = (f) =>{
     const fetchData = async () => {
-      const i = await traerInforme(f)
+      const i = await ordenes(f)
       setInforme(i);
       console.log('INFORME OBTENIDOS: ' + JSON.stringify(i))
     };
@@ -39,11 +38,16 @@ export default function Informes(){
     alert(msj);
     window.location.reload();
   }
- {/**
-      const handleFilterChange = (event) => {
-        const { name, value } = event.target;
-        setFilter((prevFilter) => ({ ...prevFilter, [name]: value }));
-      };     */} 
+  const eliminar = async (f) =>{
+    const msj = await eliminarFiltro(f);
+    alert(msj);
+    window.location.reload();
+  }
+  const modificar = async (f) =>{
+    const msj = await modificarFiltro(f);
+    alert(msj);
+    window.location.reload();
+  }
       
       return (
         <>
@@ -51,7 +55,7 @@ export default function Informes(){
            <Container style={{ height: '10vh', overflowY: 'auto', borderBottom: '1px solid #000'}}>
              <Row className="justify-content-center h-100">
                <Col>
-                 <FiltroInforme f={filter} crear={crear}/>
+                 <FiltroInforme f={filter} crear={crear} central={user.central}/>
                </Col>
              </Row>
            </Container>
@@ -60,7 +64,7 @@ export default function Informes(){
             
              <Row className="justify-content-center h-100">
               {filtroList.map((filtro,index) => (
-                 <FiltroInforme f={filtro} key={index} verInforme={verInforme}/>
+                 <FiltroInforme f={filtro} key={index} verInforme={verInforme} modificar={modificar} eliminar={eliminar} central={user.central}/>
               ))}
                
              </Row>
@@ -69,8 +73,7 @@ export default function Informes(){
            <Container style={{ height: '35vh', overflowY: 'auto', marginTop: '.3cm' }}>
              <Row className="justify-content-center h-100">
                <Col>
-                 <h3>INFORME:</h3>
-                 <Informe item={filter} />
+                 <Informe items={informe} />
                </Col>
              </Row>
            </Container>

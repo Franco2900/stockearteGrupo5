@@ -1,13 +1,14 @@
 import { Row, Col, Form, Button,Modal} from "react-bootstrap";
 import React, { useCallback, useEffect ,useState} from "react"
 
-export default function FiltroProd({f, crear, verInforme}) {
+export default function FiltroProd({f, crear, eliminar, modificar, verInforme, central}) {
+  const formatFecha = (fecha) => (fecha ? fecha.split("T")[0] : "");
   const [filter, setFilter] = useState({
     nombre : f.nombre,
     producto_codigo : f.producto_codigo,
     tienda_codigo: f.tienda_codigo,
-    fecha_inicio: f.fecha_inicio,
-    fecha_final: f.fecha_final,
+    fecha_inicio: formatFecha(f.fecha_inicio),
+    fecha_final: formatFecha(f.fecha_final),
     estado: f.estado,
   });
   const [opcMod, setOpcMod] = useState(true);
@@ -20,8 +21,8 @@ export default function FiltroProd({f, crear, verInforme}) {
       nombre: f.nombre,
       producto_codigo: f.producto_codigo,
       tienda_codigo: f.tienda_codigo,
-      fecha_inicio: f.fecha_inicio,
-      fecha_final: f.fecha_final,
+      fecha_inicio: formatFecha(f.fecha_inicio),
+      fecha_final: formatFecha(f.fecha_final),
       estado: f.estado,
     });
   }, [f]);
@@ -29,7 +30,6 @@ export default function FiltroProd({f, crear, verInforme}) {
     const { name, value } = event.target;
     setFilter((prevFilter) => {
       const updatedFilter = { ...prevFilter, [name]: value };
-      console.log("Filtro actualizado:", JSON.stringify(updatedFilter)); // Imprime el filtro actualizado en cada cambio
       return updatedFilter;
     });
   };
@@ -37,21 +37,20 @@ export default function FiltroProd({f, crear, verInforme}) {
     setOpcMod(c);
     if (c) {setFilter(f)}
   }, [f]);
-  const handleModificar = useCallback(() => {
-    console.log("Aplicando modificaciones...",JSON.stringify(filter));
-  }, [filter]);
+  const handleModificar = () => {
+    modificar(filter)
+  };
 
   const handleCrear = () => {
     if (!filter.nombre.trim()) {
-      alert("Asigne un NOMBRE al filtro."); // Muestra una alerta si no hay nombre
-      return;
+      alert("Asigne un NOMBRE al filtro."); 
     }
     crear(filter);
   };
   
-  const handleEliminar = useCallback((filtro) => {
-    console.log("Aplicando modificaciones...", filtro);
-  }, []);
+  const handleEliminar = () => {
+   eliminar(f)
+  };
 
   return (
     <>
@@ -83,7 +82,7 @@ export default function FiltroProd({f, crear, verInforme}) {
             />
           </Form.Group>
         </Col>
-        {true && <>
+        {central && <>
         <Col >
           <Form.Group controlId="tienda_codigo" >
           {crear &&<Form.Label>Tienda</Form.Label>}
@@ -106,6 +105,7 @@ export default function FiltroProd({f, crear, verInforme}) {
              onChange={handleFilterChange}
              required 
              disabled={!crear && opcMod}>
+              <option value=""></option>
              <option value="RECIBIDA">RECIBIDA</option>
              <option value="RECHAZADA">RECHAZADA</option>
              <option value="SOLICITADA">SOLICITADA</option>
@@ -138,7 +138,7 @@ export default function FiltroProd({f, crear, verInforme}) {
           </Form.Group>
         </Col>
         
-        <Col className="d-flex justify-content-center align-items-center">
+        <Col className="d-flex ">
         {crear && <><Button variant="outline-success" onClick={handleCrear}><i className="bi bi-plus-square-fill"></i></Button> </>}
         {!crear && <> <Col>
                     {opcMod ? <>
@@ -155,7 +155,14 @@ export default function FiltroProd({f, crear, verInforme}) {
                 <Modal.Header closeButton>
                   <Modal.Title>Eliminar Filtro</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+                <Modal.Body>
+                  <p>Nombre: {f.nombre}</p>
+                  <p>Código: {f.producto_codigo}</p>
+                  {central &&<p>Tienda{f.tienda_codigo}</p>}
+                  <p>Desde: {f.fecha_inicio}</p>
+                  <p>Hasta: {f.fecha_final}</p>
+                  <p>Estado: {f.estado}</p>
+                </Modal.Body>
                 <Modal.Footer>
                   <Button variant="secondary" onClick={handleClose}><i className="bi bi-arrow-left-square"></i></Button>
                   <Button variant="danger" onClick={handleEliminar}><i className="bi bi-trash"></i>{" "}Eiminar</Button>

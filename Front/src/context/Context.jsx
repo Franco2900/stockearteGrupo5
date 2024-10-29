@@ -680,7 +680,7 @@ const  modificarUsuario = async(u) =>{
       usuario: user.usuario,
       nombre: f.nombre,
       producto_codigo: f.producto_codigo,
-      tienda_codigo: user.central ? f.tienda_codigo : user.tiendaCodigo,
+      tienda_codigo: f.tienda_codigo ,
       fecha_inicio: f.fecha_inicio,
       fecha_final: f.fecha_final,
       estado: f.estado,
@@ -699,14 +699,88 @@ const  modificarUsuario = async(u) =>{
      throw error;
    }
  };
+
  const traerFiltros = async () => {
   try {
-    //const response = await axios.get(`http://apìSoap/traerFiltros/`);
-    //return response.data;
-    
-    return filtros;
+    const url = `http://localhost:7000/filtro?usuario=${user.usuario}`;
+    const response = await axios.get(url, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data.filtros; 
   } catch (error) {
-    console.error('Error al obtener loa filtros:', error);
+    console.error("Error al obtener los filtros:", error);
+    throw error;
+  }
+};
+async function modificarFiltro(f) {
+  try {
+    const params = {
+      usuario: user.usuario,
+      nombre: f.nombre,
+      producto_codigo: f.producto_codigo,
+      tienda_codigo: f.tienda_codigo,
+      fecha_inicio: f.fecha_inicio,
+      fecha_final: f.fecha_final,
+      estado: f.estado,
+    };
+
+    const response = await axios.put('http://localhost:7000/filtro', params, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("Filtro MODIFICADO: " + JSON.stringify(response.data));
+    return response.data.mensaje;
+  } catch (error) {
+    console.error("Error al modificar el filtro:", error); // Corrige mensaje de error
+    throw error;
+  }
+};
+async function eliminarFiltro(f) {{/***/}
+  try {
+    const params = {
+     usuario: user.usuario,
+     nombre: f.nombre,
+    };
+    const response = await axios.delete('http://localhost:7000/filtro', {
+      data: params, // Utiliza data en lugar de JSON.stringify
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log("Filtro ELIMINADO: " + JSON.stringify(response));
+    return response.data.mensaje;
+  } catch (error) {
+    console.error("Error al crear el filtro:", error);
+    throw error;
+  }
+};
+ 
+const ordenes = async (f) => {
+  try {
+   
+    const nuevoF = Object.fromEntries(
+      Object.entries(f).filter(([key]) => key !== 'usuario' && key !== 'nombre')
+    );
+    const params = Object.keys(nuevoF)
+      .filter((key) => nuevoF[key] !== undefined && nuevoF[key] !== null && nuevoF[key] !== ''&& nuevoF[key] !== '0000-00-00')
+      .map((key) => `${key}=${encodeURIComponent(nuevoF[key])}`)
+      .join('&');
+      
+    const url = `http://localhost:7000/orden?${params}`;
+    console.log("PARAMS ORDENES,",url)
+    const response = await axios.get(url, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    //console.log("ORDENES OBTENIDAS:", JSON.stringify(response.data.ordenes))
+    return response.data.ordenes;
+  } catch (error) {
+    console.error("Error al obtener los filtros:", error);
     throw error;
   }
 };
@@ -763,7 +837,8 @@ const crearCatalogo = async (arregloCodigos, tit) => {
      buscarTodasLasTiendas, buscarTienda,
      altaTienda,modificarTienda, traerNovedades, altaNovedades, altaOrdenDeCompraRequest,
      traerOrdenesDeCompraTienda,traerItems,aceptarDespacho,cargaMasiva, crearCatalogo,
-     crearFiltro,traerFiltros,
+     ordenes,
+     crearFiltro,modificarFiltro, eliminarFiltro,traerFiltros, 
      }}>
       {children}
     </UserContext.Provider>
