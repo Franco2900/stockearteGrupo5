@@ -6,6 +6,7 @@ import Paginacion from '../components/Paginacion.jsx';
 import FiltroProd from '../components/FiltroProd.jsx';
 import TablaOrdenCompra from "../components/TablaOrdenCompra.jsx";
 import { useNavigate } from 'react-router-dom';
+import TablaNovedades from "../components/TablaNovedades.jsx";
 
 export default function CrearUpdOrden() {
   const location = useLocation();
@@ -139,7 +140,7 @@ export default function CrearUpdOrden() {
             <FiltroProd filter={filter} handleFilterChange={handleFilterChange} />
 
             {/* CONTENIDO */}
-            <TablaOrdenCompra list={paginatedData} handleAsignar={handleAsignar} />
+            <TablaNovedades list={paginatedData} handleAsignar={handleAsignar} />
 
             {/* PAGINACION */}
             <Paginacion handlePageChange={handlePageChange} handlePreviousPage={handlePreviousPage} handleNextPage={handleNextPage} data={data} activePage={activePage} itemsPerPage={itemsPerPage} />
@@ -156,6 +157,7 @@ export default function CrearUpdOrden() {
             placeholder="Ingrese el nombre del PDF"
             value={pdfName}
             onChange={(e) => setPdfName(e.target.value)}
+            required
           />
         </Form.Group>
         {/* Agrega un margen superior para separar el input del botón */}
@@ -168,7 +170,7 @@ export default function CrearUpdOrden() {
           </Button>
         </div>
           {/* TABLA PARA ASIGNAR O DESASIGNAR */}
-          <TablaOrdenCompra list={productoList} handleDesasignar={handleDesasignar} handleStockChange={handleStockChange} stock={1} />
+          <TablaNovedades list={productoList} handleDesasignar={handleDesasignar} handleStockChange={handleStockChange} stock={1} />
         </Col>
       </Row>
     </>
