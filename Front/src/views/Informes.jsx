@@ -63,7 +63,7 @@ export default function Informes(){
            <Container style={{ height: '35vh', overflowY: 'scroll', marginTop: '.3cm' }}>
             
              <Row className="justify-content-center h-100">
-              {filtroList.map((filtro,index) => (
+              {filtroList?.map((filtro,index) => (
                  <FiltroInforme f={filtro} key={index} verInforme={verInforme} modificar={modificar} eliminar={eliminar} central={user.central}/>
               ))}
                
