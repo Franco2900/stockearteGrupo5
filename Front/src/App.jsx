@@ -24,6 +24,7 @@ import Novedades from './views/Novedades.jsx';
 import CargaMasiva from './views/CargaMasiva.jsx'; 
 import CrearCatalogo from './views/CrearCatalogo.jsx';
 import Informes from './views/Informes.jsx';
+import ErrorPage from './views/ErrorPage.jsx';
 
 function App() {
   const {user} = useContext(UserContext)
@@ -37,25 +38,23 @@ function App() {
                   <Route path="/login" element={<Login />} />
 
                   {/*Rutas protegidas solo para usuarios logueados*/}
-                  <Route element={<ProtectedRoute isAllowed={!!user}/>} >
+                  <Route element={<ProtectedRoute isAllowed={user.isUserLoggedIn}/>} >
                       <Route path='/buscarproductos' element={<BuscarProductos />} />
                       <Route path='/informes' element={<Informes/>} />
                   </Route>
 
                   {/*Rutas para usuarios de tienda*/}
-                  {/*<Route element={<ProtectedRoute isAllowed={!!user && !user.central}/>} >*/}
-                  <Route element={<ProtectedRoute isAllowed={!!user}/>} >
+                  {/*  <Route element={<ProtectedRoute isAllowed={!!user}/>} > */}
+                  <Route element={<ProtectedRoute isAllowed={user.isUserLoggedIn && !user.central}/>} >
                       <Route path='/modstock' element={<ModStock/>} />
                       <Route path='/buscarordenes' element={<BuscarOrdenes/>} />
                       <Route path='/crearupdorden' element={<CrearUpdOrden/>} />
                       <Route path='/orden' element={<Orden/>} />
-                      <Route path='/cargaMasiva'  element={<CargaMasiva/>} />
-                      <Route path='//CrearCatalogo'  element={<CrearCatalogo/>} />
-                      
+                      <Route path='//CrearCatalogo'  element={<CrearCatalogo/>} />                      
                   </Route>
 
                   {/*Rutas protegidas solo para usuarios Casa Central*/}
-                  <Route element={<ProtectedRoute isAllowed={!!user && user.central}/>} >          
+                  <Route element={<ProtectedRoute isAllowed={user.isUserLoggedIn && user.central}/>} >          
                       <Route path='/buscartiendas' element={<BuscarTiendas />} />
                       <Route path="/creartienda" element={<CrearUpdTienda/>} />
                       <Route path='/buscarusuarios' element={<BuscarUsuarios />} />
@@ -64,8 +63,9 @@ function App() {
                       <Route path="/asigprod" element={<AsigProd/>}/>
                       <Route path="/asiguser" element={<AsigUser/>}/>
                       <Route path="/novedades" element={<Novedades/>}/>
+                      <Route path='/cargaMasiva'  element={<CargaMasiva/>} />
                   </Route>
-                  
+                  <Route path="*" element={<ErrorPage />} />
                 </Routes>
               <Footer></Footer>
            </div>
@@ -74,4 +74,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
