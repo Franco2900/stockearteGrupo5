@@ -6,8 +6,7 @@ import TablaOrdenItems from '../components/TablaOrdenItems';
 export default function Orden() {
     const { traerItems , aceptarDespacho} = useContext(UserContext);
     const [orden, setOrden] = useState(() => {
-      const savedOrden = localStorage.getItem('orden');
-      //localStorage.setItem("orden", null)  //se debería eliminar la orden del localStorage para que no acceder con una orden cargada
+      const savedOrden = localStorage.getItem('orden');      
       return savedOrden !== null ? JSON.parse(savedOrden) : null;
     });
   
