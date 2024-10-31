@@ -817,8 +817,8 @@ const crearCatalogo = async (arregloCodigos, tit) => {
          'Content-Type': 'application/json',
        },
      });
-
-    return response.data.mensaje;
+     
+    return response.data.archivoPDF;
   } catch (error) {
     console.error('Error al exportar:', error);
     throw error;
