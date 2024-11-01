@@ -8,17 +8,15 @@ export function BuscarCatalogos() {
 
 //Falta ver como implementar funcion de buscarTodosLosCatalogos para casa central
     
-    const { buscarTodosLosProductos, traerCatalogos, user } = useContext(UserContext);
+    const { buscarTodosLosProductos, traerCatalogos} = useContext(UserContext);
     const [activePage, setActivePage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(15);
     const [data, setData] = useState([]);
 
     useEffect(() => {
       const fetchData = async () => {
-        const catalogos = await (user.central ? 
-          buscarTodosLosProductos() : 
-          traerCatalogos()
-        );
+        //La validacion de si es de casa central la hago en el servidor
+        const catalogos = await (traerCatalogos());
         setData(catalogos);
         console.log('CATALOGOS OBTENIDOS: ' + JSON.stringify(catalogos));
       };

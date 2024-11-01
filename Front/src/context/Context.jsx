@@ -809,7 +809,8 @@ const crearCatalogo = async (arregloCodigos, tit) => {
 
     const params =  {
       codigos: arregloCodigos,
-      titulo: tit
+      titulo: tit,
+      tienda_codigo : user.tiendaCodigo
     };
 
     const response = await axios.get('http://localhost:7000/catalogo', JSON.stringify(params), {
