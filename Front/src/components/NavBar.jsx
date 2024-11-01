@@ -62,7 +62,11 @@ function NavBar() {
                       <NavDropdown.Item href="/crearupdorden">Crear</NavDropdown.Item>
                     </NavDropdown>
                     
-                    <Nav.Link href="/CrearCatalogo">Crear Catalogo</Nav.Link>
+                   {/* < Nav.Link href="/CrearCatalogo">Crear Catalogo</Nav.Link> */}
+                   <NavDropdown title="Catalogo" id="basic-nav-dropdown">
+                      <NavDropdown.Item href="/BuscarCatalogos">Buscar</NavDropdown.Item>
+                      <NavDropdown.Item href="/CrearCatalogo">Crear</NavDropdown.Item>
+                    </NavDropdown>
                   </>
                 )}
 

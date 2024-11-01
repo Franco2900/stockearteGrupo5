@@ -25,6 +25,7 @@ import CargaMasiva from './views/CargaMasiva.jsx';
 import CrearCatalogo from './views/CrearCatalogo.jsx';
 import Informes from './views/Informes.jsx';
 import ErrorPage from './views/ErrorPage.jsx';
+import BuscarCatalogos from './views/BuscarCatalogos.jsx';
 
 function App() {
   const {user} = useContext(UserContext)
@@ -50,7 +51,8 @@ function App() {
                       <Route path='/buscarordenes' element={<BuscarOrdenes/>} />
                       <Route path='/crearupdorden' element={<CrearUpdOrden/>} />
                       <Route path='/orden' element={<Orden/>} />
-                      <Route path='//CrearCatalogo'  element={<CrearCatalogo/>} />                      
+                      <Route path='/CrearCatalogo'  element={<CrearCatalogo/>} /> 
+                      <Route path='/BuscarCatalogos'  element={<BuscarCatalogos/>} />                      
                   </Route>
 
                   {/*Rutas protegidas solo para usuarios Casa Central*/}

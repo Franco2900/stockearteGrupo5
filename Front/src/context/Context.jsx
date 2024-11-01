@@ -812,7 +812,7 @@ const crearCatalogo = async (arregloCodigos, tit) => {
       titulo: tit
     };
 
-    const response = await axios.post('http://localhost:7000/catalogo', JSON.stringify(params), {
+    const response = await axios.get('http://localhost:7000/catalogo', JSON.stringify(params), {
        headers: {
          'Content-Type': 'application/json',
        },
@@ -823,6 +823,22 @@ const crearCatalogo = async (arregloCodigos, tit) => {
     console.error('Error al exportar:', error);
     throw error;
   };
+};
+
+const traerCatalogos = async () => {
+  try {
+    const response = await axios.get('http://localhost:7000/catalogo', {
+      params: { tienda_codigo : user.tiendaCodigo },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return response.data.catalogos;
+  } catch (error) {
+    console.error('Error al traerCatalogos:', error);
+    throw error;
+  }
 };
 
 
@@ -838,7 +854,7 @@ const crearCatalogo = async (arregloCodigos, tit) => {
      altaTienda,modificarTienda, traerNovedades, altaNovedades, altaOrdenDeCompraRequest,
      traerOrdenesDeCompraTienda,traerItems,aceptarDespacho,cargaMasiva, crearCatalogo,
      ordenes,
-     crearFiltro,modificarFiltro, eliminarFiltro,traerFiltros, 
+     crearFiltro,modificarFiltro, eliminarFiltro,traerFiltros,traerCatalogos
      }}>
       {children}
     </UserContext.Provider>
