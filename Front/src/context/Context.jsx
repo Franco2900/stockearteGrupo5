@@ -813,7 +813,7 @@ const crearCatalogo = async (arregloCodigos, tit) => {
       tienda_codigo : user.tiendaCodigo
     };
 
-    const response = await axios.get('http://localhost:7000/catalogo', JSON.stringify(params), {
+    const response = await axios.post('http://localhost:7000/catalogo', JSON.stringify(params), {
        headers: {
          'Content-Type': 'application/json',
        },
