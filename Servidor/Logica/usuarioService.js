@@ -269,13 +269,14 @@ async function hacerLogin(call, callback)
 
     try
     {
-        var resultadosConsulta = await conexionDataBase.query(`SELECT u.usuario, u.password, u.nombre, u.apellido, u.habilitado, u.tienda_codigo, t.central 
+        var resultadosConsulta = await conexionDataBase.query(`SELECT u.id,u.usuario, u.password, u.nombre, u.apellido, u.habilitado, u.tienda_codigo, t.central 
                                                                FROM usuario u
                                                                INNER JOIN tienda t
                                                                ON u.tienda_codigo = t.codigo
                                                                WHERE u.usuario = '${usuario}' AND u.password = '${password}' `, {});
         
         var respuesta = {
+            id:            resultadosConsulta[0].id,
             usuario:       resultadosConsulta[0].usuario, 
             password:      resultadosConsulta[0].password, 
             nombre:        resultadosConsulta[0].nombre, 

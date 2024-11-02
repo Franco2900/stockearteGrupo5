@@ -35,6 +35,7 @@ function FormLogin() {
       // Establecer el usuario en el contexto
       //setUser(user);
       const userData = {
+        id: user.id,
         usuario : user.usuario,
         tiendaCodigo : user.tiendaCodigo,
         central: user.central ,

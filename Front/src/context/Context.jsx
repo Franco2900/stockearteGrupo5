@@ -677,7 +677,7 @@ const  modificarUsuario = async(u) =>{
  async function crearFiltro(f) {
    try {
      const params = {
-      usuario: user.usuario,
+      id_usuario: user.id,
       nombre: f.nombre,
       producto_codigo: f.producto_codigo,
       tienda_codigo: f.tienda_codigo ,
@@ -702,7 +702,7 @@ const  modificarUsuario = async(u) =>{
 
  const traerFiltros = async () => {
   try {
-    const url = `http://localhost:7000/filtro?usuario=${user.usuario}`;
+    const url = `http://localhost:7000/filtro?id_usuario=${user.id}`;
     const response = await axios.get(url, {
       headers: {
         "Content-Type": "application/json",
@@ -717,7 +717,7 @@ const  modificarUsuario = async(u) =>{
 async function modificarFiltro(f) {
   try {
     const params = {
-      usuario: user.usuario,
+      id_usuario: user.id,
       nombre: f.nombre,
       producto_codigo: f.producto_codigo,
       tienda_codigo: f.tienda_codigo,
@@ -742,7 +742,7 @@ async function modificarFiltro(f) {
 async function eliminarFiltro(f) {{/***/}
   try {
     const params = {
-     usuario: user.usuario,
+     id_usuario: user.id,
      nombre: f.nombre,
     };
     const response = await axios.delete('http://localhost:7000/filtro', {

@@ -300,13 +300,14 @@ message hacerLoginRequest
 
 message hacerLoginResponse
 {
-    string usuario    = 1;
-    string password   = 2;
-    string nombre     = 3;
-    string apellido   = 4;
-    optional bool habilitado = 5;
-    string tienda_codigo     = 6;
-    optional bool central    = 7;
+    int32 id          = 1;
+    string usuario    = 2;
+    string password   = 3;
+    string nombre     = 4;
+    string apellido   = 5;
+    optional bool habilitado = 6;
+    string tienda_codigo     = 7;
+    optional bool central    = 8;
 }
 
 message traerProductosDeLaTiendaRequest

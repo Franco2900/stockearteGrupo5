@@ -350,7 +350,8 @@ class hacerLoginRequest(_message.Message):
     def __init__(self, usuario: _Optional[str] = ..., password: _Optional[str] = ...) -> None: ...
 
 class hacerLoginResponse(_message.Message):
-    __slots__ = ("usuario", "password", "nombre", "apellido", "habilitado", "tienda_codigo", "central")
+    __slots__ = ("id", "usuario", "password", "nombre", "apellido", "habilitado", "tienda_codigo", "central")
+    ID_FIELD_NUMBER: _ClassVar[int]
     USUARIO_FIELD_NUMBER: _ClassVar[int]
     PASSWORD_FIELD_NUMBER: _ClassVar[int]
     NOMBRE_FIELD_NUMBER: _ClassVar[int]
@@ -358,6 +359,7 @@ class hacerLoginResponse(_message.Message):
     HABILITADO_FIELD_NUMBER: _ClassVar[int]
     TIENDA_CODIGO_FIELD_NUMBER: _ClassVar[int]
     CENTRAL_FIELD_NUMBER: _ClassVar[int]
+    id: int
     usuario: str
     password: str
     nombre: str
@@ -365,7 +367,7 @@ class hacerLoginResponse(_message.Message):
     habilitado: bool
     tienda_codigo: str
     central: bool
-    def __init__(self, usuario: _Optional[str] = ..., password: _Optional[str] = ..., nombre: _Optional[str] = ..., apellido: _Optional[str] = ..., habilitado: bool = ..., tienda_codigo: _Optional[str] = ..., central: bool = ...) -> None: ...
+    def __init__(self, id: _Optional[int] = ..., usuario: _Optional[str] = ..., password: _Optional[str] = ..., nombre: _Optional[str] = ..., apellido: _Optional[str] = ..., habilitado: bool = ..., tienda_codigo: _Optional[str] = ..., central: bool = ...) -> None: ...
 
 class traerProductosDeLaTiendaRequest(_message.Message):
     __slots__ = ("tienda_codigo",)
