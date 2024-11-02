@@ -4,11 +4,10 @@ import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import UserContext from "../context/Context.jsx";
 import Paginacion from '../components/Paginacion.jsx';
 import FiltroProd from '../components/FiltroProd.jsx';
-import TablaOrdenCompra from "../components/TablaOrdenCompra.jsx";
 import { useNavigate } from 'react-router-dom';
 import TablaNovedades from "../components/TablaNovedades.jsx";
 
-export default function CrearUpdOrden() {
+export default function CrearCatalogo() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const codigoTienda = searchParams.get("codigo");

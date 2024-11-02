@@ -1,8 +1,28 @@
-import React from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import UserContext from "../context/Context.jsx";
 import { Accordion, ListGroup, Col, Button,Row} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
+
+
 export default function CatalogoAccord({ catalogo }) {
+  const { user, crearCatalogo } = useContext(UserContext);
+
+  const descargarPDF = async(productos,titulo) => {
+    try {
+  
+      const codigosProducto = productos.map(producto => producto.producto_codigo);
+      
+      const pdfBase64 = await crearCatalogo(codigosProducto, titulo);
+      const link = document.createElement('a');
+      link.href = `data:application/pdf;base64,${pdfBase64}`;
+      link.download = `${titulo}.pdf`;
+      link.click();
+    } catch (error) {
+      console.error("Error al crear el catalogo:", error);
+      alert("Ocurrió un error al crear el catalogo.");
+    }
+  };
 
   return (
     <Accordion defaultActiveKey="0" flush className="CatalogoAccordion">
@@ -17,6 +37,9 @@ export default function CatalogoAccord({ catalogo }) {
                 <Link to={`/eliminarcatalogo?titulo=${catalogo.titulo}`}>
                   <Button variant="danger" size="sm">Eliminar</Button>
                 </Link>
+                <Button variant="info" size="sm" onClick={() => descargarPDF(catalogo.productos,catalogo.titulo)}>
+                  Descargar
+                </Button>
               </Col>
             </Row>
         </Accordion.Header>
@@ -56,3 +79,4 @@ export default function CatalogoAccord({ catalogo }) {
     </Accordion>
   );
 }
+
