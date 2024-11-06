@@ -842,6 +842,18 @@ const traerCatalogos = async () => {
   }
 };
 
+const borrarCatalogo = async (titulo) => {
+  try {
+    const respuesta = await axios.delete('http://localhost:7000/catalogo', {
+      data: { titulo },
+    });
+    alert(respuesta.data); // Muestra el mensaje de éxito
+    // Aquí puedes agregar lógica para actualizar el estado o la UI
+  } catch (error) {
+    console.error("Error al eliminar el catálogo:", error);
+    alert("Ocurrió un error al eliminar el catálogo.");
+  }
+};
 
 
   return (
@@ -855,7 +867,7 @@ const traerCatalogos = async () => {
      altaTienda,modificarTienda, traerNovedades, altaNovedades, altaOrdenDeCompraRequest,
      traerOrdenesDeCompraTienda,traerItems,aceptarDespacho,cargaMasiva, crearCatalogo,
      ordenes,
-     crearFiltro,modificarFiltro, eliminarFiltro,traerFiltros,traerCatalogos
+     crearFiltro,modificarFiltro, eliminarFiltro,traerFiltros,traerCatalogos, borrarCatalogo
      }}>
       {children}
     </UserContext.Provider>

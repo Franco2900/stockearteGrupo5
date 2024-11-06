@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 
 export default function CatalogoAccord({ catalogo }) {
-  const { user, crearCatalogo } = useContext(UserContext);
+  const { user, crearCatalogo, borrarCatalogo } = useContext(UserContext);
 
   const descargarPDF = async(productos,titulo) => {
     try {
@@ -23,7 +23,6 @@ export default function CatalogoAccord({ catalogo }) {
       alert("Ocurrió un error al crear el catalogo.");
     }
   };
-
   return (
     <Accordion defaultActiveKey="0" flush className="CatalogoAccordion">
       <Accordion.Item eventKey="0">
@@ -34,9 +33,7 @@ export default function CatalogoAccord({ catalogo }) {
                 <Link to={`/modificarcatalogo?titulo=${catalogo.titulo}`}>
                   <Button variant="warning" size="sm" className="me-2">Modificar</Button>
                 </Link>
-                <Link to={`/eliminarcatalogo?titulo=${catalogo.titulo}`}>
-                  <Button variant="danger" size="sm">Eliminar</Button>
-                </Link>
+                <Button variant="danger" size="sm" onClick={() => borrarCatalogo(catalogo.titulo)}>Eliminar</Button>
                 <Button variant="info" size="sm" onClick={() => descargarPDF(catalogo.productos,catalogo.titulo)}>
                   Descargar
                 </Button>

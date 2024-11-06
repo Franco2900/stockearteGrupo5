@@ -26,6 +26,7 @@ import CrearCatalogo from './views/CrearCatalogo.jsx';
 import Informes from './views/Informes.jsx';
 import ErrorPage from './views/ErrorPage.jsx';
 import BuscarCatalogos from './views/BuscarCatalogos.jsx';
+import AsigCatalogo from './views/AsigCatalogo.jsx';
 
 function App() {
   const {user} = useContext(UserContext)
@@ -52,7 +53,9 @@ function App() {
                       <Route path='/crearupdorden' element={<CrearUpdOrden/>} />
                       <Route path='/orden' element={<Orden/>} />
                       <Route path='/CrearCatalogo'  element={<CrearCatalogo/>} /> 
-                      <Route path='/BuscarCatalogos'  element={<BuscarCatalogos/>} />                      
+                      <Route path='/BuscarCatalogos'  element={<BuscarCatalogos/>} /> 
+                      <Route path='/modificarcatalogo'  element={<AsigCatalogo/>} />
+
                   </Route>
 
                   {/*Rutas protegidas solo para usuarios Casa Central*/}
