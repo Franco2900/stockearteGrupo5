@@ -171,7 +171,7 @@ export default function CrearCatalogo() {
         {/* Agrega un margen superior para separar el input del botón */}
         <div style={{ marginTop: '1rem' }}>
           <Button onClick={() => asignar(productoList)}>
-            <h3>EXPORTAR</h3>
+            <h3>CREAR</h3>
           </Button>
           <Button variant="outline-danger" style={{ marginLeft: '.5cm' }} onClick={() => navigate("/")}>
             <h3>VOLVER</h3>

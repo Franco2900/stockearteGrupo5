@@ -848,6 +848,7 @@ const borrarCatalogo = async (titulo) => {
       data: { titulo },
     });
     alert(respuesta.data); // Muestra el mensaje de éxito
+    window.location.reload();
     // Aquí puedes agregar lógica para actualizar el estado o la UI
   } catch (error) {
     console.error("Error al eliminar el catálogo:", error);
@@ -855,6 +856,75 @@ const borrarCatalogo = async (titulo) => {
   }
 };
 
+const traerProductosCatalogo = async (titulo) =>  {
+  try {
+    const response = await axios.get('http://localhost:7000/catalogo/traerProductos', {
+      params: { titulo : titulo },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return response.data.productos;
+  } catch (error) {
+    console.error('Error al traerProductos:', error);
+    throw error;
+  }
+};
+
+const traerProductosNoCatalogo = async (titulo) =>  {
+  try {
+    const response = await axios.get('http://localhost:7000/catalogo/traerNoProductos', {
+      params: { titulo : titulo },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return response.data.productos;
+  } catch (error) {
+    console.error('Error al traerProductos:', error);
+    throw error;
+  }
+};
+
+const asignarProductosCatalogo = async (codigos, titulo) => {
+  try {
+    const params = {
+      codigos: codigos,
+      titulo: titulo
+    };
+    const response = await axios.put('http://localhost:7000/catalogo/asignar', params, {
+      headers: {
+        "Content-Type": "application/json",
+        },
+      });
+
+      return response.data.mensaje; 
+  } catch (error) {
+    console.error('Error al asignar productos:', error);
+    throw error;
+  }
+};
+
+const desasignarProductosCatalogo = async (codigos, titulo) => {
+  try {
+    const params = {
+      codigos: codigos,
+      titulo: titulo
+    };
+    const response = await axios.put('http://localhost:7000/catalogo/desasignar', params, {
+      headers: {
+        "Content-Type": "application/json",
+        },
+      });
+
+      return response.data.mensaje; 
+  } catch (error) {
+    console.error('Error al asignar productos:', error);
+    throw error;
+  }
+};
 
   return (
     <UserContext.Provider value={{ user, setUser,hacerLogin,
@@ -867,7 +937,8 @@ const borrarCatalogo = async (titulo) => {
      altaTienda,modificarTienda, traerNovedades, altaNovedades, altaOrdenDeCompraRequest,
      traerOrdenesDeCompraTienda,traerItems,aceptarDespacho,cargaMasiva, crearCatalogo,
      ordenes,
-     crearFiltro,modificarFiltro, eliminarFiltro,traerFiltros,traerCatalogos, borrarCatalogo
+     crearFiltro,modificarFiltro, eliminarFiltro,traerFiltros,traerCatalogos, borrarCatalogo, traerProductosCatalogo, traerProductosNoCatalogo,
+     asignarProductosCatalogo, desasignarProductosCatalogo
      }}>
       {children}
     </UserContext.Provider>

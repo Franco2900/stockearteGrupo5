@@ -10,7 +10,8 @@ export function AsigProd() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const codigoTienda = searchParams.get("codigo");
-  const { asignarProducto, desasignarProducto, traerProductosDeLaTienda2, traerProductosNoTienda, traerOrdenesDeCompraTienda } = useContext(UserContext);
+  const tituloCatalogo = searchParams.get("titulo");
+  const { asignarProducto, desasignarProducto, traerProductosCatalogo, traerProductosNoCatalogo, asignarProductosCatalogo, desasignarProductosCatalogo } = useContext(UserContext);
 
   const [activePage, setActivePage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(15);
@@ -33,24 +34,27 @@ export function AsigProd() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const ordenes = await traerOrdenesDeCompraTienda();
-        setData(ordenes);
+        const productos = await traerProductosCatalogo(tituloCatalogo);
+        setData(Array.isArray(productos) ? productos : []);
       } catch (error) {
         console.error("Error al traer productos asignados:", error);
+        setData([]);
       }
     };
 
     const fetchNoData = async () => {
       try {
-        const ordenes = await traerOrdenesDeCompraTienda();
-        setNoData(ordenes);
+        const productos = await traerProductosNoCatalogo(tituloCatalogo);
+        setNoData(Array.isArray(productos) ? productos : []);
       } catch (error) {
         console.error("Error al traer productos no asignados:", error);
+        setNoData([]);
       }
     };
+
     fetchData();
     fetchNoData();
-  }, [codigoTienda, traerOrdenesDeCompraTienda]);
+  }, [tituloCatalogo, traerProductosCatalogo, traerProductosNoCatalogo]);
 
   const handleFilterChangeAsignados = (event) => {
     const { name, value } = event.target;
@@ -64,26 +68,25 @@ export function AsigProd() {
     setActivePage(1); // Resetear la paginación al cambiar el filtro
   };
 
-  const filteredData = data.filter((prod) =>
+  const filteredData = Array.isArray(data) ? data.filter((prod) =>
     prod.nombre.toLowerCase().includes(filterAsignados.nombre.toLowerCase()) &&
     prod.codigo.toLowerCase().includes(filterAsignados.codigo.toLowerCase()) &&
     prod.talle.toLowerCase().includes(filterAsignados.talle.toLowerCase()) &&
     prod.color.toLowerCase().includes(filterAsignados.color.toLowerCase())
-  );
+  ) : [];
 
-  const filteredNoData = noData.filter((prod) =>
+  const filteredNoData = Array.isArray(noData) ? noData.filter((prod) =>
     prod.nombre.toLowerCase().includes(filterNoAsignados.nombre.toLowerCase()) &&
     prod.codigo.toLowerCase().includes(filterNoAsignados.codigo.toLowerCase()) &&
     prod.talle.toLowerCase().includes(filterNoAsignados.talle.toLowerCase()) &&
     prod.color.toLowerCase().includes(filterNoAsignados.color.toLowerCase())
-  );
+  ) : [];
 
   const paginatedData = filteredData.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage);
   const paginatedNoData = filteredNoData.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage);
 
   const handlePageChange = (page) => {
     setActivePage(page);
-    setData(filteredData);
   };
 
   const handlePreviousPage = () => {
@@ -93,19 +96,20 @@ export function AsigProd() {
   };
 
   const handleNextPage = () => {
-    if (activePage < Math.ceil(data.length / itemsPerPage)) {
+    if (activePage < Math.ceil(filteredData.length / itemsPerPage)) {
       setActivePage(activePage + 1);
     }
   };
 
   const asignar = () => {
     if (productoList.length > 0) {
-      asignarProducto(productoList, codigoTienda)
-        .then((mensajes) => {
-          alert(mensajes.join('\n'));
+      const codigos = productoList.map(producto => producto.codigo);
+      asignarProductosCatalogo(codigos, tituloCatalogo)
+        .then((mensaje) => {
+          alert(mensaje);
           window.location.reload();
         })
-        .catch((error) => console.error("Error asignando productos:", error));
+        .catch((error) => console.error("Error agregando productos:", error));
     } else {
       alert("La lista está vacía.");
     }
@@ -113,12 +117,13 @@ export function AsigProd() {
 
   const desasignar = () => {
     if (productoList.length > 0) {
-      desasignarProducto(productoList, codigoTienda)
-        .then((mensajes) => {
-          alert(mensajes.join('\n'));
+      const codigos = productoList.map(producto => producto.codigo);
+      desasignarProductosCatalogo(codigos, tituloCatalogo)
+        .then((mensaje) => {
+          alert(mensaje);
           window.location.reload();
         })
-        .catch((error) => console.error("Error desasignando productos:", error));
+        .catch((error) => console.error("Error quitando productos:", error));
     } else {
       alert("La lista está vacía.");
     }
@@ -129,26 +134,26 @@ export function AsigProd() {
 
       <Col md={{ span: 4 }}>
         <Container className='Busqueda'>
-          <h4>Productos Asignados</h4>
+          <h4>Productos Agregados</h4>
           <FiltroProd filter={filterAsignados} handleFilterChange={handleFilterChangeAsignados} />
           <TablaNovedades list={paginatedData} handleAsignar={(item) => setProductoList((prev) => [...prev, item])} />
-          <Paginacion handlePageChange={handlePageChange} handlePreviousPage={handlePreviousPage} handleNextPage={handleNextPage} data={data} activePage={activePage} itemsPerPage={itemsPerPage}/>
-          </Container>
+          <Paginacion handlePageChange={handlePageChange} handlePreviousPage={handlePreviousPage} handleNextPage={handleNextPage} data={data} activePage={activePage} itemsPerPage={itemsPerPage} />
+        </Container>
       </Col>
 
       <Col md={{ span: 4 }}>
         <Container className='Busqueda'>
-          <h4>Productos No Asignados</h4>
+          <h4>Productos No Agregados</h4>
           <FiltroProd filter={filterNoAsignados} handleFilterChange={handleFilterChangeNoAsignados} />
           <TablaNovedades list={paginatedNoData} handleAsignar={(item) => setProductoList((prev) => [...prev, item])} />
-          <Paginacion handlePageChange={handlePageChange} handlePreviousPage={handlePreviousPage} handleNextPage={handleNextPage} data={noData} activePage={activePage} itemsPerPage={itemsPerPage}/>
+          <Paginacion handlePageChange={handlePageChange} handlePreviousPage={handlePreviousPage} handleNextPage={handleNextPage} data={noData} activePage={activePage} itemsPerPage={itemsPerPage} />
         </Container>
       </Col>
 
       <Col md={{ span: 4 }} style={{ marginTop: '.3cm' }}>
-        <h3>Tienda: {codigoTienda}</h3>
-        <Button onClick={asignar}><h3>ASIGNAR</h3></Button>
-        <Button variant="outline-danger" style={{ marginLeft: '.5cm' }} onClick={desasignar}><h3>DESASIGNAR</h3></Button>
+        <h3>Catalogo: {tituloCatalogo}</h3>
+        <Button onClick={asignar}><h3>AGREGAR</h3></Button>
+        <Button variant="outline-danger" style={{ marginLeft: '.5cm' }} onClick={desasignar}><h3>QUITAR</h3></Button>
         <TablaNovedades list={productoList} handleDesasignar={(item) => setProductoList((prev) => prev.filter(prod => prod.codigo !== item.codigo))} />
       </Col>
 
