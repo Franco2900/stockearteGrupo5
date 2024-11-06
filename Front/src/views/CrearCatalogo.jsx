@@ -157,7 +157,7 @@ export default function CrearCatalogo() {
         </Col>
         <Col md={{ span: 1 }} />
         <Col md={{ span: 5 }} style={{ marginTop: '.3cm' }}>
-          <h3>Tienda: {codigoTienda}</h3>
+          <h3>Tienda: {user.tiendaCodigo}</h3>
           <Form.Group controlId="pdfName">
           <Form.Label>Nombre del PDF:</Form.Label>
           <Form.Control
