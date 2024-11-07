@@ -913,11 +913,12 @@ const desasignarProductosCatalogo = async (codigos, titulo) => {
       codigos: codigos,
       titulo: titulo
     };
-    const response = await axios.delete('http://localhost:7000/catalogo/productos', params, {
+    const response = await axios.delete('http://localhost:7000/catalogo/productos', {
+      data: params, // Utiliza data en lugar de JSON.stringify
       headers: {
         "Content-Type": "application/json",
-        },
-      });
+      },
+    });
 
       return response.data.mensaje; 
   } catch (error) {
