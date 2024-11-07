@@ -858,7 +858,7 @@ const borrarCatalogo = async (titulo) => {
 
 const traerProductosCatalogo = async (titulo) =>  {
   try {
-    const response = await axios.get('http://localhost:7000/catalogo/traerProductos', {
+    const response = await axios.get('http://localhost:7000/catalogo/productos', {
       params: { titulo : titulo },
       headers: {
         'Content-Type': 'application/json',
@@ -874,7 +874,7 @@ const traerProductosCatalogo = async (titulo) =>  {
 
 const traerProductosNoCatalogo = async (titulo) =>  {
   try {
-    const response = await axios.get('http://localhost:7000/catalogo/traerNoProductos', {
+    const response = await axios.get('http://localhost:7000/catalogo/noProductos', {
       params: { titulo : titulo },
       headers: {
         'Content-Type': 'application/json',
@@ -894,7 +894,7 @@ const asignarProductosCatalogo = async (codigos, titulo) => {
       codigos: codigos,
       titulo: titulo
     };
-    const response = await axios.put('http://localhost:7000/catalogo/asignar', params, {
+    const response = await axios.post('http://localhost:7000/catalogo/productos', params, {
       headers: {
         "Content-Type": "application/json",
         },
@@ -913,7 +913,7 @@ const desasignarProductosCatalogo = async (codigos, titulo) => {
       codigos: codigos,
       titulo: titulo
     };
-    const response = await axios.put('http://localhost:7000/catalogo/desasignar', params, {
+    const response = await axios.delete('http://localhost:7000/catalogo/productos', params, {
       headers: {
         "Content-Type": "application/json",
         },
