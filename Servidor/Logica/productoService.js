@@ -313,6 +313,20 @@ async function modificarProducto(call, callback)
             color:              call.request.color
         }
         
+
+        // Chequeo si ya existe un producto con dicho nombre, talle y color
+        var resultados = await conexionDataBase.query(
+            `SELECT EXISTS(SELECT codigo FROM producto WHERE nombre = ? and talle = ? and color = ?) AS existe`,
+            [registro.nombre, registro.talle, registro.color]
+        );
+        var existeProducto = resultados[0].existe;
+
+        if (existeProducto) // SI EXISTE EL PRODUCTO CON MISMO NOMBRE, TALLE Y COLOR..ARROJA ERROR
+        { 
+            console.log('No se puede modificar el producto porque ya existe uno con dichos atributos');
+            return callback(null, { mensaje: 'ERROR: No se puede modificar el producto porque ya existe uno con dichos atributos' });
+        }
+
         console.log('Datos antes de la modificación');
         resultados = await conexionDataBase.query(
             `SELECT *

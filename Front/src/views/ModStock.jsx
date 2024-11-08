@@ -42,6 +42,7 @@ export function ModStock() {
     e.preventDefault();
     modificarStock(formData).then((msj) => {
         alert(msj);
+        window.location.href = '/buscarproductos';
       });
   };
 

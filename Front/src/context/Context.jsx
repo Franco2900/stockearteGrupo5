@@ -502,6 +502,7 @@ const  modificarUsuario = async(u) =>{
       return response.data;
     } catch (error) {
       console.error('Error al obtener el usuario:', error);
+      alert("Usuario y/o contraseña invalidos");
       throw error;
     }
   };
