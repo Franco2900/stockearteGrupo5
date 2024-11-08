@@ -125,6 +125,12 @@ export function AsigProd() {
     }
   };
 
+  const handleAsignar = (item) => {
+    if (!productoList.some((prod) => prod.codigo === item.codigo)) {
+      setProductoList((prevList) => [...prevList, item]);
+    }
+  };
+
   return (
     <Row className='justify-content-center'>
 
@@ -132,7 +138,7 @@ export function AsigProd() {
         <Container className='Busqueda'>
           <h4>Productos Asignados</h4>
           <FiltroProd filter={filterAsignados} handleFilterChange={handleFilterChangeAsignados} />
-          <TablaNovedades list={paginatedData} handleAsignar={(item) => setProductoList((prev) => [...prev, item])} />
+          <TablaNovedades list={paginatedData} handleAsignar={handleAsignar} />
           <Paginacion handlePageChange={handlePageChange} handlePreviousPage={handlePreviousPage} handleNextPage={handleNextPage} data={data} activePage={activePage} itemsPerPage={itemsPerPage}/>
           </Container>
       </Col>
@@ -141,7 +147,7 @@ export function AsigProd() {
         <Container className='Busqueda'>
           <h4>Productos No Asignados</h4>
           <FiltroProd filter={filterNoAsignados} handleFilterChange={handleFilterChangeNoAsignados} />
-          <TablaNovedades list={paginatedNoData} handleAsignar={(item) => setProductoList((prev) => [...prev, item])} />
+          <TablaNovedades list={paginatedNoData} handleAsignar={handleAsignar} />
           <Paginacion handlePageChange={handlePageChange} handlePreviousPage={handlePreviousPage} handleNextPage={handleNextPage} data={noData} activePage={activePage} itemsPerPage={itemsPerPage}/>
         </Container>
       </Col>
