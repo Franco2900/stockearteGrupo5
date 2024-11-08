@@ -39,6 +39,7 @@ function FormLogin() {
         usuario : user.usuario,
         tiendaCodigo : user.tiendaCodigo,
         central: user.central ,
+        habilitado: user.habilitado,
         isUserLoggedIn : true
       }
       localStorage.setItem("user",JSON.stringify(userData));

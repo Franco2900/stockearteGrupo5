@@ -40,14 +40,14 @@ function App() {
                   <Route path="/login" element={<Login />} />
 
                   {/*Rutas protegidas solo para usuarios logueados*/}
-                  <Route element={<ProtectedRoute isAllowed={user.isUserLoggedIn}/>} >
+                  <Route element={<ProtectedRoute isAllowed={user.isUserLoggedIn && user.habilitado}/>} >
                       <Route path='/buscarproductos' element={<BuscarProductos />} />
                       <Route path='/informes' element={<Informes/>} />
                   </Route>
 
                   {/*Rutas para usuarios de tienda*/}
                   {/*  <Route element={<ProtectedRoute isAllowed={!!user}/>} > */}
-                  <Route element={<ProtectedRoute isAllowed={user.isUserLoggedIn && !user.central}/>} >
+                  <Route element={<ProtectedRoute isAllowed={user.isUserLoggedIn && !user.central && user.habilitado}/>} >
                       <Route path='/modstock' element={<ModStock/>} />
                       <Route path='/buscarordenes' element={<BuscarOrdenes/>} />
                       <Route path='/crearupdorden' element={<CrearUpdOrden/>} />
@@ -59,7 +59,7 @@ function App() {
                   </Route>
 
                   {/*Rutas protegidas solo para usuarios Casa Central*/}
-                  <Route element={<ProtectedRoute isAllowed={user.isUserLoggedIn && user.central}/>} >          
+                  <Route element={<ProtectedRoute isAllowed={user.isUserLoggedIn && user.central && user.habilitado}/>} >          
                       <Route path='/buscartiendas' element={<BuscarTiendas />} />
                       <Route path="/creartienda" element={<CrearUpdTienda/>} />
                       <Route path='/buscarusuarios' element={<BuscarUsuarios />} />

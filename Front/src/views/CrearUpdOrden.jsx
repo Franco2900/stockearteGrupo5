@@ -12,7 +12,7 @@ export default function CrearUpdOrden(){
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const codigoTienda = searchParams.get("codigo");
-  const { buscarTodosLosProductos, asignarProducto, desasignarProducto, altaOrdenDeCompraRequest} = useContext(UserContext)
+  const { buscarTodosLosProductos, asignarProducto, desasignarProducto, altaOrdenDeCompraRequest, user} = useContext(UserContext)
   const [activePage, setActivePage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(15);
   const[productoList, setProductoList] = useState([])
@@ -42,8 +42,6 @@ export default function CrearUpdOrden(){
     }, [buscarTodosLosProductos, codigoTienda]);
 
     const navigate = useNavigate();
-
-    const { user } = useContext(UserContext);
 
     const asignar = async () => {
       try {
@@ -152,7 +150,7 @@ export default function CrearUpdOrden(){
       </Col>
       <Col md={{ span: 1 }} />
       <Col md={{ span: 5 }} style={{marginTop: '.3cm'}}>
-      <h3>Tienda: {codigoTienda}</h3>
+      <h3>Tienda: {user.tiendaCodigo}</h3>
       <Button onClick={()=>asignar(productoList)}><h3>SOLICITAR</h3></Button>
       <Button variant="outline-danger"style={{marginLeft: '.5cm'}} onClick={()=> navigate("/")}><h3>VOLVER</h3></Button>
       {/* TABLA PARA ASIGNAR O DESASIGNAR*/}
