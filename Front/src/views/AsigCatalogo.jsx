@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate  } from "react-router-dom";
 import React, { useState, useContext, useEffect } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import UserContext from "../context/Context.jsx";
@@ -8,6 +8,7 @@ import TablaNovedades from "../components/TablaNovedades.jsx";
 
 export function AsigProd() {
   const location = useLocation();
+  const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
   const codigoTienda = searchParams.get("codigo");
   const tituloCatalogo = searchParams.get("titulo");
@@ -107,7 +108,7 @@ export function AsigProd() {
       asignarProductosCatalogo(codigos, tituloCatalogo)
         .then((mensaje) => {
           alert(mensaje);
-          window.location.reload();
+          navigate('/BuscarCatalogos');
         })
         .catch((error) => console.error("Error agregando productos:", error));
     } else {
@@ -121,7 +122,7 @@ export function AsigProd() {
       desasignarProductosCatalogo(codigos, tituloCatalogo)
         .then((mensaje) => {
           alert(mensaje);
-          window.location.reload();
+          navigate('/BuscarCatalogos');
         })
         .catch((error) => console.error("Error quitando productos:", error));
     } else {

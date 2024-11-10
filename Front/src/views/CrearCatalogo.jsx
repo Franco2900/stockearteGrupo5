@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation  } from "react-router-dom";
 import React, { useState, useContext, useEffect } from 'react';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import UserContext from "../context/Context.jsx";
@@ -54,7 +54,8 @@ export default function CrearCatalogo() {
       link.href = `data:application/pdf;base64,${pdfBase64}`;
       link.download = `${pdfName}.pdf`;
       link.click();
-      window.location.reload();
+      navigate('/BuscarCatalogos');
+      //window.location.reload();
 
     } catch (error) {
       console.error("Error al crear el catalogo:", error);
