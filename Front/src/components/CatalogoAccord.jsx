@@ -42,7 +42,6 @@ export default function CatalogoAccord({ catalogo }) {
         </Accordion.Header>
 
         <Accordion.Body>
-          {/* Recorro y muestro los productos del catálogo */}
           {catalogo.productos.map((producto, index) => (
             <Accordion key={index} defaultActiveKey="1" flush className="ProductoAccordion">
               <Accordion.Item eventKey="1">

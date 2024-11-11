@@ -7,12 +7,9 @@ import FiltroProd from '../components/FiltroProd.jsx';
 import TablaNovedades from "../components/TablaNovedades.jsx";
 import { useNavigate } from 'react-router-dom';
 
-//import { traerNovedades, altaNovedades } from "../../../Servidor/Logica/tiendaService.js";
-
 export default function CrearUpdOrden(){
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  //const codigoTienda = searchParams.get("codigo");
   const { traerNovedades, altaNovedades} = useContext(UserContext)
   const [activePage, setActivePage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(15);
@@ -48,23 +45,7 @@ export default function CrearUpdOrden(){
         alert("La lista está vacía.");
       }
     };
-    /*
-    const desasignar = (list) => {
-      console.log("Cod tienda: ",codigoTienda)
-     if(list && list.length > 0){ 
-      desasignarProducto(list, codigoTienda)
-      .then((mensajes) => {
-        alert(mensajes.join('\n').toString());
-        window.location.reload();
-      })
-      .catch((error) => {
-        console.error("Error desasignando productos:", error);
-      });
-      }else{
-        alert("La lista está vacía.");
-      }
-    };
-    */
+    
     const navigate = useNavigate();
 
     const handleFilterChange = (event) => {

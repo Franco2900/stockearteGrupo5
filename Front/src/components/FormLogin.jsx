@@ -32,7 +32,7 @@ function FormLogin() {
       const user = await hacerLogin(usuario1);
       //console.log("USUARIO LOGIN OBTENIDO:", JSON.stringify(user));     
             
-      // Establecer el usuario en el contexto
+      // Establece el usuario en el contexto
       //setUser(user);
       const userData = {
         id: user.id,

@@ -27,14 +27,6 @@ export default function CrearUpdOrden(){
     useEffect(() => {
       const fetchData = async () => {
         const productos = await buscarTodosLosProductos()
-        //productos.filter((prod) => prod.codigo !== codigoTienda);
-        // Agrupar por código usando un objeto
-        //const groupedByCodigo = Object.values(
-        //  productos.reduce((acc, item) => {
-        //    acc[item.codigo] = item; // Almacena solo el último elemento con el mismo código
-        //    return acc;
-        //  }, {})
-        //);
         setData(productos);
         //console.log('PRODUCTOS OBTENIDOS: ' + JSON.stringify(productos))
       };

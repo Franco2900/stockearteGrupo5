@@ -41,14 +41,6 @@ export default function CrearCatalogo() {
 
   const asignar = async () => {
     try {
-      //const mensajes = await altaOrdenDeCompraRequest(user?.tiendaCodigo, productoList);
-      //const mensaje = await crearCatalogo(getProductCodes(), pdfName);
-      //console.log("respuesta cliente SOAP");
-      //console.log(mensaje);
-      // Aquí puedes implementar la función para exportar el PDF usando pdfName
-      // Por ejemplo, exportarPdf(pdfName, productoList);
-      // alert(mensajes.join('\n'));
-      //window.location.reload(); // Opcional: recargar la página si es necesario
       const pdfBase64 = await crearCatalogo(getProductCodes(), pdfName); // Obtener el PDF en base64
       const link = document.createElement('a');
       link.href = `data:application/pdf;base64,${pdfBase64}`;

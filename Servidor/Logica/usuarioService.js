@@ -264,9 +264,6 @@ async function hacerLogin(call, callback)
     var usuario  = call.request.usuario;
     var password = call.request.password;
 
-    //var usuarioBloqueado                   = await conexionDataBase.chequearUsuarioBloqueado(usuario);
-    //if (usuarioBloqueado)    return callback(null, {mensaje: `ERROR: El usuario '${usuario}' está bloqueado `});
-
     try
     {
         var resultadosConsulta = await conexionDataBase.query(`SELECT u.id,u.usuario, u.password, u.nombre, u.apellido, u.habilitado, u.tienda_codigo, t.central 

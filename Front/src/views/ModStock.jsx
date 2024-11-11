@@ -59,7 +59,6 @@ export function ModStock() {
         setFilePreview(reader.result); // Actualiza la vista previa con la imagen en base64
       };
       reader.readAsDataURL(file); // Convierte el archivo a base64
-      //console.log("CONVERSION BASE64: ",file)
     }
   };
   

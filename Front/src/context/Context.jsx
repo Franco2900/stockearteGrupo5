@@ -75,9 +75,6 @@ const  modificarUsuario = async(u) =>{
       });
       return response.data;
 
-     // const userList = await buscarTodosLosUsuarios();
-     // const usuario = userList.find(u => u.usuario === userName)
-     // return usuario
     } catch (error) {
       console.error('Error al obtener', error);
       throw error;
@@ -506,29 +503,6 @@ const  modificarUsuario = async(u) =>{
       throw error;
     }
   };
-/*
-  async function traerNovedades  () {
-    try {           
-     
-    const response = await axios.get(`/api/traerNovedades`,JSON.stringify(), {
-       headers: {
-         'Content-Type': 'application/json',
-       },
-     });
-     //console.log("PRODUCTOS: " +JSON.stringify(response.data.arregloProductos3))
-     const novedadesList = response.data.arregloNovedades.map((novedad) => ({
-      codigo: novedad.codigo,
-      nombre: novedad.nombre,
-      talle: novedad.talle,
-      foto: novedad.foto,
-      color: novedad.color
-    }));
-     return novedadesList;       
-    } catch (error) {
-      console.error('Error al obtener las novedades:', error);
-      throw error;
-    }
-  };*/
 
   async function traerNovedades() {
     try {

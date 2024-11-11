@@ -219,7 +219,7 @@ async function modificarStock(call, callback) {
     console.log('************************************************************');
     console.log('Modificando datos');
 
-    // Acá van los datos que nos llegan del cliente desde gRPC
+    // Aca van los datos que nos llegan del cliente desde gRPC
     const registro =
     {
         usuario:         call.request.usuario,
@@ -303,7 +303,7 @@ async function modificarProducto(call, callback)
 
     try
     {
-        // Acá van los datos que nos llegan del cliente desde gRPC
+        // Aca van los datos que nos llegan del cliente desde gRPC
         const registro =
         {
             codigo:             call.request.codigo,
@@ -335,12 +335,6 @@ async function modificarProducto(call, callback)
         );
         console.log(resultados);
 
-
-       // await conexionDataBase.query( // Actualizo el producto
-       //     `UPDATE producto
-       //     SET nombre = '${registro.nombre}', talle = '${registro.talle}', foto = '${registro.foto}', color = '${registro.color}'
-       //     WHERE codigo = '${registro.codigo}' `, {}
-       // )
 	   await conexionDataBase.query(
 				`UPDATE producto
 				SET nombre = '${registro.nombre}', talle = '${registro.talle}', foto = ?, color = '${registro.color}'
@@ -368,10 +362,8 @@ async function asignarProducto(call, callback)
     console.log('************************************************************');
     console.log('Asignando el producto a una tienda');
 
-    // Acá van los datos que nos llegan del cliente desde gRPC
+    // Aca van los datos que nos llegan del cliente desde gRPC
     const { codigoTienda, codigoProducto} = call.request;
-    //var tiendaBloqueada                   = await conexionDataBase.chequearTiendaBloqueada(codigoTienda);
-    //if (tiendaBloqueada)    return callback(null, {mensaje: `ERROR: No es posible asignar productos a una tienda bloqueada `});
     try
     { 
         await conexionDataBase.query(
@@ -398,7 +390,7 @@ async function desasignarProducto(call, callback)
     console.log('************************************************************');
     console.log('Desasignando el producto a una tienda');
 
-    // Acá van los datos que nos llegan del cliente desde gRPC
+    // Aca van los datos que nos llegan del cliente desde gRPC
     const { codigoTienda, codigoProducto} = call.request;
 
     try

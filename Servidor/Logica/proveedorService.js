@@ -376,7 +376,6 @@ async function traerOrdenesDeCompraTienda(call, callback) {
                 observaciones: resultadosConsulta[i].observaciones,
                 fecha_de_solicitud: formatDate(resultadosConsulta[i].fecha_de_solicitud),
                 fecha_de_recepcion: formatDate(resultadosConsulta[i].fecha_de_recepcion),
-                //fecha_de_envio: formatDate(resultadosConsulta[i].fecha_de_envio) // Asegúrate de incluir esto
             });
         }
 
@@ -388,7 +387,7 @@ async function traerOrdenesDeCompraTienda(call, callback) {
         
     } catch (error) {
         console.error('Error en traerOrdenesDeCompra:', error);
-        callback(error); // Maneja el error
+        callback(error);
     }
 }
 
@@ -423,7 +422,7 @@ async function traerItems(call, callback) {
         
     } catch (error) {
         console.error('Error en traerOrdenesDeCompra:', error);
-        callback(error); // Maneja el error
+        callback(error);
     }
 }
 
@@ -463,7 +462,7 @@ async function traerOrdenesDeCompraTienda2(call, callback) {
         
     } catch (error) {
         console.error('Error en traerOrdenesDeCompra:', error);
-        callback(error); // Maneja el error
+        callback(error);
     }
 }
 
